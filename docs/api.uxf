@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>504</x>
+      <y>360</y>
+      <w>352</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>VigenereController
+--
+
+--
++ cipher(in request: VigenereData): VigenereData
++ decipher(in request: VigenereData): VigenereData
++ decrypt(in request: VigenereDecryptInput): VigenereDecryptOutput
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>504</x>
+      <y>464</y>
+      <w>352</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>CesarController
+--
+
+--
++ cipher(in request: CaesarData): CaesarData
++ decipher(in request: CaesarData): CaesarData
+
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>960</x>
+      <y>472</y>
+      <w>248</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+CaesarData
+--
+- message: str
+- key: OneCharStr | int
+--
+__+ from_json(in json: str): CaesarData__
+__+ to_json(in data: CaesarData): str__
++ ctor(in message: str, in key: OneCharStr | int)
++ cipher(): CaesarData
++ decipher(): CaesarData
+
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>960</x>
+      <y>328</y>
+      <w>248</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+VigenereData
+--
+- message: str
+- key: str
+--
+__+ from_json(in json: str): VigenereData__
+__+ to_json(in data: VigenereData): str__
++ ctor(in message: str, in key: str)
++ cipher(): VigenereData
++ decipher(): VigenereData
+
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>504</x>
+      <y>184</y>
+      <w>240</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+VigenereDecryptInput
+--
+- message: str
+--
+__+ from_json(in json: str): VigenereDecryptInput__
++ ctor(in message: str)
++ decrypt(): VigenereDecryptOutput
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>816</x>
+      <y>184</y>
+      <w>280</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+VigenereDecryptOutput
+--
+- possibilities: Collection[Taux, VigenereData]
+--
+__+ to_json(in data: VigenereDecryptOutput): str__
++ ctor(in possibilities: Collection[Taux, VigenereData])
+
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1088</x>
+      <y>200</y>
+      <w>80</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=1
+m2=1..*</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0;60.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>592</x>
+      <y>272</y>
+      <w>56</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+&lt;&lt;use&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>760</x>
+      <y>256</y>
+      <w>200</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+&lt;&lt;use&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;90.0;230.0;90.0;230.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>848</x>
+      <y>392</y>
+      <w>128</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+&lt;&lt;use&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>848</x>
+      <y>488</y>
+      <w>128</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+&lt;&lt;use&gt;&gt;</panel_attributes>
+    <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>288</x>
+      <y>416</y>
+      <w>128</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>BlackSheep
+--
+
+--
++ start(): NoReturn
+
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>392</y>
+      <w>112</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=1
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;70.0;60.0;70.0;60.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>440</y>
+      <w>112</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=1
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0;60.0;70.0;120.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>64</x>
+      <y>416</y>
+      <w>160</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>VigenereAPI
+--
+
+--
++ ctor(config: Configuration)
++ start(): NoReturn
+
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>216</x>
+      <y>432</y>
+      <w>88</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=1
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;20.0;90.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>176</y>
+      <w>280</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>Configuration
+--
++ host: IPvAnyAddress
++ port: StrictPositiveInt = 8080
++ workers: StrictPositiveInt = 1
++ limit_concurrency: StrictPositiveInt | None = None
++ limit_max_requests: StrictPositiveInt | None = None
++ reload: StrictBool = False
++ reload_dirs: Collection[DirectoryPath] | None = None
++ reload_include: Pattern | None = None
++ reload_exclude: Pattern | None = None
+--
+__+ default(): Configuration__
+__+ from_file(in file: Path): Configuration__
+__+ to_file(in config: Configuration, in file: Path): None__
+
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>128</x>
+      <y>352</y>
+      <w>24</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m1=1
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>928</x>
+      <y>112</y>
+      <w>112</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Taux is a float</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>968</x>
+      <y>136</y>
+      <w>24</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>736</x>
+      <y>216</y>
+      <w>96</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+&lt;&lt;generate&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
+  </element>
+</diagram>
