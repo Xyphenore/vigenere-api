@@ -1,0 +1,1133 @@
+[tool.poetry]
+name = "Vigenere-API"
+version = "0.0.1"
+description = """\
+The project provides an API to use cipher, decipher and decrypt method with the Vigenere algorithm.\
+The Caesar algorithm is provided for the cipher method and decipher method.\
+"""
+authors = ["Axel DAVID <axel.david@etu.univ-amu.fr>"]
+readme = "README.md"
+license = "GPL-3.0-or-later"
+packages = [{ include = "src" }]
+homepage = "https://etulab.univ-amu.fr/d19006523/vigenere-api"
+repository = "https://etulab.univ-amu.fr/d19006523/vigenere-api"
+keywords = ["vigenere", "caesar", "API", "Python"]
+include = ["CHANGELOG.md", "INSTALL.md"]
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+blacksheep = "^2.0a6"
+uvicorn = { extras = ["standard"], version = "^0" }
+pyyaml = "^6"
+pydantic = "^2.0a3"
+
+
+[tool.poetry.group.formatter.dependencies]
+black = "^23"
+isort = "^5"
+
+
+[tool.poetry.group.linter.dependencies]
+bandit = { extras = ["toml"], version = "^1" }
+pycodestyle = "^2"
+pydocstyle = { extras = ["toml"], version = "^6" }
+pylint-secure-coding-standard = "^1"
+pylint-pydantic = "^0"
+pylint-enums = "^0"
+pylint-blocking-calls = "^0"
+pylint-blank-line-plugin = "^0"
+ruff = "^0"
+interrogate = "^1"
+deptry = "^0"
+pylint = "^2"
+mypy = { extras = ["reports"], version = "^1" }
+vulture = "^2"
+safety = "^2.4.0b1"
+dodgy = "^0"
+yamllint = "^1"
+
+
+[tool.poetry.group.test.dependencies]
+coverage = { extras = ["toml"], version = "^7" }
+pytest = "^7"
+pytest-asyncio = "^0"
+pytest-benchmark = "^4"
+pytest-cov = "^4"
+pytest-depends = "^1"
+pytest-raises = "^0"
+pytest-integration = "^0"
+pytest-snail = "^0"
+pytest-todo = "^0"
+pytest-assert-utils = "^0"
+pytest-bg-process = "^0"
+pytest-rich = "^0"
+pytest-timer = "^0"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3"
+requests = "^2.19"
+
+
+[tool.poetry.scripts]
+#serve = "src:start:start"
+
+
+[tool.poetry.urls]
+"Mirror" = "https://github.com/Xyphenore/vigenere-api"
+"Bug Tracker" = "https://etulab.univ-amu.fr/d19006523/vigenere-api/issues"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.interrogate]
+ignore-init-method = false
+ignore-init-module = false
+ignore-magic = false
+ignore-semiprivate = false
+ignore-private = false
+ignore-property-decorators = false
+ignore-module = false
+ignore-nested-functions = false
+ignore-nested-classes = false
+ignore-setters = false
+fail-under = 80
+exclude = ["docs", "build"]
+verbose = 0
+quiet = false
+color = true
+omit-covered-files = false
+
+
+[tool.vulture]
+exclude = ["docs/"]
+sort_by_size = true
+
+
+[tool.ruff]
+target-version = "py39"
+
+select = [
+    "A",
+    "ANN",
+    "ARG",
+    "B",
+    "BLE",
+    "C",
+    "COM",
+    "C4",
+    "C90",
+    "D",
+    "DTZ",
+    "E",
+    "EM",
+    "ERA",
+    "EXE",
+    "F",
+    "FBT",
+    "G",
+    "I",
+    "ICN",
+    "INP",
+    "INT",
+    "ISC",
+    "N",
+    "NPY",
+    "PGH",
+    "PIE",
+    "PL",
+    "PLE",
+    "PLR",
+    "PLW",
+    "PT",
+    "PTH",
+    "PYI",
+    "Q",
+    "RET",
+    "RSE",
+    "RUF",
+    "S",
+    "SIM",
+    "SLF",
+    "TCH",
+    "TID",
+    "TRY",
+    "T10",
+    "T20",
+    "UP",
+    "W",
+    "YTT",
+]
+extend-select = []
+external = []
+
+allowed-confusables = []
+
+builtins = []
+
+cache-dir = ".ruff_cache"
+
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+extend-exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv"
+]
+force-exclude = true
+
+respect-gitignore = true
+extend-ignore = [
+    # Disable violation for explicit string concatenation
+    "ISC003",
+]
+per-file-ignores = { }
+
+fix = false
+fix-only = false
+show-fixes = true
+unfixable = []
+
+format = "grouped"
+
+ignore-init-module-imports = true
+
+line-length = 88
+
+show-source = true
+
+namespace-packages = []
+src = ["src"]
+typing-modules = []
+
+task-tags = ["TODO", "FIXME"]
+
+[tool.ruff.flake8-annotations]
+allow-star-arg-any = false
+ignore-fully-untyped = false
+mypy-init-return = false
+suppress-dummy-args = false
+suppress-none-returning = false
+
+[tool.ruff.flake8-bandit]
+check-typed-exception = true
+hardcoded-tmp-directory-extend = []
+
+[tool.ruff.flake8-bugbear]
+extend-immutable-calls = []
+
+[tool.ruff.flake8-builtins]
+builtins-ignorelist = []
+
+[tool.ruff.flake8-comprehensions]
+allow-dict-calls-with-keyword-arguments = false
+
+[tool.ruff.flake8-errmsg]
+max-string-length = 20
+
+[tool.ruff.flake8-implicit-str-concat]
+allow-multiline = false
+
+[tool.ruff.flake8-import-conventions]
+extend-aliases = { }
+
+[tool.ruff.flake8-pytest-style]
+fixture-parentheses = true
+mark-parentheses = true
+parametrize-names-type = "tuple"
+parametrize-values-row-type = "tuple"
+parametrize-values-type = "list"
+raises-extend-require-match-for = []
+
+[tool.ruff.flake8-quotes]
+avoid-escape = true
+docstring-quotes = "double"
+inline-quotes = "double"
+multiline-quotes = "double"
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "parents"
+
+[tool.ruff.flake8-type-checking]
+exempt-modules = ["typing", "typing_extensions"]
+strict = true
+
+[tool.ruff.flake8-unused-arguments]
+ignore-variadic-names = false
+
+[tool.ruff.isort]
+classes = []
+constants = []
+variables = []
+
+combine-as-imports = true
+
+force-single-line = false
+force-sort-within-sections = false
+force-to-top = []
+force-wrap-aliases = false
+forced-separate = []
+
+extra-standard-library = []
+known-first-party = []
+known-local-folder = []
+known-third-party = []
+
+lines-after-imports = 2
+lines-between-types = 0
+no-lines-before = []
+
+order-by-type = true
+relative-imports-order = "furthest-to-closest"
+
+required-imports = []
+
+single-line-exclusions = []
+
+split-on-trailing-comma = true
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.pep8-naming]
+classmethod-decorators = []
+staticmethod-decorators = []
+
+[tool.ruff.pycodestyle]
+ignore-overlong-task-comments = false
+max-doc-length = 88
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
+ignore-decorators = []
+property-decorators = []
+
+[tool.ruff.pylint]
+allow-magic-value-types = []
+max-args = 6
+max-branches = 12
+max-returns = 4
+max-statements = 50
+
+[tool.ruff.pyupgrade]
+keep-runtime-typing = false
+
+
+[tool.pylint.main]
+init-hook = 'import sys; sys.path.append(".")'
+
+jobs = 0
+py-version = [3, 9]
+
+analyse-fallback-blocks = false
+clear-cache-post-run = false
+confidence = []
+
+disable = []
+
+fail-under = 10
+limit-inference-results = 100
+
+ignore-patterns = []
+
+output-format = "colorized"
+persistent = true
+recursive = false
+
+reports = false
+score = true
+suggestion-mode = true
+
+source-roots = ["src"]
+
+unsafe-load-any-extension = false
+
+load-plugins = [
+    "pylint.extensions.bad_builtin",
+    "pylint.extensions.broad_try_clause",
+    "pylint.extensions.check_elif",
+    "pylint.extensions.code_style",
+    "pylint.extensions.comparetozero",
+    "pylint.extensions.comparison_placement",
+    "pylint.extensions.confusing_elif",
+    "pylint.extensions.consider_refactoring_into_while_condition",
+    "pylint.extensions.consider_ternary_expression",
+    "pylint.extensions.dict_init_mutate",
+    "pylint.extensions.docparams",
+    "pylint.extensions.dunder",
+    "pylint.extensions.empty_comment",
+    "pylint.extensions.emptystring",
+    "pylint.extensions.eq_without_hash",
+    "pylint.extensions.for_any_all",
+    "pylint.extensions.magic_value",
+    "pylint.extensions.mccabe",
+    "pylint.extensions.no_self_use",
+    "pylint.extensions.overlapping_exceptions",
+    "pylint.extensions.private_import",
+    "pylint.extensions.redefined_loop_name",
+    "pylint.extensions.redefined_variable_type",
+    "pylint.extensions.set_membership",
+    "pylint.extensions.typing",
+    "pylint.extensions.while_used",
+    "pylint_pydantic",
+    "pylint_enums",
+    "pylint_secure_coding_standard",
+]
+
+[tool.pylint.basic]
+argument-naming-style = "snake_case"
+argument-rgx = "^_{0,2}[A-Za-z0-9_]*$"
+
+attr-naming-style = "snake_case"
+attr-rgx = "^_{0,2}[A-Za-z0-9_]*$"
+
+bad-names = ["foo", "bar", "baz", "toto", "tutu", "tata"]
+good-names = ["i", "j", "k", "_", "__"]
+
+class-attribute-naming-style = "snake_case"
+class-attribute-rgx = "^_{0,2}[A-Za-z0-9_]*$"
+class-const-naming-style = "UPPER_CASE"
+class-const-rgx = "^_{0,2}[A-Z0-9_]*$"
+class-naming-style = "PascalCase"
+class-rgx = "^[A-Z][a-zA-Z]*$"
+
+method-naming-style = "snake_case"
+method-rgx = "^_{0,2}[A-Za-z0-9_]*$"
+
+const-naming-style = "UPPER_CASE"
+const-rgx = "^_{0,2}[A-Z0-9_]*$"
+variable-naming-style = "snake_case"
+variable-rgx = "^_{0,2}[A-Z0-9_]*$"
+
+docstring-min-length = 1
+
+function-naming-style = "snake_case"
+
+include-naming-hint = true
+
+inlinevar-naming-style = "any"
+#inlinevar-rgx = ""
+
+module-naming-style = "snake_case"
+module-rgx = "^_{0,2}[a-z][a-z0-9_]*$"
+
+no-docstring-rgx = ""
+
+property-classes = []
+
+[tool.pylint.classes]
+check-protected-access-in-special-methods = true
+
+defining-attr-methods = [
+    "__init__",
+    "__new__",
+]
+
+exclude-protected = []
+
+valid-classmethod-first-arg = ["cls"]
+valid-metaclass-classmethod-first-arg = ["mcs"]
+
+[tool.pylint.design]
+exclude-too-few-public-methods = []
+
+ignored-parents = []
+
+max-bool-expr = 5
+max-branches = 12
+max-complexity = 10
+
+max-parents = 7
+
+max-args = 6
+max-locals = 15
+max-returns = 4
+max-statements = 50
+
+max-attributes = 7
+max-public-methods = 20
+min-public-methods = 2
+
+[tool.pylint.exceptions]
+overgeneral-exceptions = ["builtins.BaseException", "builtins.Exception"]
+
+[tool.pylint.format]
+expected-line-ending-format = "LF"
+
+ignore-long-lines = "^\\s*(# )?<?https?://\\S+>?$"
+
+indent-after-paren = 4
+indent-string = "    "
+
+max-line-length = 88
+max-module-lines = 300
+
+single-line-class-stmt = false
+single-line-if-stmt = false
+
+[tool.pylint.imports]
+allow-any-import-level = []
+allow-reexport-from-package = false
+allow-wildcard-with-all = false
+
+deprecated-modules = []
+
+known-standard-library = []
+known-third-party = []
+preferred-modules = []
+
+[tool.pylint.logging]
+logging-format-style = "new"
+logging-modules = ["logging"]
+
+[tool.pylint.method_args]
+timeout-methods = [
+    "requests.api.delete",
+    "requests.api.get",
+    "requests.api.head",
+    "requests.api.options",
+    "requests.api.patch",
+    "requests.api.post",
+    "requests.api.put",
+    "requests.api.request"
+]
+
+[tool.pylint.miscellaneous]
+notes = ["FIXME", "TODO"]
+
+[tool.pylint.refactoring]
+max-nested-blocks = 5
+never-returning-functions = ["sys.exit", "argparse.parse_error"]
+
+[tool.pylint.similarities]
+ignore-comments = true
+ignore-docstrings = true
+ignore-imports = true
+ignore-signatures = true
+
+min-similarity-lines = 4
+
+[tool.pylint.spelling]
+max-spelling-suggestions = 4
+
+spelling-dict = ""
+
+spelling-ignore-comment-directives = "fmt: on,fmt: off,noqa:,noqa,nosec,isort:skip,mypy:"
+
+spelling-ignore-words = ""
+
+spelling-private-dict-file = ""
+
+spelling-store-unknown-words = false
+
+[tool.pylint.string]
+check-quote-consistency = true
+check-str-concat-over-line-jumps = true
+
+[tool.pylint.typecheck]
+contextmanager-decorators = ["contextlib.contextmanager"]
+
+generated-members = []
+
+ignore-mixin-members = true
+ignore-none = true
+ignore-on-opaque-inference = true
+ignored-checks-for-mixins = [
+    "no-member",
+    "not-async-context-manager",
+    "not-context-manager",
+    "attribute-defined-outside-init"
+]
+ignored-classes = [
+    "optparse.Values",
+    "thread._local",
+    "_thread._local",
+    "argparse.Namespace"
+]
+
+missing-member-hint = true
+missing-member-hint-distance = 1
+missing-member-max-choices = 1
+
+mixin-class-rgx = "^.*[Mm]ixin$"
+
+signature-mutators = []
+
+[tool.pylint.variables]
+additional-builtins = []
+
+allow-global-unused-variables = true
+
+allowed-redefined-builtins = []
+
+callbacks = ["cb_", "_cb"]
+
+dummy-variables-rgx = "_+$|(_[a-zA-Z0-9_]*[a-zA-Z0-9]+?$)|dummy|^ignored_|^unused_"
+
+ignored-argument-names = "_.*|^ignored_|^unused_"
+
+init-import = true
+
+redefining-builtins-modules = [
+    "six.moves",
+    "past.builtins",
+    "future.builtins",
+    "builtins",
+    "io"
+]
+
+[tool.pylint.broad_try_clause]
+max-try-statements = 1
+
+[tool.pylint.code_style]
+max-line-length-suggestions = 88
+
+[tool.pylint.deprecated_builtins]
+bad-functions = ["print", "map", "filter"]
+
+[tool.pylint.dunder]
+good-dunder-names = []
+
+[tool.pylint.magic-value]
+valid-magic-values = [
+    "0", "-1", "1", "100", "2", "3", "4", "5",
+    "",
+    "__main__"
+]
+
+[tool.pylint.parameter_documentation]
+accept-no-param-doc = false
+
+accept-no-raise-doc = false
+
+accept-no-return-doc = false
+
+accept-no-yields-doc = false
+
+default-docstring-type = "numpy"
+
+[tool.pylint.typing]
+runtime-typing = true
+
+[tool.pylint.plugins]
+# Secure Coding Standard
+os-open-mode = true
+os-mkdir-mode = true
+os-mkfifo-mode = true
+os-mknod-mode = true
+
+
+[tool.mypy]
+python_version = "3.9"
+
+namespace_packages = true
+explicit_package_bases = true
+
+ignore_missing_imports = false
+
+follow_imports = "normal"
+follow_imports_for_stubs = true
+
+no_site_packages = false
+no_silence_site_packages = false
+
+disallow_any_unimported = true
+disallow_any_expr = true
+disallow_any_decorated = true
+disallow_any_explicit = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+
+implicit_optional = false
+strict_optional = true
+
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_return_any = true
+warn_unreachable = true
+
+ignore_errors = false
+
+allow_untyped_globals = false
+allow_redefinition = false
+
+local_partial_types = false
+implicit_reexport = false
+
+strict_concatenate = true
+strict_equality = true
+
+strict = true
+
+show_error_context = true
+show_column_numbers = true
+hide_error_codes = false
+pretty = false
+color_output = true
+error_summary = true
+show_absolute_path = true
+
+incremental = true
+cache_dir = ".mypy_cache"
+sqlite_cache = true
+cache_fine_grained = false
+skip_version_check = false
+skip_cache_mtime_checks = false
+
+pdb = false
+show_traceback = true
+raise_exceptions = false
+warn_incomplete_stub = true
+
+
+[tool.isort]
+profile = "black"
+
+py_version = "39"
+
+extend_skip = []
+extend_skip_glob = []
+skip_gitignore = true
+
+line_ending = "\n"
+
+no_sections = false
+
+known_third_party = []
+known_first_party = []
+known_local_folder = []
+extra_standard_library = []
+
+forced_separate = []
+
+length_sort = false
+length_sort_straight = false
+length_sort_sections = []
+
+reverse_relative = false
+force_single_line = true
+single_line_exclusions = []
+
+balanced_wrapping = false
+order_by_type = true
+
+atomic = true
+
+lines_before_imports = 1
+lines_after_imports = 2
+lines_between_sections = 1
+lines_between_types = 0
+
+combine_as_imports = true
+combine_star = true
+
+from_first = false
+
+verbose = false
+quiet = false
+
+force_adds = false
+force_alphabetical_sort_within_sections = true
+force_alphabetical_sort = false
+force_sort_within_sections = false
+
+lexicographical = false
+
+group_by_package = true
+ignore_whitespace = false
+
+no_lines_before = []
+no_inline_sort = false
+
+ignore_comments = false
+
+case_sensitive = false
+
+virtual_env = ".venv"
+
+honor_noqa = true
+src_paths = "src"
+
+old_finders = false
+remove_redundant_aliases = true
+
+float_to_top = false
+filter_files = false
+
+color_output = true
+
+treat_comments_as_code = []
+treat_all_comments_as_code = false
+
+constants = []
+classes = []
+variables = []
+
+dedup_headings = false
+only_sections = false
+only_modified = true
+
+combine_straight_imports = false
+
+auto_identify_namespace_packages = true
+namespace_packages = []
+
+follow_links = true
+indented_import_headings = true
+
+honor_case_in_force_sorted_sections = true
+sort_relative_in_force_sorted_sections = false
+
+overwrite_in_place = false
+
+reverse_sort = false
+star_first = true
+
+sort_order = "natural"
+
+
+[tool.black]
+quiet = false
+verbose = false
+
+line-length = 88
+target-version = ["py39"]
+color = true
+
+extend-exclude = "docs"
+force-exclude = "docs"
+
+
+[tool.pydocstyle]
+convention = "numpy"
+
+add_select = []
+add_ignore = []
+
+match = "^.*.pyi?$"
+#match_dir = ""
+
+ignore_decorators = []
+property_decorators = []
+
+ignore_self_only_init = true
+
+
+[tool.bandit]
+exclude_dirs = ["docs"]
+targets = ["src", "tests"]
+
+skips = []
+tests = [
+    # Divers tests checks
+    "B101",
+    "B102",
+    "B103",
+    "B104",
+    "B105",
+    "B106",
+    "B107",
+    "B108",
+    "B110",
+    "B112",
+    "B113",
+    # Bad configuration of frameworks checks
+    "B201",
+    "B202",
+    # Blacklist of function calls checks
+    "B301",
+    "B302",
+    "B303",
+    "B304",
+    "B305",
+    "B306",
+    "B307",
+    "B308",
+    "B309",
+    "B310",
+    "B311",
+    "B312",
+    "B313",
+    "B314",
+    "B315",
+    "B316",
+    "B317",
+    "B318",
+    "B319",
+    "B320",
+    "B321",
+    "B322",
+    "B323",
+    "B324",
+    "B325",
+    # Blacklist importations checks
+    "B401",
+    "B402",
+    "B403",
+    "B404",
+    "B405",
+    "B406",
+    "B407",
+    "B408",
+    "B409",
+    "B410",
+    "B411",
+    "B412",
+    "B413",
+    "B414",
+    "B415",
+    # Cryptographic checks
+    "B501",
+    "B502",
+    "B503",
+    "B504",
+    "B505",
+    "B506",
+    "B507",
+    "B508",
+    "B509",
+    # Injection checks
+    "B601",
+    "B602",
+    "B603",
+    "B604",
+    "B605",
+    "B606",
+    "B607",
+    "B608",
+    "B609",
+    "B610",
+    "B611",
+    "B612",
+    # XSS checks
+    "B701",
+    "B702",
+    "B703",
+]
+
+blacklist = []
+
+[tool.bandit.assert_used]
+skips = ["*_test.py", "test_*.py"]
+
+[tool.bandit.hardcoded_tmp_directory]
+tmp_dirs = ["/tmp", "/var/tmp", "/dev/shm"]
+
+[tool.bandit.try_except_pass]
+check_typed_exception = true
+
+[tool.bandit.try_except_continue]
+check_typed_exception = true
+
+[tool.bandit.ssl_with_bad_version]
+bad_protocol_versions = [
+    "PROTOCOL_SSLv2",
+    "SSLv2_METHID",
+    "SSLv23_METHOD",
+    "PROTOCOL_SSLv3",
+    "PROTOCOL_TLSv1",
+    "SSLv3_METHOD",
+    "TLSv1_METHOD",
+]
+
+[tool.bandit.shell_injection]
+wrappers = []
+subprocess = [
+    "subprocess.Popen",
+    "subprocess.call",
+    "subprocess.check_call",
+    "subprocess.check_output",
+    "execute_with_timeout",
+]
+shell = [
+    "os.system",
+    "os.popen",
+    "os.popen2",
+    "os.popen3",
+    "os.popen4",
+    "popen2.popen2",
+    "popen2.popen3",
+    "popen2.popen4",
+    "popen2.Popen3",
+    "popen2.Popen4",
+    "commands.getoutput",
+    "commands.getstatusoutput",
+]
+no_shell = [
+    "os.execl",
+    "os.execle",
+    "os.execlp",
+    "os.execlpe",
+    "os.execv",
+    "os.execve",
+    "os.execvp",
+    "os.execvpe",
+    "os.spawnl",
+    "os.spawnle",
+    "os.spawnlp",
+    "os.spawnlpe",
+    "os.spawnv",
+    "os.spawnve",
+    "os.spawnvp",
+    "os.spawnvpe",
+    "os.startfile",
+]
+
+
+[tool.deptry]
+extend_exclude = []
+
+ignore_obsolete = []
+ignore_missing = []
+ignore_transitive = []
+ignore_misplaced_dev = []
+ignore_notebooks = true
+
+skip_obsolete = false
+skip_missing = false
+skip_transitive = false
+skip_misplaced_dev = false
+
+known_first_party = []
+
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+
+cache_dir = "."
+
+console_output_style = "progress"
+
+python_classes = ["*Suite"]
+python_files = [
+    "test_*.py",
+    "*_test.py",
+]
+python_functions = [
+    "*_test",
+    "test_*"
+]
+
+pythonpath = ["."]
+
+required_plugins = [
+    "pytest-cov",
+    "pytest-asyncio",
+]
+
+testpaths = [
+    "**/test",
+    "**/tests",
+    "**/unit_test",
+    "**/unit_tests",
+]
+
+asyncio_mode = "strict"
+
+
+[tool.coverage]
+
+[tool.coverage.run]
+branch = true
+
+command_line = ""
+debug = []
+
+concurrency = ["thread"]
+context = "static"
+dynamic_context = "test_function"
+cover_pylib = false
+
+data_file = ".coverage"
+
+disable_warnings = []
+
+include = []
+omit = []
+source = ["src", "tests"]
+source_pkgs = []
+
+parallel = false
+
+plugins = []
+
+relative_files = false
+
+sigterm = true
+timid = false
+
+[tool.coverage.paths]
+
+[tool.coverage.report]
+exclude_also = []
+
+fail_under = 85.00
+precision = 2
+
+ignore_errors = false
+
+include = []
+omit = []
+include_namespace_packages = false
+
+partial_branches = []
+
+show_missing = true
+
+skip_covered = true
+skip_empty = true
+
+sort = "Name"
+
+[tool.coverage.html]
+directory = "htmlcov"
+extra_css = ""
+
+show_contexts = true
+
+skip_covered = true
+skip_empty = true
+
+title = "Coverage of vigenere-api"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+package_depth = 99
+
+[tool.coverage.json]
+output = "coverage.json"
+
+pretty_print = false
+
+show_contexts = true
+
+[tool.coverage.lcov]
+output = "coverage.lcov"
