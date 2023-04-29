@@ -1,0 +1,488 @@
+default:
+    image: python:3.9
+    cache:
+        -   key:
+                files:
+                    - ${CI_PROJECT_DIR}/poetry.lock
+            paths:
+                - ${CI_PROJECT_DIR}/.venv
+        -   key: "${CI_PROJECT_ID}"
+            paths:
+                - ${CI_PROJECT_DIR}/.cache/pip
+        -   key: "${CI_JOB_ID}"
+            paths:
+                - ${CI_PROJECT_DIR}/**/__pycache__/
+
+
+stages:
+    - 🎨 format 🎨
+    - 🦄 quality 🦄
+    - 🔒️ security 🔒️
+    - 🤞 test 🤞
+    - 🔒️ dast 🤞
+    - 📝 pages 📝
+    - 🚀 release 🚀
+
+workflow:
+    rules:
+        -   if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"
+            when: never
+        -   if: $CI_PIPELINE_SOURCE == "merge_request_event"
+        -   if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+            when: never
+        -   if: $CI_COMMIT_BRANCH
+
+
+variables:
+    FF_USE_FASTZIP: "true"
+    # These can be specified per job or per pipeline
+    ARTIFACT_COMPRESSION_LEVEL: "fast"
+    CACHE_COMPRESSION_LEVEL: "fast"
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+    VENV: "$CI_PROJECT_DIR/.venv"
+    ACTIVATE_VENV: "$VENV/bin/activate"
+    PYTHONPATH: "."
+    GIT_STRATEGY: "fetch"
+    GIT_SUBMODULE_STRATEGY: "recursive"
+    ASDF_PYTHON_VERSION: "3.9"
+    LM_PYTHON_VERSION: "3.9"
+    SAFETY_POLICY_FILE: "$CI_PROJECT_DIR/.safety-policy.yml"
+    SAFETY_COLOR: "True"
+#    FUZZAPI_OPENAPI: test_openapi.v3.0.json
+#    FUZZAPI_TARGET_URL: http://target:7777
+#    FUZZAPI_OVERRIDES_ENV: $FUZZAPIOVERRIDESJSON
+#    OPENAPI_TARGET_IMAGE: registry.gitlab.com/gitlab-org/security-products/demos/api-fuzzing-example/openapi-target
+
+
+include:
+    -   template: Jobs/SAST.gitlab-ci.yml
+    -   template: Jobs/Dependency-Scanning.gitlab-ci.yml
+    -   template: Jobs/Container-Scanning.gitlab-ci.yml
+    -   template: Jobs/Secret-Detection.latest.gitlab-ci.yml
+    -   template: API-Fuzzing.gitlab-ci.yml
+    -   template: Coverage-Fuzzing.gitlab-ci.yml
+    -   template: Code-Quality.gitlab-ci.yml
+    -   template: DAST.gitlab-ci.yml
+    -   template: Jobs/License-Scanning.gitlab-ci.yml
+
+
+# Define good stage for includes
+
+dast:
+    cache: [ ]
+    stage: 🔒️ dast 🤞
+    dast_configuration:
+        site_profile: "VigenereAPI"
+        scanner_profile: "Penetration"
+
+license_scanning:
+    cache: [ ]
+    stage: 🦄 quality 🦄
+
+container_scanning:
+    cache: [ ]
+    stage: 🔒️ security 🔒️
+
+dependency_scanning:
+    cache: [ ]
+    stage: 🔒️ security 🔒️
+
+.secret-analyzer:
+    cache: [ ]
+    stage: 🔒️ security 🔒️
+
+sast:
+    cache: [ ]
+    stage: 🔒️ security 🔒️
+
+apifuzzer_fuzz:
+    cache: [ ]
+    stage: 🤞 test 🤞
+
+.fuzz_base:
+    cache: [ ]
+    stage: 🤞 test 🤞
+
+code_quality:
+    cache: [ ]
+    stage: 🦄 quality 🦄
+
+
+# Install dependencies
+
+🔧 build env 🔧:
+    cache:
+        -   key:
+                files:
+                    - poetry.lock
+            paths:
+                - ${CI_PROJECT_DIR}/.venv
+            policy: pull-push
+        -   key: "${CI_PROJECT_ID}"
+            paths:
+                - ${CI_PROJECT_DIR}/.cache/pip
+            policy: pull-push
+    stage: .pre
+    script:
+        - python --version
+        - pip install --upgrade pip
+        - export PATH="$PATH":"$HOME/.local/bin"
+        - pip install --user pipx
+        - pipx ensurepath
+        - pipx install virtualenv
+        - pipx install poetry
+        - virtualenv $VENV
+        - source $ACTIVATE_VENV
+        - poetry --version
+        - poetry install
+    artifacts:
+        paths:
+            - $VENV
+
+
+# Pre script
+
+.load_env:
+    cache:
+        -   key:
+                files:
+                    - poetry.lock
+            paths:
+                - ${CI_PROJECT_DIR}/.venv
+            policy: pull
+        -   key: "${CI_PROJECT_ID}"
+            paths:
+                - ${CI_PROJECT_DIR}/.cache/pip
+            policy: pull
+    needs:
+        - 🔧 build env 🔧
+    before_script:
+        - source $ACTIVATE_VENV
+
+
+# Format code
+
+.common_format:
+    extends: .load_env
+    stage:
+        🎨 format 🎨
+    rules:
+        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+.common_format_py:
+    extends: .common_format
+    rules:
+        -   changes:
+                - $CI_PROJECT_DIR/src/**/*.py
+
+🩹 isort 🎨:
+    extends: .common_format_py
+    script:
+        - isort src --check
+
+🩹 black 🎨:
+    extends: .common_format_py
+    script:
+        - black src --check
+
+🩹 yamllint 🎨:
+    extends: .common_format
+    rules:
+        -   changes:
+                - $CI_PROJECT_DIR/**/*.yml
+                - $CI_PROJECT_DIR/**/*.yaml
+    script:
+        - yamllint src tests
+
+🩹 markdownlint 🎨:
+    cache: [ ]
+    image: node:slim
+    rules:
+        -   changes:
+                - $CI_PROJECT_DIR/**/*.md
+    stage:
+        🎨 format 🎨
+    before_script:
+        - node --version
+        - npm install markdownlint
+        - npm install -g markdownlint-cli
+    script:
+        - markdownlint src tests -j -o markdownlint.json -c .markdownlint.yaml
+    artifacts:
+        paths:
+            - markdownlint.json
+
+
+# Security check
+
+.common_security:
+    extends: .load_env
+    stage: 🔒️ security 🔒️
+
+.common_security_after_format:
+    extends: .common_security
+    rules:
+        -   changes:
+                - $CI_PROJECT_DIR/src/**/*.py
+        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    needs:
+        - !reference [ .common_security, needs ]
+        - 🩹 black 🎨
+        - 🩹 isort 🎨
+
+🔍️ bandit 🔒️ 1/2:
+    extends: .common_security_after_format
+    script:
+        - bandit -r src -f xml -o bandit.xml
+    artifacts:
+        reports:
+            junit: bandit.xml
+
+🔍️ bandit 🔒️ 2/2:
+    extends: .common_security_after_format
+    script:
+        - bandit -r src -f html -o bandit.html
+    artifacts:
+        paths:
+            - bandit.html
+
+🔍️ mypy 🏷️:
+    extends: .common_security_after_format
+    cache:
+        key: "mypy-${$CI_COMMIT_BRANCH}"
+        paths:
+            - ${CI_PROJECT_DIR}/.mypy_cache
+        policy: pull-push
+    script:
+        - mypy src --install-types --non-interactive --html-report html_mypy --junit-xml mypy.xml
+    artifacts:
+        reports:
+            junit: mypy.xml
+        paths:
+            - html_mypy
+
+🔍️ safety 🔒️:
+    extends: .common_security
+    script:
+        - safety check -i 51457 -o html --save-html safety.html -o json --save-json safety.json
+    artifacts:
+        paths:
+            - safety.json
+            - safety.html
+
+🔍️ dodgy 🔐:
+    extends: .common_security
+    script:
+        - dodgy src
+
+
+# Quality tests
+
+.common_quality:
+    extends: .load_env
+    stage: 🦄 quality 🦄
+    rules:
+        -   changes:
+                - $CI_PROJECT_DIR/src/**/*.py
+        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    needs:
+        - !reference [ .load_env, needs ]
+        - 🩹 black 🎨
+        - 🩹 isort 🎨
+
+🔍️ pycodestyle 🎨:
+    extends: .common_quality
+    script:
+        - pycodestyle src
+
+🔍️ pydocstyle 📝:
+    extends: .common_quality
+    script:
+        - pydocstyle src
+
+🔍️ pylint 🧐:
+    extends: .common_quality
+    script:
+        - pylint src
+
+🔍️ ruff 🧐:
+    extends: .common_quality
+    cache:
+        key: "ruff-${$CI_COMMIT_BRANCH}"
+        paths:
+            - ${CI_PROJECT_DIR}/.ruff_cache
+        policy: pull-push
+    script:
+        - ruff src --format gitlab > ruff.json
+    artifacts:
+        reports:
+            codequality: ruff.json
+
+🔍️ vulture ⚰️:
+    extends: .common_quality
+    script:
+        - vulture src tests
+
+🔍️ interrogate 📝:
+    extends: .common_quality
+    script:
+        - interrogate src --generate-badge .
+    artifacts:
+        paths:
+            - interrogate_badge.svg
+
+🔍️ deptry ⚰️:
+    extends: .load_env
+    stage: 🦄 quality 🦄
+    script:
+        - deptry src -o deptry.json
+    artifacts:
+        paths:
+            - deptry.json
+
+
+# Tests
+
+.common_test:
+    extends: .load_env
+    stage: 🤞 test 🤞
+    rules:
+        -   changes:
+                - $CI_PROJECT_DIR/src/**/*.py
+                - $CI_PROJECT_DIR/tests/**/*.py
+        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    cache:
+        key: "pytest-${$CI_COMMIT_BRANCH}"
+        paths:
+            - ${CI_PROJECT_DIR}/.pytest_cache
+        policy: pull-push
+
+🤞 unittests 🤞:
+    extends: .common_test
+    needs:
+        - !reference [ .common_test, needs ]
+        - 🔍️ bandit 🔒️ 1/2
+        - 🔍️ bandit 🔒️ 2/2
+        - 🔍️ pycodestyle 🎨
+        - 🔍️ pydocstyle 📝
+        - 🔍️ pylint 🧐
+        - 🔍️ ruff 🧐
+        - 🔍️ mypy 🏷️
+        - 🔍️ vulture ⚰️
+        - 🔍️ safety 🔒️
+        - 🔍️ dodgy 🔐
+        - 🔍️ interrogate 📝
+        - 🔍️ deptry ⚰️
+    script:
+        - pytest -j 4
+
+🚨 integration tests 🚨:
+    extends: .common_test
+    needs:
+        - !reference [ .common_test, needs ]
+        - 🤞 unittests 🤞
+    script:
+        - pytest -j 4 --with-integration
+
+🐛 slow integration tests 🐛:
+    extends: .common_test
+    needs:
+        - !reference [ .common_test, needs ]
+        - 🚨 integration tests 🚨
+    script:
+        - pytest -j 4 --with-slow-integration
+
+🤞 coverage 🔍️:
+    extends: .common_test
+    needs:
+        - !reference [ .common_test, needs ]
+        - 🤞 unittests 🤞
+    coverage: /TOTAL\s+[\d\.]+\s+[\d\.]+\s+([\d\.]+)/
+    script:
+        - pytest -j 4 --cov=src --cov=tests --cov-report=xml:coverage.xml --cov-report=html:coverage_html report
+    allow_failure: true
+    artifacts:
+        when: always
+        paths:
+            - coverage.xml
+            - coverage_html
+        reports:
+            junit: coverage.xml
+
+
+# Deploy coverage results
+
+pages:
+    cache: [ ]
+    stage: 📝 pages 📝
+    rules:
+        -   if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE != 'merge_request_event'
+            changes:
+                - $CI_PROJECT_DIR/src/**/*.py
+                - $CI_PROJECT_DIR/tests/**/*.py
+        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    needs:
+        - 🤞 coverage 🔍️
+    script:
+        - mkdir public
+        - mkdir public/coverage
+        - mv coverage_html/* public/coverage
+    artifacts:
+        when: on_success
+        paths:
+            - public
+        expire_in: 31 days
+
+
+# Build the package
+
+.common_release:
+    stage: 🚀 release 🚀
+    rules:
+        # Run this job when a tag is created manually
+        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+.load_env_for_release:
+    extends:
+        - .load_env
+        - .common_release
+
+🔧 build package 🚧:
+    extends: .load_env_for_release
+    needs:
+        - !reference [ .load_env_for_release, needs ]
+        - 🤞 coverage 🔍️
+        - 🐛 slow integration tests 🐛
+    script:
+        - poetry build
+    artifacts:
+        when: on_success
+        paths:
+            - dist
+
+🤞 test package 🚧:
+    extends: .load_env_for_release
+    needs:
+        - !reference [ .load_env_for_release, needs ]
+        - 🔧 build package 🚧
+    before_script:
+        - virtualenv .venv_test_package
+        - source .venv_test_package
+        - pip --version
+        - pip install --upgrade pip
+        - pip install dist/vigenere-api
+    script:
+        - pytest -j 4
+
+🔖 release package 🚧:
+    cache: [ ]
+    extends: .common_release
+    needs:
+        - 🤞 test package 🚧
+    image: registry.gitlab.com/gitlab-org/release-cli:latest
+    script:
+        - echo "Running the release job."
+    release:
+        tag_name: $CI_COMMIT_TAG
+        name: 'Release $CI_COMMIT_TAG'
+        description: 'Release created using the release-cli.'

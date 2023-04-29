@@ -446,18 +446,6 @@ files = [
 ]
 
 [[package]]
-name = "docutils"
-version = "0.19"
-description = "Docutils -- Python Documentation Utilities"
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-files = [
-    { file = "docutils-0.19-py3-none-any.whl", hash = "sha256:5e1de4d849fee02c63b040a4a3fd567f4ab104defd8a5511fbbc24a8a017efbc" },
-    { file = "docutils-0.19.tar.gz", hash = "sha256:33995a6753c30b7f577febfc2c50411fec6aac7f7ffeb7c4cfe5991072dcf9e6" },
-]
-
-[[package]]
 name = "dodgy"
 version = "0.2.1"
 description = "Dodgy: Searches for dodgy looking lines in Python code"
@@ -1551,45 +1539,6 @@ pylint = ">=2"
 test = ["mock", "pytest", "pytest-cov", "pytest-mock"]
 
 [[package]]
-name = "pyproject-hooks"
-version = "1.0.0"
-description = "Wrappers to call pyproject.toml-based build backend hooks."
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-files = [
-    { file = "pyproject_hooks-1.0.0-py3-none-any.whl", hash = "sha256:283c11acd6b928d2f6a7c73fa0d01cb2bdc5f07c57a2eeb6e83d5e56b97976f8" },
-    { file = "pyproject_hooks-1.0.0.tar.gz", hash = "sha256:f271b298b97f5955d53fb12b72c1fb1948c22c1a6b70b315c54cedaca0264ef5" },
-]
-
-[package.dependencies]
-tomli = { version = ">=1.1.0", markers = "python_version < \"3.11\"" }
-
-[[package]]
-name = "pyroma"
-version = "4.2"
-description = "Test your project's packaging friendliness"
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-files = [
-    { file = "pyroma-4.2-py3-none-any.whl", hash = "sha256:a59854b6f8a72b55384cc1de42410e5c5ac59d0c40a92e84fd8364aa6cec3e37" },
-    { file = "pyroma-4.2.tar.gz", hash = "sha256:6c727dc4a7a10e12274faed5fb47ebd499ca0821995befec98e3cfcaf1e7383c" },
-]
-
-[package.dependencies]
-build = ">=0.7.0"
-docutils = "*"
-packaging = "*"
-pygments = "*"
-requests = "*"
-setuptools = ">=42"
-trove-classifiers = ">=2022.6.26"
-
-[package.extras]
-test = ["setuptools (>=60)", "zest.releaser[recommended]"]
-
-[[package]]
 name = "pytest"
 version = "7.3.1"
 description = "pytest: simple powerful testing with Python"
@@ -2190,18 +2139,6 @@ python-versions = ">=3.7"
 files = [
     { file = "tomlkit-0.11.8-py3-none-any.whl", hash = "sha256:8c726c4c202bdb148667835f68d68780b9a003a9ec34167b6c673b38eff2a171" },
     { file = "tomlkit-0.11.8.tar.gz", hash = "sha256:9330fc7faa1db67b541b28e62018c17d20be733177d290a13b24c62d1614e0c3" },
-]
-
-[[package]]
-name = "trove-classifiers"
-version = "2023.4.29"
-description = "Canonical source for classifiers on PyPI (pypi.org)."
-category = "dev"
-optional = false
-python-versions = "*"
-files = [
-    { file = "trove-classifiers-2023.4.29.tar.gz", hash = "sha256:8adcc06f1eb7c495f0bdceb698bd9c044b3e57b0d5767d99ec4b6b17c9bbe957" },
-    { file = "trove_classifiers-2023.4.29-py3-none-any.whl", hash = "sha256:c27d168cd341325fb75338ce46e1c4a2f2179b0ff3df3733190ee3662a25a4fa" },
 ]
 
 [[package]]
