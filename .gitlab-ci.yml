@@ -205,9 +205,9 @@ code_quality:
     before_script:
         - node --version
         - npm install markdownlint
-        - npm install -g markdownlint-cli
+        - npm install markdownlint-cli
     script:
-        - markdownlint src tests -j -o markdownlint.json -c .markdownlint.yaml
+        - ./node_modules/markdownlint-cli/markdownlint.js src tests -j -o markdownlint.json -c .markdownlint.yaml
     artifacts:
         paths:
             - markdownlint.json
@@ -264,7 +264,7 @@ code_quality:
 🔍️ safety 🔒️:
     extends: .common_security
     script:
-        - safety check -i 51457 -o html --save-html safety.html -o json --save-json safety.json
+        - safety check -o html --save-html safety.html -o json --save-json safety.json
     artifacts:
         paths:
             - safety.json
@@ -321,7 +321,7 @@ code_quality:
 🔍️ vulture ⚰️:
     extends: .common_quality
     script:
-        - vulture src tests
+        - vulture src
 
 🔍️ interrogate 📝:
     extends: .common_quality
