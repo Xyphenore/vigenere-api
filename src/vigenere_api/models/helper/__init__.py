@@ -14,4 +14,8 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""All models used by VigenereAPI."""
+"""Helper package for models."""
+
+from .helper import move_char
+
+__all__ = ["move_char"]
