@@ -1,3 +1,5 @@
+"""All utils for the API."""
+
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -14,8 +16,6 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""All controllers of the API."""
+from .open_api_handler import VigenereAPIOpenAPIHandler
 
-from .caesar import CaesarController
-
-__all__ = ["CaesarController"]
+__all__ = ["VigenereAPIOpenAPIHandler"]

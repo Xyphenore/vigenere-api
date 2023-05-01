@@ -13,9 +13,7 @@
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from blacksheep import Response
 
-"""All controllers of the API."""
 
-from .caesar import CaesarController
-
-__all__ = ["CaesarController"]
+async def index() -> Response: ...

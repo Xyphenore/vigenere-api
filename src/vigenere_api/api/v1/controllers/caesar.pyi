@@ -13,10 +13,13 @@
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from blacksheep import FromJSON, Response
+from blacksheep.server.controllers import APIController
 
-"""All OpenAPI docs for each controller."""
+from vigenere_api.models import CaesarData
 
-from .openapi_v1 import docs as openapi_v1_docs
-from .openapi_versions import docs as openapi_versions_docs
 
-__all__ = ["openapi_versions_docs", "openapi_v1_docs"]
+class CaesarController(APIController):
+    async def cipher(self, data: FromJSON[CaesarData]) -> Response: ...
+
+    async def decipher(self, data: FromJSON[CaesarData]) -> Response: ...
