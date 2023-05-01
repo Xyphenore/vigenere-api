@@ -15,3 +15,8 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 """All OpenAPI docs for each controller."""
+
+from .openapi_v1 import docs as openapi_v1_docs
+from .openapi_versions import docs as openapi_versions_docs
+
+__all__ = ["openapi_versions_docs", "openapi_v1_docs"]
