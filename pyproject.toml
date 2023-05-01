@@ -17,10 +17,10 @@ include = ["CHANGELOG.md", "INSTALL.md"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-blacksheep = "^2.0a6"
+blacksheep = "^1"
 uvicorn = { extras = ["standard"], version = "^0" }
 pyyaml = "^6"
-pydantic = "^2.0a3"
+pydantic = "^1"
 
 
 [tool.poetry.group.formatter.dependencies]
@@ -52,16 +52,10 @@ yamllint = "^1"
 coverage = { extras = ["toml"], version = "^7" }
 pytest = "^7"
 pytest-asyncio = "^0"
-pytest-benchmark = "^4"
 pytest-cov = "^4"
-pytest-depends = "^1"
 pytest-raises = "^0"
 pytest-integration = "^0"
-pytest-snail = "^0"
 pytest-todo = "^0"
-pytest-assert-utils = "^0"
-pytest-bg-process = "^0"
-pytest-rich = "^0"
 pytest-timer = "^0"
 
 
@@ -199,8 +193,27 @@ force-exclude = true
 
 respect-gitignore = true
 extend-ignore = [
+    # Isort sort imports in a different way
+    "I001",
+    # Disable typing for self and cls
+    "ANN101", # flake8 Disable typing of self
+    "ANN102", # flake8 Disable typing for cls
+    "ANN401", # flake8 Disable warning for use of type Any
     # Disable violation for explicit string concatenation
     "ISC003",
+    # Pylint warning : no line between the docstring and function
+    "D202", # pydocstyle No line between the docstring and start of function
+    # Numpy convention from pydocstyle site https://www.pydocstyle.org/en/stable/error_codes.html#default-conventions
+    "D203", # pydocstyle 1 line before the class docstring
+    "D212", # pydocstyle Multi-line summary should start the first line
+    "D213", # pydocstyle Multi-line summary should start the second line
+    "D402", # pydocstyle First line should not be the function's signature
+    "D413", # pydocstyle Missing blank line after the last section
+    "D415", # pydocstyle First line should end with a period
+    "D416", # pydocstyle Section name should end with a colon
+    "D417", # pydocstyle Missing argument description in the docstring
+    # Disable upgrade to python3.10
+    "UP007",
 ]
 per-file-ignores = { }
 
@@ -270,7 +283,7 @@ multiline-quotes = "double"
 ban-relative-imports = "parents"
 
 [tool.ruff.flake8-type-checking]
-exempt-modules = ["typing", "typing_extensions"]
+exempt-modules = ["typing", "typing_extensions", "pydantic"]
 strict = true
 
 [tool.ruff.flake8-unused-arguments]
@@ -311,7 +324,7 @@ split-on-trailing-comma = true
 max-complexity = 10
 
 [tool.ruff.pep8-naming]
-classmethod-decorators = []
+classmethod-decorators = ["classmethod", "pydantic.validator", "validator"]
 staticmethod-decorators = []
 
 [tool.ruff.pycodestyle]
@@ -363,12 +376,15 @@ source-roots = ["src"]
 
 unsafe-load-any-extension = false
 
+extension-pkg-allow-list = [
+    "pydantic"
+]
+
 load-plugins = [
     "pylint.extensions.bad_builtin",
     "pylint.extensions.broad_try_clause",
     "pylint.extensions.check_elif",
     "pylint.extensions.code_style",
-    "pylint.extensions.comparetozero",
     "pylint.extensions.comparison_placement",
     "pylint.extensions.confusing_elif",
     "pylint.extensions.consider_refactoring_into_while_condition",
@@ -397,28 +413,28 @@ load-plugins = [
 
 [tool.pylint.basic]
 argument-naming-style = "snake_case"
-argument-rgx = "^_{0,2}[A-Za-z0-9_]*$"
+argument-rgx = "^_{0,2}[a-z0-9_]*$"
 
 attr-naming-style = "snake_case"
-attr-rgx = "^_{0,2}[A-Za-z0-9_]*$"
+attr-rgx = "^_{0,2}[a-z0-9_]*$"
 
 bad-names = ["foo", "bar", "baz", "toto", "tutu", "tata"]
 good-names = ["i", "j", "k", "_", "__"]
 
 class-attribute-naming-style = "snake_case"
-class-attribute-rgx = "^_{0,2}[A-Za-z0-9_]*$"
+class-attribute-rgx = "^_{0,2}[a-z0-9_]*$"
 class-const-naming-style = "UPPER_CASE"
 class-const-rgx = "^_{0,2}[A-Z0-9_]*$"
 class-naming-style = "PascalCase"
 class-rgx = "^[A-Z][a-zA-Z]*$"
 
 method-naming-style = "snake_case"
-method-rgx = "^_{0,2}[A-Za-z0-9_]*$"
+method-rgx = "^_{0,2}[a-z0-9_]*$"
 
 const-naming-style = "UPPER_CASE"
 const-rgx = "^_{0,2}[A-Z0-9_]*$"
 variable-naming-style = "snake_case"
-variable-rgx = "^_{0,2}[A-Z0-9_]*$"
+variable-rgx = "^_{0,2}[a-z0-9_]*$"
 
 docstring-min-length = 1
 
@@ -642,7 +658,11 @@ os-mknod-mode = true
 python_version = "3.9"
 
 namespace_packages = true
-explicit_package_bases = true
+explicit_package_bases = false
+
+plugins = [
+    "pydantic.mypy",
+]
 
 ignore_missing_imports = false
 
@@ -653,9 +673,9 @@ no_site_packages = false
 no_silence_site_packages = false
 
 disallow_any_unimported = true
-disallow_any_expr = true
-disallow_any_decorated = true
-disallow_any_explicit = true
+disallow_any_expr = false
+disallow_any_decorated = false
+disallow_any_explicit = false
 disallow_any_generics = true
 disallow_subclassing_any = true
 
@@ -706,6 +726,12 @@ pdb = false
 show_traceback = true
 raise_exceptions = false
 warn_incomplete_stub = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
 
 
 [tool.isort]
@@ -830,7 +856,10 @@ force-exclude = "docs"
 convention = "numpy"
 
 add_select = []
-add_ignore = []
+ignore = [
+    # Need a blank line between docstring and code.
+    "D202",
+]
 
 match = "^.*.pyi?$"
 #match_dir = ""
@@ -1041,13 +1070,12 @@ pythonpath = ["."]
 required_plugins = [
     "pytest-cov",
     "pytest-asyncio",
+    "pytest-integration",
 ]
 
 testpaths = [
     "**/test",
     "**/tests",
-    "**/unit_test",
-    "**/unit_tests",
 ]
 
 asyncio_mode = "strict"
@@ -1071,9 +1099,12 @@ data_file = ".coverage"
 disable_warnings = []
 
 include = []
-omit = []
-source = ["src", "tests"]
-source_pkgs = []
+omit = [
+    "tests/integration/**/*.py",
+    "**/__main__.py",
+]
+source = ["tests"]
+source_pkgs = ["vigenere_api"]
 
 parallel = false
 
