@@ -14,4 +14,17 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""Configuration of API."""
+from enum import Enum
+
+
+class Format(Enum):
+    YAML = "YAML"
+    JSON = "JSON"
+
+
+class OpenAPIElement:
+    """Base class for all OpenAPI Elements."""
+
+
+class OpenAPIRoot(OpenAPIElement):
+    """Base class for a root OpenAPI Documentation."""

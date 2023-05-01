@@ -14,4 +14,4 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""The caesar controller's documentation."""
+"""Stubs for 'openapidocs' for vigenere_api package."""
