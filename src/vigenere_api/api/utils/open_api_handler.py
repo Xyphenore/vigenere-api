@@ -1,3 +1,8 @@
+"""
+Override the OpenAPIHandler to give server list,
+tag list and security of the VigenereAPI.
+"""
+
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -14,8 +19,35 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""All controllers of the API."""
+from typing import final
 
-from .caesar import CaesarController
+from blacksheep.server.openapi.v3 import OpenAPIHandler
+from openapidocs.v3 import ExternalDocs, OpenAPI, Tag
 
-__all__ = ["CaesarController"]
+
+@final
+class VigenereAPIOpenAPIHandler(OpenAPIHandler):
+    """
+    Override the OpenAPIHandler to give server list,
+    tag list and security of the VigenereAPI.
+    """
+
+    def on_docs_generated(self, docs: OpenAPI) -> None:
+        docs.tags = [
+            Tag(
+                name="Vigenere",
+                description="Provide the Vigenere algorithm.",
+                external_docs=ExternalDocs(
+                    url="https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher",
+                    description="Wikipedia page of Vigenere cipher.",
+                ),
+            ),
+            Tag(
+                name="Caesar",
+                description="Provide the Caesar algorithm.",
+                external_docs=ExternalDocs(
+                    url="https://en.wikipedia.org/wiki/Caesar_cipher",
+                    description="Wikipedia page of Caesar cipher.",
+                ),
+            ),
+        ]

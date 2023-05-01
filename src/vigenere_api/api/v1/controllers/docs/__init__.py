@@ -14,8 +14,8 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""All controllers of the API."""
+"""All OpenAPI docs for each controller."""
 
-from .caesar import CaesarController
+from .caesar import post_caesar_cipher_docs, post_caesar_decipher_docs
 
-__all__ = ["CaesarController"]
+__all__ = ["post_caesar_cipher_docs", "post_caesar_decipher_docs"]
