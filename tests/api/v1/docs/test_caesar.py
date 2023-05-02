@@ -13,16 +13,18 @@
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 from http import HTTPStatus
 
-from blacksheep.server.openapi.common import ContentInfo, RequestBodyInfo, ResponseExample, ResponseInfo
+from blacksheep.server.openapi.common import ContentInfo
+from blacksheep.server.openapi.common import RequestBodyInfo
+from blacksheep.server.openapi.common import ResponseExample
+from blacksheep.server.openapi.common import ResponseInfo
 
-from vigenere_api.api.v1.controllers.docs.caesar import (
-    CAESAR_DATA1,
-    CAESAR_DATA2,
-    CaesarControllerDocs,
-    CaesarOperation,
-)
+from vigenere_api.api.v1.controllers.docs.caesar import CAESAR_DATA1
+from vigenere_api.api.v1.controllers.docs.caesar import CAESAR_DATA2
+from vigenere_api.api.v1.controllers.docs.caesar import CaesarControllerDocs
+from vigenere_api.api.v1.controllers.docs.caesar import CaesarOperation
 from vigenere_api.models import CaesarData
 
 
@@ -30,7 +32,10 @@ def test_operation_cipher() -> None:
     docs = CaesarControllerDocs(CaesarOperation.CIPHER)
 
     assert docs.summary == "Apply the Caesar algorithm to cipher the content."
-    assert docs.description == "Use the key with the Caesar algorithm to cipher the content."
+    assert (
+        docs.description
+        == "Use the key with the Caesar algorithm to cipher the content."
+    )
     assert "Caesar" in docs.tags
     assert docs.request_body == RequestBodyInfo(
         description="Examples of requests body.",
@@ -62,7 +67,10 @@ def test_operation_decipher() -> None:
     docs = CaesarControllerDocs(CaesarOperation.DECIPHER)
 
     assert docs.summary == "Apply the Caesar algorithm to decipher the content."
-    assert docs.description == "Use the key with the Caesar algorithm to decipher the content."
+    assert (
+        docs.description
+        == "Use the key with the Caesar algorithm to decipher the content."
+    )
     assert "Caesar" in docs.tags
     assert docs.request_body == RequestBodyInfo(
         description="Examples of requests body.",

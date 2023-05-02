@@ -23,6 +23,7 @@ from blacksheep.server.responses import redirect
 from .v1.controllers import CaesarController
 from .v1.openapi_docs import docs
 
+
 application = Application()
 application.debug = False
 application.show_error_details = False
@@ -33,7 +34,8 @@ application.use_cors(
     max_age=300,
 )
 
-if is_development():
+# Exclude from coverage because this depends on the env
+if is_development():  # pragma: no cover
     application.debug = True
     application.show_error_details = True
 

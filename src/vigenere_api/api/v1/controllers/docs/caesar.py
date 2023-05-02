@@ -18,16 +18,16 @@
 """The caesar controller's documentation."""
 
 from dataclasses import dataclass
-from enum import Enum, unique
+from enum import Enum
+from enum import unique
 from http import HTTPStatus
 from typing import final
 
-from blacksheep.server.openapi.common import (
-    ContentInfo,
-    EndpointDocs,
-    RequestBodyInfo, ResponseExample,
-    ResponseInfo,
-)
+from blacksheep.server.openapi.common import ContentInfo
+from blacksheep.server.openapi.common import EndpointDocs
+from blacksheep.server.openapi.common import RequestBodyInfo
+from blacksheep.server.openapi.common import ResponseExample
+from blacksheep.server.openapi.common import ResponseInfo
 
 from vigenere_api.models import CaesarData
 
@@ -85,12 +85,11 @@ class CaesarControllerDocs(EndpointDocs):
 
         super().__init__(
             summary=(
-                    "Apply the Caesar algorithm to"
-                    + f" {operation.value} the content."
+                "Apply the Caesar algorithm to" + f" {operation.value} the content."
             ),
             description=(
-                    "Use the key with the Caesar algorithm to"
-                    + f" {operation.value} the content."
+                "Use the key with the Caesar algorithm to"
+                + f" {operation.value} the content."
             ),
             tags=["Caesar"],
             request_body=RequestBodyInfo(

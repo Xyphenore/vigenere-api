@@ -15,7 +15,9 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 """All errors thrown by the helper."""
-from typing import Any, final
+
+from typing import Any
+from typing import final
 
 
 @final

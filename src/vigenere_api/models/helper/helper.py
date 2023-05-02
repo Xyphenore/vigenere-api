@@ -18,14 +18,12 @@
 
 from typing import Literal
 
-from .errors import (
-    HelperBadCharValueError,
-    HelperBadFirstLetterValueError,
-    HelperBadLengthCharValueError,
-    HelperCharTypeError,
-    HelperFirstLetterTypeError,
-    HelperKeyTypeError,
-)
+from .errors import HelperBadCharValueError
+from .errors import HelperBadFirstLetterValueError
+from .errors import HelperBadLengthCharValueError
+from .errors import HelperCharTypeError
+from .errors import HelperFirstLetterTypeError
+from .errors import HelperKeyTypeError
 
 
 def move_char(char: str, key: int, first_letter: Literal["a", "A"]) -> str:

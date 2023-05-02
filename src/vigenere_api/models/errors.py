@@ -16,7 +16,8 @@
 
 """All errors thrown by the caesar model."""
 
-from typing import Any, final
+from typing import Any
+from typing import final
 
 
 @final

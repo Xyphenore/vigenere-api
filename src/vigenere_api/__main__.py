@@ -15,3 +15,12 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 """Main entrypoint of Vigenere-API."""
+
+from asyncio import new_event_loop
+
+from .server import start
+
+
+if __name__ == "__main__":
+    loop = new_event_loop()
+    loop.run_until_complete(start())

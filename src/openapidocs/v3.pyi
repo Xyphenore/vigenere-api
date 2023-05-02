@@ -19,21 +19,21 @@ https://swagger.io/specification/.
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 from abc import ABC
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Optional, Union
+from typing import Any
+from typing import Optional
+from typing import Union
 
-from openapidocs.common import OpenAPIElement, OpenAPIRoot
-
+from openapidocs.common import OpenAPIElement
+from openapidocs.common import OpenAPIRoot
 
 class ParameterLocation(Enum):
     QUERY = "query"
     HEADER = "header"
     PATH = "path"
     COOKIE = "cookie"
-
 
 class ValueType(Enum):
     ARRAY = "array"
@@ -42,7 +42,6 @@ class ValueType(Enum):
     NUMBER = "number"
     OBJECT = "object"
     STRING = "string"
-
 
 class ValueFormat(Enum):
     BASE64 = "base64"
@@ -59,7 +58,6 @@ class ValueFormat(Enum):
     UUID = "uuid"
     PARTIALTIME = "partial-time"
 
-
 class SecuritySchemeType(Enum):
     APIKEY = "apiKey"
     HTTP = "http"
@@ -68,25 +66,21 @@ class SecuritySchemeType(Enum):
     OIDC = "openIdConnect"
     OPENIDCONNECT = "openIdConnect"
 
-
 @dataclass
 class Contact(OpenAPIElement):
     name: Optional[str] = None
     url: Optional[str] = None
     email: Optional[str] = None
 
-
 @dataclass
 class ExternalDocs(OpenAPIElement):
     url: str
     description: Optional[str] = None
 
-
 @dataclass
 class License(OpenAPIElement):
     name: str
     url: Optional[str] = None
-
 
 @dataclass
 class Info(OpenAPIElement):
@@ -97,20 +91,17 @@ class Info(OpenAPIElement):
     contact: Optional[Contact] = None
     license: Optional[License] = None
 
-
 @dataclass
 class ServerVariable(OpenAPIElement):
     default: str
     description: Optional[str] = None
     enum: Optional[list[str]] = None
 
-
 @dataclass
 class Server(OpenAPIElement):
     url: str
     description: Optional[str] = None
     variables: Optional[dict[str, ServerVariable]] = None
-
 
 @dataclass
 class XML(OpenAPIElement):
@@ -120,12 +111,10 @@ class XML(OpenAPIElement):
     attribute: Optional[bool] = None
     wrapped: Optional[bool] = None
 
-
 @dataclass
 class Discriminator(OpenAPIElement):
     property_name: str
     mapping: Optional[dict[str, str]] = None
-
 
 @dataclass
 class Schema(OpenAPIElement):
@@ -153,12 +142,10 @@ class Schema(OpenAPIElement):
     one_of: Optional[list[Union[Schema, Reference]]] = None
     not_: Optional[list[Union[Schema, Reference]]] = None
 
-
 @dataclass
 class Header(OpenAPIElement):
     description: Optional[str] = None
     schema: Union[None, Schema, Reference] = None
-
 
 @dataclass
 class Example(OpenAPIElement):
@@ -167,11 +154,9 @@ class Example(OpenAPIElement):
     value: Any = None
     external_value: Optional[str] = None
 
-
 @dataclass
 class Reference(OpenAPIElement):
     ref: str
-
 
 @dataclass
 class Encoding(OpenAPIElement):
@@ -180,7 +165,6 @@ class Encoding(OpenAPIElement):
     style: Optional[str] = None
     explode: Optional[bool] = None
     allow_reserved: Optional[bool] = None
-
 
 @dataclass
 class Link(OpenAPIElement):
@@ -191,7 +175,6 @@ class Link(OpenAPIElement):
     description: Optional[str] = None
     server: Optional[Server] = None
 
-
 @dataclass
 class MediaType(OpenAPIElement):
     schema: Union[None, Schema, Reference] = None
@@ -199,14 +182,12 @@ class MediaType(OpenAPIElement):
     examples: Optional[dict[str, Union[Example, Reference]]] = None
     encoding: Optional[dict[str, Encoding]] = None
 
-
 @dataclass
 class Response(OpenAPIElement):
     description: Optional[str] = None
     headers: Optional[dict[str, Union[Header, Reference]]] = None
     content: Optional[dict[str, Union[MediaType, Reference]]] = None
     links: Optional[dict[str, Union[Link, Reference]]] = None
-
 
 @dataclass
 class Parameter(OpenAPIElement):
@@ -221,19 +202,16 @@ class Parameter(OpenAPIElement):
     example: Optional[Any] = None
     examples: Optional[dict[str, Union[Example, Reference]]] = None
 
-
 @dataclass
 class RequestBody(OpenAPIElement):
     content: dict[str, MediaType]
     required: Optional[bool] = None
     description: Optional[str] = None
 
-
 @dataclass
 class SecurityRequirement(OpenAPIElement):
     name: str
     value: list[str]
-
 
 @dataclass
 class Operation(OpenAPIElement):
@@ -249,7 +227,6 @@ class Operation(OpenAPIElement):
     deprecated: Optional[bool] = None
     security: Optional[list[SecurityRequirement]] = None
     servers: Optional[list[Server]] = None
-
 
 @dataclass
 class PathItem(OpenAPIElement):
@@ -267,12 +244,10 @@ class PathItem(OpenAPIElement):
     servers: Optional[list[Server]] = None
     parameters: Optional[list[Union[Parameter, Reference]]] = None
 
-
 @dataclass
 class Callback(OpenAPIElement):
     expression: str
     path: PathItem
-
 
 @dataclass
 class OAuthFlow(OpenAPIElement):
@@ -281,7 +256,6 @@ class OAuthFlow(OpenAPIElement):
     token_url: Optional[str] = None
     refresh_url: Optional[str] = None
 
-
 @dataclass
 class OAuthFlows(OpenAPIElement):
     implicit: Optional[OAuthFlow] = None
@@ -289,10 +263,8 @@ class OAuthFlows(OpenAPIElement):
     client_credentials: Optional[OAuthFlow] = None
     authorization_code: Optional[OAuthFlow] = None
 
-
 class SecurityScheme(OpenAPIElement, ABC):
     """Abstract security scheme."""
-
 
 @dataclass
 class HTTPSecurity(SecurityScheme):
@@ -301,7 +273,6 @@ class HTTPSecurity(SecurityScheme):
     description: Optional[str] = None
     bearer_format: Optional[str] = None
 
-
 @dataclass
 class APIKeySecurity(SecurityScheme):
     name: str
@@ -309,20 +280,17 @@ class APIKeySecurity(SecurityScheme):
     type: SecuritySchemeType = ...
     description: Optional[str] = None
 
-
 @dataclass
 class OAuth2Security(SecurityScheme):
     flows: OAuthFlows
     type: SecuritySchemeType = ...
     description: Optional[str] = None
 
-
 @dataclass
 class OpenIdConnectSecurity(SecurityScheme):
     open_id_connect_url: str
     type: SecuritySchemeType = ...
     description: Optional[str] = None
-
 
 @dataclass
 class Components(OpenAPIElement):
@@ -336,19 +304,16 @@ class Components(OpenAPIElement):
     links: Optional[dict[str, Union[Link, Reference]]] = None
     callbacks: Optional[dict[str, Union[Callback, Reference]]] = None
 
-
 @dataclass
 class Tag(OpenAPIElement):
     name: str
     description: Optional[str] = None
     external_docs: Optional[ExternalDocs] = None
 
-
 @dataclass
 class Security(OpenAPIElement):
     requirements: list[SecurityRequirement]
     optional: bool = False
-
 
 @dataclass
 class OpenAPI(OpenAPIRoot):

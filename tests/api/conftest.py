@@ -20,7 +20,8 @@ from collections.abc import Generator
 
 import pytest
 import pytest_asyncio
-from blacksheep import Application, Request
+from blacksheep import Application
+from blacksheep import Request
 from blacksheep.testing import TestClient
 
 from vigenere_api.api import application

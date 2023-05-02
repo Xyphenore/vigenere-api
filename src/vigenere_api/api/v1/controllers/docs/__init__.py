@@ -16,6 +16,8 @@
 
 """All OpenAPI docs for each controller."""
 
-from .caesar import post_caesar_cipher_docs, post_caesar_decipher_docs
+from .caesar import post_caesar_cipher_docs
+from .caesar import post_caesar_decipher_docs
+
 
 __all__ = ["post_caesar_cipher_docs", "post_caesar_decipher_docs"]

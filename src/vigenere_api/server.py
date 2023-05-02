@@ -14,12 +14,26 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from blacksheep import FromJSON
-from blacksheep import Response
-from blacksheep.server.controllers import APIController
+"""Start method of API."""
 
-from vigenere_api.models import CaesarData
+from uvicorn import Config
+from uvicorn import Server
 
-class CaesarController(APIController):
-    async def cipher(self, data: FromJSON[CaesarData]) -> Response: ...
-    async def decipher(self, data: FromJSON[CaesarData]) -> Response: ...
+from .api import application
+
+
+async def start() -> None:
+    """Start the API on 127.0.0.1:8080."""
+
+    server = Server(
+        Config(
+            app=application,
+            port=8080,
+            http="httptools",
+            ws="none",
+            log_level="info",
+            use_colors=True,
+        ),
+    )
+
+    await server.serve()

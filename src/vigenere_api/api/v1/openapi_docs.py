@@ -17,10 +17,13 @@
 """Common OpenAPI docs."""
 
 from blacksheep.server.openapi.ui import ReDocUIProvider
-from openapidocs.common import Format
-from openapidocs.v3 import Contact, Info, License
 
+from openapidocs.common import Format
+from openapidocs.v3 import Contact
+from openapidocs.v3 import Info
+from openapidocs.v3 import License
 from vigenere_api.api.utils import VigenereAPIOpenAPIHandler
+
 
 APP_URL = "https://localhost:8080"
 
