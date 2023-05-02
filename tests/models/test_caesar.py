@@ -44,6 +44,18 @@ class CtorSuite:
 
     @staticmethod
     @pytest.mark.raises(exception=ValidationError)
+    def test_missing_content() -> None:
+        key = "z"
+        _ignored_data = CaesarData(key=key)
+
+    @staticmethod
+    @pytest.mark.raises(exception=ValidationError)
+    def test_missing_key() -> None:
+        text = "z"
+        _ignored_data = CaesarData(content=text)
+
+    @staticmethod
+    @pytest.mark.raises(exception=ValidationError)
     def test_bad_type_content() -> None:
         text = b"Test"
         key = "z"

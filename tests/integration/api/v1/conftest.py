@@ -13,48 +13,43 @@
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+import os
+from collections.abc import Generator
+from multiprocessing import Process
+from time import sleep
 
-"""Create the application Vigenere-API."""
+import pytest
+import uvicorn
 
-from blacksheep import Application, Response
-from blacksheep.server.env import is_development
-from blacksheep.server.responses import redirect
-
-from .v1.controllers import CaesarController
-from .v1.openapi_docs import docs
-
-application = Application()
-application.debug = False
-application.show_error_details = False
-application.use_cors(
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_origins=["http://127.0.0.1:8080"],
-    allow_headers=["Authorization"],
-    max_age=300,
-)
-
-if is_development():
-    application.debug = True
-    application.show_error_details = True
-
-application.register_controllers([CaesarController])
-docs.bind_app(application)
-
-get = application.router.get
+from vigenere_api.api import application
 
 
-@docs(ignored=True)
-@get()
-async def index() -> Response:
-    """
-    Route handle for the index page.
+def get_sleep_time() -> float:
+    # when starting a server process,
+    # a longer sleep time is necessary on Windows
+    if os.name == "nt":
+        return 1.5
+    return 0.5
 
-    It redirects to the OpenAPI documentation of the API.
 
-    Returns
-    -------
-    redirect
-        Response
-    """
+server_host = "127.0.0.1"
+server_port = 44555
 
-    return redirect("/api/v1")
+
+def _start_server() -> None:
+    uvicorn.run(application, host=server_host, port=server_port, log_level="debug")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def server() -> Generator[str, None, None]:
+    server_process = Process(target=_start_server)
+    server_process.start()
+    sleep(get_sleep_time())
+
+    if not server_process.is_alive():
+        raise TypeError("The server process did not start!")
+
+    yield "http://" + server_host + ":" + str(server_port)
+
+    sleep(1.2)
+    server_process.terminate()

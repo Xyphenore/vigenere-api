@@ -1102,6 +1102,8 @@ include = []
 omit = [
     "tests/integration/**/*.py",
     "**/__main__.py",
+    "src/vigenere_api/server.py",
+    "vigenere_api/server.py"
 ]
 source = ["tests"]
 source_pkgs = ["vigenere_api"]

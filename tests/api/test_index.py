@@ -14,47 +14,20 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""Create the application Vigenere-API."""
-
-from blacksheep import Application, Response
-from blacksheep.server.env import is_development
-from blacksheep.server.responses import redirect
-
-from .v1.controllers import CaesarController
-from .v1.openapi_docs import docs
-
-application = Application()
-application.debug = False
-application.show_error_details = False
-application.use_cors(
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_origins=["http://127.0.0.1:8080"],
-    allow_headers=["Authorization"],
-    max_age=300,
-)
-
-if is_development():
-    application.debug = True
-    application.show_error_details = True
-
-application.register_controllers([CaesarController])
-docs.bind_app(application)
-
-get = application.router.get
+import pytest
+from blacksheep.testing import TestClient
 
 
-@docs(ignored=True)
-@get()
-async def index() -> Response:
-    """
-    Route handle for the index page.
+@pytest.mark.asyncio()
+async def test_get_index(test_client: TestClient) -> None:
+    response = await test_client.get("/")
 
-    It redirects to the OpenAPI documentation of the API.
+    assert response is not None
 
-    Returns
-    -------
-    redirect
-        Response
-    """
+    assert response.status == 302
+    assert response.content is None
+    assert response.reason.upper() == "FOUND"
 
-    return redirect("/api/v1")
+    first_header = response.headers.values[0]
+    assert first_header[0] == b"Location"
+    assert first_header[1] == b"/api/v1"
