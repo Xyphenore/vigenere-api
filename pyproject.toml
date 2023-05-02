@@ -19,7 +19,6 @@ include = ["CHANGELOG.md", "INSTALL.md"]
 python = "^3.9"
 blacksheep = "^1"
 uvicorn = { extras = ["standard"], version = "^0" }
-pyyaml = "^6"
 pydantic = "^1"
 
 
@@ -36,7 +35,6 @@ pylint-secure-coding-standard = "^1"
 pylint-pydantic = "^0"
 pylint-enums = "^0"
 pylint-blocking-calls = "^0"
-pylint-blank-line-plugin = "^0"
 ruff = "^0"
 interrogate = "^1"
 deptry = "^0"
@@ -55,7 +53,6 @@ pytest-asyncio = "^0"
 pytest-cov = "^4"
 pytest-raises = "^0"
 pytest-integration = "^0"
-pytest-todo = "^0"
 pytest-timer = "^0"
 
 
@@ -90,7 +87,7 @@ ignore-nested-functions = false
 ignore-nested-classes = false
 ignore-setters = false
 fail-under = 95
-exclude = ["docs", "build"]
+exclude = ["build", "**/.pyi"]
 verbose = 0
 quiet = false
 color = true
@@ -98,8 +95,25 @@ omit-covered-files = false
 
 
 [tool.vulture]
-exclude = ["docs/"]
+exclude = []
 sort_by_size = true
+ignore_decorators = [
+    "@get",
+    "@post",
+    "@docs",
+    "@validtor"
+]
+ignore_names = [
+    "cls",
+    "version",
+    "class_name",
+    "on_docs_generated",
+    "validate_*",
+    "debug",
+    "show_error_details",
+    "tags",
+]
+min_confidence = 80
 
 
 [tool.ruff]
@@ -187,7 +201,8 @@ extend-exclude = [
     "build",
     "dist",
     "node_modules",
-    "venv"
+    "venv",
+    "*.pyi",
 ]
 force-exclude = true
 
@@ -853,16 +868,11 @@ color = true
 convention = "numpy"
 
 add_select = []
-ignore = [
-    # Need a blank line between docstring and code.
-    "D202",
-]
 
-match = "^.*.pyi?$"
+match = "^.*.py$"
 #match_dir = ""
 
 ignore_decorators = []
-property_decorators = []
 
 ignore_self_only_init = true
 
@@ -1031,7 +1041,8 @@ no_shell = [
 extend_exclude = []
 
 ignore_obsolete = []
-ignore_missing = []
+# openapidocs is essential-openapidocs
+ignore_missing = ["openapidocs"]
 ignore_transitive = []
 ignore_misplaced_dev = []
 ignore_notebooks = true
@@ -1046,6 +1057,7 @@ known_first_party = []
 
 [tool.pytest.ini_options]
 minversion = "7.0"
+addopts = "--without-integration --without-slow-integration"
 
 cache_dir = "."
 

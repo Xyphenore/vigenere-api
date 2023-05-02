@@ -50,7 +50,6 @@ class CaesarController(APIController):
         version
             str
         """
-
         return "v1"
 
     @classmethod
@@ -63,7 +62,6 @@ class CaesarController(APIController):
         class_name
             str
         """
-
         return "caesar"
 
     @docs(post_caesar_cipher_docs)
@@ -82,7 +80,6 @@ class CaesarController(APIController):
         response
             Response
         """
-
         return self.json(data.value.cipher())
 
     @docs(post_caesar_decipher_docs)
@@ -101,5 +98,4 @@ class CaesarController(APIController):
         response
             Response
         """
-
         return self.json(data.value.decipher())

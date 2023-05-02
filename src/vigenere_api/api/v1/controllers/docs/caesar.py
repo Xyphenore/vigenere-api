@@ -60,6 +60,13 @@ class CaesarControllerDocs(EndpointDocs):
     """Create the documentation for Caesar algorithm."""
 
     def __init__(self, operation: CaesarOperation) -> None:
+        """
+        Create a CaesarControllerDocs.
+
+        Parameters
+        ----------
+        operation : CaesarOperation
+        """
         response_examples = [
             ResponseExample(value=CAESAR_DATA1[0]),
             ResponseExample(value=CAESAR_DATA1[1]),

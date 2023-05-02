@@ -25,6 +25,14 @@ class HelperCharTypeError(TypeError):
     """Thrown if the helper receives a bad type for the char variable."""
 
     def __init__(self, char: Any) -> None:
+        """
+        Create a HelperCharTypeError with the received char.
+
+        Parameters
+        ----------
+        char : Any
+            The received char.
+        """
         cls_name = type(char).__qualname__
 
         super().__init__(
@@ -37,6 +45,13 @@ class HelperBadLengthCharValueError(ValueError):
     """Thrown if the helper receives a char with a length different from 1."""
 
     def __init__(self, char: str) -> None:
+        """
+        Create a HelperBadLengthCharValueError with the received char.
+
+        Parameters
+        ----------
+        char : str
+        """
         super().__init__(
             f"The helper function receives a char with a length of '{len(char)}'."
             + " Please give one character string.",
@@ -48,6 +63,13 @@ class HelperBadCharValueError(ValueError):
     """Thrown if the helper receives a char, which is not an alphabetical character."""
 
     def __init__(self, char: str) -> None:
+        """
+        Create a HelperBadCharValueError with the received char.
+
+        Parameters
+        ----------
+        char : str
+        """
         super().__init__(
             f"The helper function receives the char '{len(char)}'."
             + " Please give one alphabetical character string.",
@@ -59,6 +81,14 @@ class HelperKeyTypeError(TypeError):
     """Thrown if the algorithm receives a bad type for the key variable."""
 
     def __init__(self, key: Any) -> None:
+        """
+        Create a HelperBadKeyTypeError with the received key.
+
+        Parameters
+        ----------
+        key : Any
+            The key.
+        """
         cls_name = type(key).__qualname__
 
         super().__init__(
@@ -71,6 +101,14 @@ class HelperFirstLetterTypeError(TypeError):
     """Thrown if the helper receives a bad type for the char variable."""
 
     def __init__(self, first_letter: Any) -> None:
+        """
+        Create a HelperBadFirstLetterTypeError with the received letter.
+
+        Parameters
+        ----------
+        first_letter : Any
+            The first letter.
+        """
         cls_name = type(first_letter).__qualname__
 
         super().__init__(
@@ -83,6 +121,14 @@ class HelperBadFirstLetterValueError(ValueError):
     """Thrown if the helper receives a char with a length different from 1."""
 
     def __init__(self, first_letter: str) -> None:
+        """
+        Create a HelperBadFirstLetterValueError with the received letter.
+
+        Parameters
+        ----------
+        first_letter : str
+            The first letter.
+        """
         super().__init__(
             f"The helper function receives a first letter equals to '{first_letter}'."
             + " Please give a string in {'a', 'A'}.",

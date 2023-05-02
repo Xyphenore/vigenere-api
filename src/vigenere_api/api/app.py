@@ -16,7 +16,8 @@
 
 """Create the application Vigenere-API."""
 
-from blacksheep import Application, Response
+from blacksheep import Application
+from blacksheep import Response
 from blacksheep.server.env import is_development
 from blacksheep.server.responses import redirect
 
@@ -33,7 +34,6 @@ application.use_cors(
     allow_headers=["Authorization"],
     max_age=300,
 )
-
 # Exclude from coverage because this depends on the env
 if is_development():  # pragma: no cover
     application.debug = True
@@ -58,5 +58,4 @@ async def index() -> Response:
     redirect
         Response
     """
-
     return redirect("/api/v1")

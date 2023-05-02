@@ -59,7 +59,6 @@ def move_char(char: str, key: int, first_letter: Literal["a", "A"]) -> str:
     str
         The moved character.
     """
-
     if not isinstance(char, str):
         raise HelperCharTypeError(char)
 
