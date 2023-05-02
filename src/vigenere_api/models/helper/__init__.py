@@ -18,4 +18,5 @@
 
 from .helper import move_char
 
+
 __all__ = ["move_char"]

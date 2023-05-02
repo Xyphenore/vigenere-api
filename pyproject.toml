@@ -848,9 +848,6 @@ line-length = 88
 target-version = ["py39"]
 color = true
 
-extend-exclude = "docs"
-force-exclude = "docs"
-
 
 [tool.pydocstyle]
 convention = "numpy"
@@ -871,7 +868,6 @@ ignore_self_only_init = true
 
 
 [tool.bandit]
-exclude_dirs = ["docs"]
 targets = ["src", "tests"]
 
 skips = []

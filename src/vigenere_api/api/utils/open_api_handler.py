@@ -18,11 +18,13 @@ tag list and security of the VigenereAPI.
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 from typing import final
 
 from blacksheep.server.openapi.v3 import OpenAPIHandler
-from openapidocs.v3 import ExternalDocs, OpenAPI, Tag
+
+from openapidocs.v3 import ExternalDocs
+from openapidocs.v3 import OpenAPI
+from openapidocs.v3 import Tag
 
 
 @final

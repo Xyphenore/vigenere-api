@@ -18,4 +18,5 @@
 
 from .caesar import CaesarData
 
+
 __all__ = ["CaesarData"]

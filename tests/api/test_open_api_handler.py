@@ -15,8 +15,11 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from openapidocs.common import Format
-from openapidocs.v3 import Contact, ExternalDocs, Info, License, Tag
-
+from openapidocs.v3 import Contact
+from openapidocs.v3 import ExternalDocs
+from openapidocs.v3 import Info
+from openapidocs.v3 import License
+from openapidocs.v3 import Tag
 from vigenere_api.api import application
 from vigenere_api.api.utils import VigenereAPIOpenAPIHandler
 
