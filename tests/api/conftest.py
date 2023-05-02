@@ -14,47 +14,32 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""Create the application Vigenere-API."""
+import asyncio
+from asyncio import AbstractEventLoop
+from collections.abc import Generator
 
-from blacksheep import Application, Response
-from blacksheep.server.env import is_development
-from blacksheep.server.responses import redirect
+import pytest
+import pytest_asyncio
+from blacksheep import Application, Request
+from blacksheep.testing import TestClient
 
-from .v1.controllers import CaesarController
-from .v1.openapi_docs import docs
-
-application = Application()
-application.debug = False
-application.show_error_details = False
-application.use_cors(
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_origins=["http://127.0.0.1:8080"],
-    allow_headers=["Authorization"],
-    max_age=300,
-)
-
-if is_development():
-    application.debug = True
-    application.show_error_details = True
-
-application.register_controllers([CaesarController])
-docs.bind_app(application)
-
-get = application.router.get
+from vigenere_api.api import application
 
 
-@docs(ignored=True)
-@get()
-async def index() -> Response:
-    """
-    Route handle for the index page.
+@pytest.fixture(scope="session")
+def event_loop(request: Request) -> Generator[AbstractEventLoop, None, None]:
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
 
-    It redirects to the OpenAPI documentation of the API.
 
-    Returns
-    -------
-    redirect
-        Response
-    """
+@pytest_asyncio.fixture(scope="session")
+async def api() -> Generator[Application, None, None]:
+    await application.start()
+    yield application
+    await application.stop()
 
-    return redirect("/api/v1")
+
+@pytest_asyncio.fixture(scope="session")
+async def test_client(api) -> TestClient:
+    return TestClient(api)
