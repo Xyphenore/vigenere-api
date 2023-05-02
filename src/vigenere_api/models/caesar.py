@@ -77,7 +77,6 @@ class CaesarData(BaseModel):
         ciphered_data
             CaesarData
         """
-
         return CaesarData(
             content=self.__algorithm(self.content, self.__convert_key()),
             key=self.key,
@@ -92,7 +91,6 @@ class CaesarData(BaseModel):
         deciphered_data
             CaesarData
         """
-
         return CaesarData(
             content=self.__algorithm(self.content, -self.__convert_key()),
             key=self.key,
@@ -123,7 +121,6 @@ class CaesarData(BaseModel):
         converted_text
             str
         """
-
         if not isinstance(text, str):
             raise AlgorithmTextTypeError(text)
 
@@ -150,7 +147,6 @@ class CaesarData(BaseModel):
         int_key
             int
         """
-
         if isinstance(self.key, int):
             return self.key
 
@@ -179,7 +175,6 @@ class CaesarData(BaseModel):
         content
             str
         """
-
         if not isinstance(content, str):
             raise ContentTypeError(content)
 
@@ -214,7 +209,6 @@ class CaesarData(BaseModel):
         key
             Key
         """
-
         if not isinstance(key, (str, int)):
             raise KeyTypeError(key)
 

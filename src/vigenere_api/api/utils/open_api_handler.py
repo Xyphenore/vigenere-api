@@ -1,7 +1,4 @@
-"""
-Override the OpenAPIHandler to give server list,
-tag list and security of the VigenereAPI.
-"""
+"""APIHandler with a tag list of the VigenereAPI."""
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
@@ -18,6 +15,7 @@ tag list and security of the VigenereAPI.
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 from typing import final
 
 from blacksheep.server.openapi.v3 import OpenAPIHandler
@@ -29,12 +27,10 @@ from openapidocs.v3 import Tag
 
 @final
 class VigenereAPIOpenAPIHandler(OpenAPIHandler):
-    """
-    Override the OpenAPIHandler to give server list,
-    tag list and security of the VigenereAPI.
-    """
+    """APIHandler with a tag list of the VigenereAPI."""
 
     def on_docs_generated(self, docs: OpenAPI) -> None:
+        """Add a tag list to docs."""
         docs.tags = [
             Tag(
                 name="Vigenere",

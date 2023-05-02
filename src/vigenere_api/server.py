@@ -24,7 +24,6 @@ from .api import application
 
 async def start() -> None:
     """Start the API on 127.0.0.1:8080."""
-
     server = Server(
         Config(
             app=application,

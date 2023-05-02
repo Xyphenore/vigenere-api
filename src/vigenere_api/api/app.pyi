@@ -14,7 +14,8 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from blacksheep import Application, Response
+from blacksheep import Application
+from blacksheep import Response
 
 application: Application
 
