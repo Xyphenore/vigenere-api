@@ -328,7 +328,7 @@ dependency_scanning:
     needs:
         - !reference [ .common_test, needs ]
         - 🤞 unittests 🤞
-    coverage: /TOTAL\s+[\d\.]+\s+[\d\.]+\s+([\d\.]+)/
+    coverage: /TOTAL\s+[\d\.]+\s+[\d\.]+\s+[\d\.]+\s+[\d\.]+\s+([\d\.]+)/
     script:
         - pytest --cov=src --cov=tests --junit-xml=coverage.xml --cov-report=html:coverage_html
         - coverage report
