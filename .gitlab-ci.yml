@@ -123,23 +123,14 @@ dependency_scanning:
     extends: .load_env
     stage:
         🎨 format 🎨
-    rules:
-        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
-.common_format_py:
-    extends: .common_format
-    rules:
-        -   changes:
-                - $CI_PROJECT_DIR/src/**/*.py
-        - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 🩹 isort 🎨:
-    extends: .common_format_py
+    extends: .common_format
     script:
         - isort src --check
 
 🩹 black 🎨:
-    extends: .common_format_py
+    extends: .common_format
     script:
         - black src --check
 
@@ -181,11 +172,6 @@ dependency_scanning:
 
 .common_security_after_format:
     extends: .common_security
-    rules:
-        -   changes:
-                - $CI_PROJECT_DIR/src/**/*.py
-        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-        - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     needs:
         - !reference [ .common_security, needs ]
         - 🩹 black 🎨
@@ -243,11 +229,6 @@ dependency_scanning:
 .common_quality:
     extends: .load_env
     stage: 🦄 quality 🦄
-    rules:
-        -   changes:
-                - $CI_PROJECT_DIR/src/**/*.py
-        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-        - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     needs:
         - !reference [ .load_env, needs ]
         - 🩹 black 🎨
@@ -309,12 +290,6 @@ dependency_scanning:
 .common_test:
     extends: .load_env
     stage: 🤞 test 🤞
-    rules:
-        -   changes:
-                - $CI_PROJECT_DIR/src/**/*.py
-                - $CI_PROJECT_DIR/tests/**/*.py
-        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-        -   if: $CI_PIPELINE_SOURCE == 'merge_request_event'
     cache:
         key: "pytest-${$CI_COMMIT_BRANCH}"
         paths:
@@ -369,10 +344,6 @@ pages:
     stage: 📝 pages 📝
     rules:
         -   if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE != 'merge_request_event'
-            changes:
-                - $CI_PROJECT_DIR/src/**/*.py
-                - $CI_PROJECT_DIR/tests/**/*.py
-        -   if: $CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     needs:
         - 🤞 coverage 🔍️
     script:
