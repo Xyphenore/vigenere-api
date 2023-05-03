@@ -18,32 +18,28 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import final
-from typing import Union
+from typing import final, Union
 
-from pydantic import BaseModel
-from pydantic import Extra
-from pydantic import StrictInt
-from pydantic import StrictStr
-from pydantic import validator
+from pydantic import StrictInt, StrictStr, validator
 
-from .errors import AlgorithmKeyTypeError
-from .errors import AlgorithmTextTypeError
-from .errors import BadKeyError
-from .errors import ContentTypeError
-from .errors import EmptyContentError
-from .errors import EmptyKeyError
-from .errors import KeyTypeError
-from .errors import TooLongKeyError
+from vigenere_api.helpers import Model
+from .errors import (
+    AlgorithmKeyTypeError,
+    AlgorithmTextTypeError,
+    BadKeyError,
+    ContentTypeError,
+    EmptyContentError,
+    EmptyKeyError,
+    KeyTypeError,
+    TooLongKeyError,
+)
 from .helper import move_char
-
 
 Key = Union[StrictInt, StrictStr]
 
 
 @final
-class CaesarData(BaseModel):
+class CaesarData(Model):
     """
     Caesar data to cipher the content or decipher.
 
@@ -223,16 +219,3 @@ class CaesarData(BaseModel):
                 raise BadKeyError(key)
 
         return key
-
-    @final
-    @dataclass
-    class Config:
-        """Model configuration."""
-
-        title = "CaesarData"
-        validate_all = True
-        validate_assignment = True
-        extra = Extra.forbid
-        frozen = True
-        smart_union = True
-        arbitrary_types_allowed = False

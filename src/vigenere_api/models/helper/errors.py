@@ -19,9 +19,11 @@
 from typing import Any
 from typing import final
 
+from vigenere_api.helpers import VigenereAPITypeError
+
 
 @final
-class HelperCharTypeError(TypeError):
+class HelperCharTypeError(VigenereAPITypeError):
     """Thrown if the helper receives a bad type for the char variable."""
 
     def __init__(self, char: Any) -> None:
@@ -33,11 +35,7 @@ class HelperCharTypeError(TypeError):
         char : Any
             The received char.
         """
-        cls_name = type(char).__qualname__
-
-        super().__init__(
-            f"The char variable is '{cls_name}'. Please give a string.",
-        )
+        super().__init__(char, "char variable", "a string")
 
 
 @final
@@ -77,7 +75,7 @@ class HelperBadCharValueError(ValueError):
 
 
 @final
-class HelperKeyTypeError(TypeError):
+class HelperKeyTypeError(VigenereAPITypeError):
     """Thrown if the algorithm receives a bad type for the key variable."""
 
     def __init__(self, key: Any) -> None:
@@ -89,15 +87,11 @@ class HelperKeyTypeError(TypeError):
         key : Any
             The key.
         """
-        cls_name = type(key).__qualname__
-
-        super().__init__(
-            f"The key variable is '{cls_name}'. Please give an integer.",
-        )
+        super().__init__(key, "key variable", "an integer")
 
 
 @final
-class HelperFirstLetterTypeError(TypeError):
+class HelperFirstLetterTypeError(VigenereAPITypeError):
     """Thrown if the helper receives a bad type for the char variable."""
 
     def __init__(self, first_letter: Any) -> None:
@@ -109,11 +103,7 @@ class HelperFirstLetterTypeError(TypeError):
         first_letter : Any
             The first letter.
         """
-        cls_name = type(first_letter).__qualname__
-
-        super().__init__(
-            f"The first letter variable is '{cls_name}'. Please give a string.",
-        )
+        super().__init__(first_letter, "first letter variable", "a string")
 
 
 @final

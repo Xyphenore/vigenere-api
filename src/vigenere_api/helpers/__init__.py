@@ -1,5 +1,3 @@
-"""All utils for the API."""
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -16,7 +14,9 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .controller import Controller
-from .open_api_handler import VigenereAPIOpenAPIHandler
+"""Common helpers for the package vigenere_api."""
 
-__all__ = ["VigenereAPIOpenAPIHandler", "Controller"]
+from .errors import VigenereAPITypeError
+from .model import Model
+
+__all__ = ["Model", "VigenereAPITypeError"]

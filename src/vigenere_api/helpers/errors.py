@@ -1,5 +1,3 @@
-"""All utils for the API."""
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -16,7 +14,15 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .controller import Controller
-from .open_api_handler import VigenereAPIOpenAPIHandler
+"""All common errors for vigenere-api."""
 
-__all__ = ["VigenereAPIOpenAPIHandler", "Controller"]
+from typing import Any
+
+
+class VigenereAPITypeError(TypeError):
+    """Common base for each type error in vigenere-api."""
+
+    def __init__(self, obj: Any, name: str, waited_obj: str) -> None:
+        """Create a new type error."""
+        cls_name = type(obj).__qualname__
+        super().__init__(f"The {name} is '{cls_name}'." + f" Please give {waited_obj}.")

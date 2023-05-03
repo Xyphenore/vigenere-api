@@ -16,33 +16,8 @@
 
 """Common OpenAPI docs."""
 
-from blacksheep.server.openapi.ui import ReDocUIProvider
-
-from openapidocs.common import Format
-from openapidocs.v3 import Contact
-from openapidocs.v3 import Info
-from openapidocs.v3 import License
 from vigenere_api.api.utils import VigenereAPIOpenAPIHandler
+from vigenere_api.version import Version
 
 
-APP_URL = "https://localhost:8080"
-
-docs = VigenereAPIOpenAPIHandler(
-    info=Info(
-        title="Vigenere-API",
-        version="1.0.0",
-        description="""
-        An API to use cipher, decipher and decrypt method with the Vigenere algorithm.
-        The Caesar algorithm is provided for the cipher method and decipher method.
-
-        It's a JSON-RPC API.
-        Powered by BlackSheep framework: https://www.neoteroi.dev/blacksheep/
-        """,
-        contact=Contact(name="Axel DAVID", email="axel.david@etu.univ-amu.fr"),
-        license=License(name="GPL-3.0", url=APP_URL + "/LICENSE.md"),
-    ),
-    ui_path="/api/v1",
-    preferred_format=Format.YAML,
-)
-
-docs.ui_providers.append(ReDocUIProvider(ui_path="/api/v1/redocs"))
+docs = VigenereAPIOpenAPIHandler(Version(major=1, minor=0, patch=0))

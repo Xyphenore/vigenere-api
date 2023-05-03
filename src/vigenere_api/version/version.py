@@ -16,11 +16,11 @@
 
 """Version of the API."""
 
-from dataclasses import dataclass
 from typing import final
 
-from pydantic import BaseModel, Extra, validator
+from pydantic import validator
 
+from vigenere_api.helpers import Model
 from .errors import (
     InvalidMajorValueError,
     InvalidMinorValueError,
@@ -34,7 +34,7 @@ StrictPositiveIntOrNull = int
 
 
 @final
-class Version(BaseModel):
+class Version(Model):
     """Version of the API."""
 
     major: StrictPositiveIntOrNull
@@ -142,19 +142,6 @@ class Version(BaseModel):
         """
 
         return f"{self.major}.{self.minor}.{self.patch}"
-
-    @final
-    @dataclass
-    class Config:
-        """Model configuration."""
-
-        title = "Version"
-        validate_all = True
-        validate_assignment = True
-        extra = Extra.forbid
-        frozen = True
-        smart_union = True
-        arbitrary_types_allowed = False
 
 
 def get_version() -> Version:
