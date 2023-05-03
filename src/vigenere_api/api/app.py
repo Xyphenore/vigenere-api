@@ -73,7 +73,6 @@ def __fallback() -> str:
     error_text
         str
     """
-
     return "OOPS! Nothing was found here!"
 
 

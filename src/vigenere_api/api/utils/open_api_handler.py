@@ -47,7 +47,6 @@ class VigenereAPIOpenAPIHandler(OpenAPIHandler):
         VersionTypeError
             Thrown if 'version' is not a Version object.
         """
-
         if not isinstance(version, Version):
             raise VersionTypeError(version)
 

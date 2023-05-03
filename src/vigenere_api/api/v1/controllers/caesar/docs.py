@@ -18,7 +18,7 @@
 """The caesar controller's documentation."""
 
 from dataclasses import dataclass
-from enum import Enum, unique
+from enum import auto, unique
 from http import HTTPStatus
 from typing import final
 
@@ -30,17 +30,17 @@ from blacksheep.server.openapi.common import (
     ResponseInfo,
 )
 
+from strenum import LowercaseStrEnum
 from vigenere_api.models import CaesarData
 
 
 @final
 @unique
-class CaesarOperation(Enum):
+class CaesarOperation(LowercaseStrEnum):
     """All Caesar operations."""
 
-    value: str
-    CIPHER = "cipher"
-    DECIPHER = "decipher"
+    CIPHER = auto()
+    DECIPHER = auto()
 
 
 CAESAR_DATA1 = (

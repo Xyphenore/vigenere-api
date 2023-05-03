@@ -21,6 +21,7 @@ from typing import final
 from pydantic import validator
 
 from vigenere_api.helpers import Model
+
 from .errors import (
     InvalidMajorValueError,
     InvalidMinorValueError,
@@ -141,7 +142,6 @@ class Version(Model):
         version
             str
         """
-
         return f"{self.major}.{self.minor}.{self.patch}"
 
 
@@ -154,5 +154,4 @@ def get_version() -> Version:
     version
         Version
     """
-
     return Version(major=1, minor=0, patch=0)
