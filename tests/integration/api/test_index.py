@@ -46,7 +46,7 @@ def test_bad_path(server: str) -> None:
 
     assert response is not None
 
-    assert response.status == 200
+    assert response.status_code == 200
     assert response.content is not None
     assert response.reason.upper() == "OK"
 
