@@ -16,22 +16,19 @@
 
 """The caesar controller."""
 
-from typing import final
-
-from blacksheep import FromJSON
-from blacksheep import Response
-from blacksheep.server.controllers import APIController
+from blacksheep import FromJSON, Response
 from blacksheep.server.controllers import post
 
+from vigenere_api.api.utils import Controller
 from vigenere_api.api.v1.openapi_docs import docs
 from vigenere_api.models import CaesarData
+from .docs import (
+    post_caesar_cipher_docs,
+    post_caesar_decipher_docs,
+)
 
-from .docs import post_caesar_cipher_docs
-from .docs import post_caesar_decipher_docs
 
-
-@final
-class CaesarController(APIController):
+class CaesarController(Controller):
     """
     The caesar controller.
 
@@ -50,19 +47,7 @@ class CaesarController(APIController):
         version
             str
         """
-        return "v1"
-
-    @classmethod
-    def class_name(cls) -> str:
-        """
-        Name of the class.
-
-        Returns
-        -------
-        class_name
-            str
-        """
-        return "caesar"
+        return f"v{docs.version.major}"
 
     @docs(post_caesar_cipher_docs)
     @post("cipher")
