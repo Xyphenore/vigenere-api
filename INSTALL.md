@@ -64,7 +64,7 @@ pip install https://etulab.univ-amu.fr/d19006523/vigenere-api/-/packages/pypi/vi
 ## Run the API :
 
 ```shell
-python3 -m vigenere-api
+python3 -m vigenere_api
 ```
 
 # Development :
@@ -154,7 +154,25 @@ poetry update
 ## Run the API :
 
 ```shell
-poetry run start
+python -m vigenere_api
+```
+
+## Execute tests :
+
+```shell
+PYTHONPATH=.src pytest
+```
+
+## Execute coverage :
+
+```shell
+PYTHONPATH=.src pytest --cov=src --cov=tests --cov=src --cov=tests --junit-xml=coverage.xml --cov-report=html:coverage_html
+```
+
+## Execute integration tests :
+
+```shell
+PYTHONPATH=.src pytest --with-integration
 ```
 
 ## Build the API package :
@@ -162,32 +180,3 @@ poetry run start
 ```shell
 poetry build
 ```
-
-## Bump version :
-
-You can bump a new version of the package.<br>
-The script increases the version of the package, and creates a new tag.<br>
-You need to push tag, like:
-
-```shell
-git push --tags
-```
-
-### Major version :
-
-```shell
-poetry run bump-major-version
-```
-
-### Minor version :
-
-```shell
-poetry run bump-minor-version
-```
-
-### Patch version :
-
-```shell
-poetry run bump-patch-version
-```
-
