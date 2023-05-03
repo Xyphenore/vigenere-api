@@ -1,5 +1,3 @@
-"""All utils for the API."""
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -16,7 +14,26 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .controller import Controller
-from .open_api_handler import VigenereAPIOpenAPIHandler
+"""Common base for each model in Vigenere-API."""
 
-__all__ = ["VigenereAPIOpenAPIHandler", "Controller"]
+from dataclasses import dataclass
+from typing import final
+
+from pydantic import BaseModel, Extra
+
+
+class Model(BaseModel):
+    """Base model for each model in Vigenere-API."""
+
+    @final
+    @dataclass
+    class Config:
+        """Model configuration."""
+
+        title = "CaesarData"
+        validate_all = True
+        validate_assignment = True
+        extra = Extra.forbid
+        frozen = True
+        smart_union = True
+        arbitrary_types_allowed = False

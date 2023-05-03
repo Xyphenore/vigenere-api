@@ -19,9 +19,11 @@
 from typing import Any
 from typing import final
 
+from vigenere_api.helpers import VigenereAPITypeError
+
 
 @final
-class ContentTypeError(TypeError):
+class ContentTypeError(VigenereAPITypeError):
     """Thrown if the content is not a string."""
 
     def __init__(self, content: Any) -> None:
@@ -33,15 +35,11 @@ class ContentTypeError(TypeError):
         content : Any
             The received content.
         """
-        cls_name = type(content).__qualname__
-
-        super().__init__(
-            f"The content is '{cls_name}'. Please give a string.",
-        )
+        super().__init__(content, "content", "a string")
 
 
 @final
-class KeyTypeError(TypeError):
+class KeyTypeError(VigenereAPITypeError):
     """Thrown if the key is not a string and not an integer."""
 
     def __init__(self, key: Any) -> None:
@@ -53,11 +51,7 @@ class KeyTypeError(TypeError):
         key : Any
             The received key.
         """
-        cls_name = type(key).__qualname__
-
-        super().__init__(
-            f"The key is '{cls_name}'. Please give a string or an integer.",
-        )
+        super().__init__(key, "key", "a string or an integer")
 
 
 @final
@@ -113,7 +107,7 @@ class BadKeyError(ValueError):
 
 
 @final
-class AlgorithmTextTypeError(TypeError):
+class AlgorithmTextTypeError(VigenereAPITypeError):
     """Thrown if the algorithm receives a bad type for the text variable."""
 
     def __init__(self, text: Any) -> None:
@@ -125,15 +119,11 @@ class AlgorithmTextTypeError(TypeError):
         text : Any
             The given text.
         """
-        cls_name = type(text).__qualname__
-
-        super().__init__(
-            f"The text variable is '{cls_name}'. Please give a string.",
-        )
+        super().__init__(text, "text variable", "a string")
 
 
 @final
-class AlgorithmKeyTypeError(TypeError):
+class AlgorithmKeyTypeError(VigenereAPITypeError):
     """Thrown if the algorithm receives a bad type for the key variable."""
 
     def __init__(self, key: Any) -> None:
@@ -145,8 +135,4 @@ class AlgorithmKeyTypeError(TypeError):
         key : Any
             The given key.
         """
-        cls_name = type(key).__qualname__
-
-        super().__init__(
-            f"The key variable is '{cls_name}'. Please give an integer.",
-        )
+        super().__init__(key, "key variable", "an integer")
