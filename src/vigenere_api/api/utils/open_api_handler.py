@@ -59,17 +59,19 @@ class VigenereAPIOpenAPIHandler(OpenAPIHandler):
         json_spec_path = f"{api_route}/openapi.json"
         yaml_spec_path = f"{api_route}/openapi.yaml"
 
+        description = """
+        An API to use cipher, decipher and decrypt method with the Vigenere algorithm.
+        The Caesar algorithm is provided for the cipher method and decipher method.
+
+        It's a JSON-RPC API.
+        Powered by BlackSheep framework: https://www.neoteroi.dev/blacksheep/
+        """
+
         super().__init__(
             info=Info(
                 title="Vigenere-API",
                 version=str(version),
-                description="""
-                An API to use cipher, decipher and decrypt method with the Vigenere algorithm.
-                The Caesar algorithm is provided for the cipher method and decipher method.
-
-                It's a JSON-RPC API.
-                Powered by BlackSheep framework: https://www.neoteroi.dev/blacksheep/
-                """,
+                description=description,
                 contact=Contact(name="Axel DAVID", email="axel.david@etu.univ-amu.fr"),
                 license=License(name="GPL-3.0", url=f"{app_url}/LICENSE.md"),
             ),
