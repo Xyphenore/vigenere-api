@@ -75,6 +75,7 @@ class InvalidElementValueError(ValueError):
     """Thrown if an element in the version is less than 0."""
 
     def __init__(self, element: int, element_type: Element) -> None:
+        """Create an InvalidElementValueError from the element and element_type."""
         super().__init__(
             f"The {element_type} is equal to '{element}'."
             + " Please give an integer greater or equal to zero.",
@@ -86,6 +87,7 @@ class InvalidMajorValueError(InvalidElementValueError):
     """Thrown if 'major' is less than 0."""
 
     def __init__(self, major: int) -> None:
+        """Create an InvalidMajorValueError from the major."""
         super().__init__(major, Element.MAJOR)
 
 
@@ -94,6 +96,7 @@ class InvalidMinorValueError(InvalidElementValueError):
     """Thrown if 'minor' is less than 0."""
 
     def __init__(self, minor: int) -> None:
+        """Create an InvalidMinorValueError from the minor."""
         super().__init__(minor, Element.MINOR)
 
 
@@ -102,4 +105,5 @@ class InvalidPatchValueError(InvalidElementValueError):
     """Thrown if 'patch' is less than 0."""
 
     def __init__(self, patch: int) -> None:
+        """Create an InvalidPatchValueError from the patch."""
         super().__init__(patch, Element.PATCH)
