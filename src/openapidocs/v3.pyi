@@ -27,14 +27,15 @@ https://swagger.io/specification/.
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE       +
 #  SOFTWARE                                                                            +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 from abc import ABC
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Optional, Union
+from typing import Any
+from typing import Optional
+from typing import Union
 
-from openapidocs.common import OpenAPIElement, OpenAPIRoot
-
+from openapidocs.common import OpenAPIElement
+from openapidocs.common import OpenAPIRoot
 
 class ParameterLocation(Enum):
     QUERY = "query"
