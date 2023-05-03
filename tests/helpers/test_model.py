@@ -13,41 +13,32 @@
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-import pytest
-import requests
+from vigenere_api.helpers import Model
 
 
-@pytest.mark.integration_test()
-def test_get_index(server: str) -> None:
-    response = requests.get(
-        url=server,
-        timeout=1,
-        allow_redirects=False,
-    )
+def test_instantiate() -> None:
+    obj = Model()
 
-    assert response is not None
-
-    assert response.status_code == 302
-    assert response.content == b""
-    assert response.text == ""
-    assert response.is_redirect
-
-    assert response.next is not None
-    assert response.next.path_url == "/api/v1"
+    assert obj is not None
 
 
-@pytest.mark.integration_test()
-def test_bad_path(server: str) -> None:
-    response = requests.get(
-        url=f"{server}/zzzzzzzzzz",
-        timeout=1,
-        allow_redirects=False,
-    )
+class InheritanceSuite:
+    @staticmethod
+    def test_basic() -> None:
+        class Test(Model):
+            pass
 
-    assert response is not None
+        obj = Test()
 
-    assert response.status == 200
-    assert response.content is not None
-    assert response.reason.upper() == "OK"
+        assert obj is not None
+        assert obj == Model()
 
-    assert response.text == "OOPS! Nothing was found here!"
+    @staticmethod
+    def test_with_new_field() -> None:
+        class Test(Model):
+            test: str
+
+        obj = Test(test="TEST")
+
+        assert obj is not None
+        assert obj.test == "TEST"

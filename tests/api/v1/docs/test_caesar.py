@@ -16,15 +16,19 @@
 
 from http import HTTPStatus
 
-from blacksheep.server.openapi.common import ContentInfo
-from blacksheep.server.openapi.common import RequestBodyInfo
-from blacksheep.server.openapi.common import ResponseExample
-from blacksheep.server.openapi.common import ResponseInfo
+from blacksheep.server.openapi.common import (
+    ContentInfo,
+    RequestBodyInfo,
+    ResponseExample,
+    ResponseInfo,
+)
 
-from vigenere_api.api.v1.controllers.docs.caesar import CAESAR_DATA1
-from vigenere_api.api.v1.controllers.docs.caesar import CAESAR_DATA2
-from vigenere_api.api.v1.controllers.docs.caesar import CaesarControllerDocs
-from vigenere_api.api.v1.controllers.docs.caesar import CaesarOperation
+from vigenere_api.api.v1.controllers.caesar.docs import (
+    CAESAR_DATA1,
+    CAESAR_DATA2,
+    CaesarControllerDocs,
+    CaesarOperation,
+)
 from vigenere_api.models import CaesarData
 
 

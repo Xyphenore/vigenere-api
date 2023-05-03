@@ -18,13 +18,15 @@
 
 import pytest
 
-from vigenere_api.models.helper import move_char
-from vigenere_api.models.helper.errors import HelperBadCharValueError
-from vigenere_api.models.helper.errors import HelperBadFirstLetterValueError
-from vigenere_api.models.helper.errors import HelperBadLengthCharValueError
-from vigenere_api.models.helper.errors import HelperCharTypeError
-from vigenere_api.models.helper.errors import HelperFirstLetterTypeError
-from vigenere_api.models.helper.errors import HelperKeyTypeError
+from vigenere_api.models.helpers import move_char
+from vigenere_api.models.helpers.errors import (
+    HelperBadCharValueError,
+    HelperBadFirstLetterValueError,
+    HelperBadLengthCharValueError,
+    HelperCharTypeError,
+    HelperFirstLetterTypeError,
+    HelperKeyTypeError,
+)
 
 
 def test_move_lower_letter() -> None:

@@ -20,8 +20,7 @@ import pytest
 from pydantic import ValidationError
 
 from vigenere_api.models.caesar import CaesarData
-from vigenere_api.models.errors import AlgorithmKeyTypeError
-from vigenere_api.models.errors import AlgorithmTextTypeError
+from vigenere_api.models.errors import AlgorithmKeyTypeError, AlgorithmTextTypeError
 
 
 class CtorSuite:
