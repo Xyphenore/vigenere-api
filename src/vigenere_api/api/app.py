@@ -16,14 +16,13 @@
 
 """Create the application Vigenere-API."""
 
-from blacksheep import Application
-from blacksheep import Response
+from blacksheep import Application, Response
 from blacksheep.server.env import is_development
 from blacksheep.server.responses import redirect
 
-from .v1.controllers import CaesarController
-from .v1.openapi_docs import docs
-
+from vigenere_api.version import get_version
+from .v1.controllers import CaesarController as V1CaesarController
+from .v1.openapi_docs import docs as v1_docs
 
 application = Application()
 application.debug = False
@@ -39,13 +38,15 @@ if is_development():  # pragma: no cover
     application.debug = True
     application.show_error_details = True
 
-application.register_controllers([CaesarController])
-docs.bind_app(application)
+application.register_controllers([V1CaesarController])
+v1_docs.bind_app(application)
 
 get = application.router.get
 
+version = get_version()
 
-@docs(ignored=True)
+
+@v1_docs(ignored=True)
 @get()
 async def index() -> Response:
     """
@@ -58,4 +59,20 @@ async def index() -> Response:
     redirect
         Response
     """
-    return redirect("/api/v1")
+    return redirect(f"/api/v{version.major}")
+
+
+def __fallback() -> str:
+    """
+    Process all requests to bad routes.
+
+    Returns
+    -------
+    error_text
+        str
+    """
+
+    return "OOPS! Nothing was found here!"
+
+
+application.router.fallback = __fallback
