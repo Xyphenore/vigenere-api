@@ -17,5 +17,5 @@ pip install https://etulab.univ-amu.fr/d19006523/vigenere-api/-/packages/pypi/vi
   You can run the API with an HTTP server like :
 
 ```shell
-python -m vigenere-api
+python -m vigenere_api
 ```
