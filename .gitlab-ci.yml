@@ -79,7 +79,7 @@ dependency_scanning:
                 - ${CI_PROJECT_DIR}/.cache/pip
             policy: pull-push
     stage: .pre
-    script:
+    before_script:
         - python --version
         - pip install --upgrade pip
         - export PATH="$PATH":"$HOME/.local/bin"
@@ -87,9 +87,11 @@ dependency_scanning:
         - pipx ensurepath
         - pipx install virtualenv
         - pipx install poetry
+        - poetry --version
+    script:
         - virtualenv $VENV
         - source $ACTIVATE_VENV
-        - poetry --version
+        - pip install --upgrade pip
         - poetry install
         - poetry update
     artifacts:
