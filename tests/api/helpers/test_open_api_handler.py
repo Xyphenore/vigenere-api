@@ -14,54 +14,38 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+import pytest
+
 from openapidocs.common import Format
-from openapidocs.v3 import Contact
-from openapidocs.v3 import ExternalDocs
-from openapidocs.v3 import Info
-from openapidocs.v3 import License
-from openapidocs.v3 import Tag
+from openapidocs.v3 import ExternalDocs, Tag
 from vigenere_api.api import application
-from vigenere_api.api.utils import VigenereAPIOpenAPIHandler
+from vigenere_api.api.helpers import VigenereAPIOpenAPIHandler
+from vigenere_api.api.helpers.errors import VersionTypeError
+from vigenere_api.version import Version
 
 
 def basic_test() -> None:
-    docs = VigenereAPIOpenAPIHandler(
-        info=Info(
-            title="Vigenere-API",
-            version="1.0.0",
-            description="""
-            An API to use cipher, decipher and decrypt method with the Vigenere algorithm.
-            The Caesar algorithm is provided for the cipher method and decipher method.
+    docs = VigenereAPIOpenAPIHandler(Version(major=1, minor=0, patch=0))
 
-            It's a JSON-RPC API.
-            Powered by BlackSheep framework: https://www.neoteroi.dev/blacksheep/
-            """,
-            contact=Contact(name="Axel DAVID", email="axel.david@etu.univ-amu.fr"),
-            license=License(name="GPL-3.0", url="TEST/LICENSE.md"),
-        ),
-        ui_path="/api/v1",
-        preferred_format=Format.YAML,
-    )
+    assert docs.version == Version(major=1, minor=0, patch=0)
 
     info = docs.info
     assert info.title == "Vigenere-API"
     assert info.version == "1.0.0"
-    assert info.description == (
-        "\n"
-        "            An API to use cipher, decipher and decrypt method with the "
-        "Vigenere algorithm.\n"
-        "            The Caesar algorithm is provided for the cipher method and "
-        "decipher method.\n"
-        "\n"
-        "            It's a JSON-RPC API.\n"
-        "            Powered by BlackSheep framework: "
-        "https://www.neoteroi.dev/blacksheep/\n"
-        "            "
+    assert (
+        info.description
+        == """
+        An API to use cipher, decipher and decrypt method with the Vigenere algorithm.
+        The Caesar algorithm is provided for the cipher method and decipher method.
+
+        It's a JSON-RPC API.
+        Powered by BlackSheep framework: https://www.neoteroi.dev/blacksheep/
+        """
     )
     assert info.contact.name == "Axel DAVID"
     assert info.contact.email == "axel.david@etu.univ-amu.fr"
     assert info.license.name == "GPL-3.0"
-    assert info.license.url == "TEST/LICENSE.md"
+    assert info.license.url == "http://localhost:8080/LICENSE.md"
 
     assert docs.ui_providers[0].ui_path == "/api/v1"
 
@@ -88,3 +72,8 @@ def basic_test() -> None:
             ),
         ),
     ]
+
+
+@pytest.mark.raises(exception=VersionTypeError)
+def test_bad_type_version() -> None:
+    _ignored = VigenereAPIOpenAPIHandler(b"toto")
