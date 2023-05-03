@@ -44,7 +44,7 @@ class ExcludedPathTypeError(TypeError):
         super().__init__(
             "The excluded route collection contains something else than a string."
             + f" The path '{path}' is bad. Please give a collection of string."
-            + f" Complete collection: '{excluded}'"
+            + f" Complete collection: '{excluded}'",
         )
 
 

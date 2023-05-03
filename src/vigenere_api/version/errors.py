@@ -40,7 +40,7 @@ class ElementVersionTypeError(TypeError):
         cls_name = type(element).__qualname__
         super().__init__(
             f"The {element_type} is '{cls_name}'."
-            + " Please give an integer greater or equal to zero."
+            + " Please give an integer greater or equal to zero.",
         )
 
 
@@ -77,7 +77,7 @@ class InvalidElementValueError(ValueError):
     def __init__(self, element: int, element_type: Element) -> None:
         super().__init__(
             f"The {element_type} is equal to '{element}'."
-            + " Please give an integer greater or equal to zero."
+            + " Please give an integer greater or equal to zero.",
         )
 
 
