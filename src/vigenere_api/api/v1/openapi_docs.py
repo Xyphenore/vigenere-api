@@ -16,7 +16,7 @@
 
 """Common OpenAPI docs."""
 
-from vigenere_api.api.utils import VigenereAPIOpenAPIHandler
+from vigenere_api.api.helpers import VigenereAPIOpenAPIHandler
 from vigenere_api.version import Version
 
 
