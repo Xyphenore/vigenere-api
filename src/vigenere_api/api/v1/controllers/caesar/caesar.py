@@ -19,7 +19,7 @@
 from blacksheep import FromJSON, Response
 from blacksheep.server.controllers import post
 
-from vigenere_api.api.utils import Controller
+from vigenere_api.api.helpers import Controller
 from vigenere_api.api.v1.openapi_docs import docs
 from vigenere_api.models import CaesarData
 

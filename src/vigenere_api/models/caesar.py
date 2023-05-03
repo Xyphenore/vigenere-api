@@ -34,7 +34,7 @@ from .errors import (
     KeyTypeError,
     TooLongKeyError,
 )
-from .helper import move_char
+from .helpers import move_char
 
 
 Key = Union[StrictInt, StrictStr]
