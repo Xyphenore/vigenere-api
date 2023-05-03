@@ -13,8 +13,10 @@ __pycache__
 .mypy_cache
 .vale-styles
 .ruff_cache
+v
 
 # Coverage files
 coverage.wml
 .coverage
 coverage_html
+htmlcov
