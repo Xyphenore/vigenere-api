@@ -19,7 +19,7 @@ stages:
     - 🦄 quality 🦄
     - 🔒️ security 🔒️
     - 🤞 test 🤞
-    - 📝 pages 📝
+    - deploy
     - 🚀 release 🚀
 
 workflow:
@@ -346,7 +346,7 @@ dependency_scanning:
 
 pages:
     cache: [ ]
-    stage: 📝 pages 📝
+    stage: deploy
     rules:
         -   if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE != 'merge_request_event'
     needs:
