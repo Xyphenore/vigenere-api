@@ -249,7 +249,10 @@ dependency_scanning:
 🔍️ pylint 🧐:
     extends: .common_quality
     script:
-        - pylint src
+        - pylint src --output-format json --output pylint.json
+    artifacts:
+        reports:
+            codequality: pylint.json
 
 🔍️ ruff 🧐:
     extends: .common_quality
