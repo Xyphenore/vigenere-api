@@ -44,7 +44,6 @@ def get_route_filter(excluded: Collection[str]) -> Callable[[str, Route], bool]:
     filter
         Callable[[str, Route], bool]
     """
-
     if not isinstance(excluded, Collection):
         raise ExcludedPathsTypeError(excluded)
 
@@ -78,7 +77,6 @@ def get_route_filter(excluded: Collection[str]) -> Callable[[str, Route], bool]:
         route_shown
             bool
         """
-
         if not isinstance(path, str):
             raise PathTypeError(path)
 

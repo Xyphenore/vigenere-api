@@ -23,6 +23,7 @@ from typing import final, Union
 from pydantic import StrictInt, StrictStr, validator
 
 from vigenere_api.helpers import Model
+
 from .errors import (
     AlgorithmKeyTypeError,
     AlgorithmTextTypeError,
@@ -34,6 +35,7 @@ from .errors import (
     TooLongKeyError,
 )
 from .helper import move_char
+
 
 Key = Union[StrictInt, StrictStr]
 

@@ -19,4 +19,5 @@
 from .errors import VigenereAPITypeError
 from .model import Model
 
+
 __all__ = ["Model", "VigenereAPITypeError"]
