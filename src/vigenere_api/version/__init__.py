@@ -18,4 +18,5 @@
 
 from .version import get_version, Version
 
+
 __all__ = ["Version", "get_version"]

@@ -16,8 +16,7 @@
 
 """Start method of API."""
 
-from uvicorn import Config
-from uvicorn import Server
+from uvicorn import Config, Server
 
 from .api import application
 

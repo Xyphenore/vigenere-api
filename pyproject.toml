@@ -775,7 +775,7 @@ length_sort_straight = false
 length_sort_sections = []
 
 reverse_relative = false
-force_single_line = true
+force_single_line = false
 single_line_exclusions = []
 
 balanced_wrapping = false

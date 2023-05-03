@@ -14,8 +14,7 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from blacksheep import FromJSON
-from blacksheep import Response
+from blacksheep import FromJSON, Response
 from blacksheep.server.controllers import APIController
 
 from vigenere_api.models import CaesarData

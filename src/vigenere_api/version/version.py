@@ -30,6 +30,7 @@ from .errors import (
     PatchTypeError,
 )
 
+
 StrictPositiveIntOrNull = int
 
 

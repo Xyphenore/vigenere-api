@@ -19,4 +19,5 @@
 from .controller import Controller
 from .open_api_handler import VigenereAPIOpenAPIHandler
 
+
 __all__ = ["VigenereAPIOpenAPIHandler", "Controller"]
