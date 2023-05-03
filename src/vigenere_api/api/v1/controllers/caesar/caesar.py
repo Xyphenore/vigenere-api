@@ -22,10 +22,8 @@ from blacksheep.server.controllers import post
 from vigenere_api.api.utils import Controller
 from vigenere_api.api.v1.openapi_docs import docs
 from vigenere_api.models import CaesarData
-from .docs import (
-    post_caesar_cipher_docs,
-    post_caesar_decipher_docs,
-)
+
+from .docs import post_caesar_cipher_docs, post_caesar_decipher_docs
 
 
 class CaesarController(Controller):

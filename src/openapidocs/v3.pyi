@@ -30,12 +30,9 @@ https://swagger.io/specification/.
 from abc import ABC
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
-from typing import Optional
-from typing import Union
+from typing import Any, Optional, Union
 
-from openapidocs.common import OpenAPIElement
-from openapidocs.common import OpenAPIRoot
+from openapidocs.common import OpenAPIElement, OpenAPIRoot
 
 class ParameterLocation(Enum):
     QUERY = "query"

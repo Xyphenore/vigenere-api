@@ -25,10 +25,8 @@
 import enum
 from typing import Any
 
-
 class StrEnum(str, enum.Enum):
     def __str__(self) -> str: ...
-
     @staticmethod
     def _generate_next_value_(name: str, *_: Any) -> str: ...
 

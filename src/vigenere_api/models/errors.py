@@ -16,8 +16,7 @@
 
 """All errors thrown by the caesar model."""
 
-from typing import Any
-from typing import final
+from typing import Any, final
 
 from vigenere_api.helpers import VigenereAPITypeError
 

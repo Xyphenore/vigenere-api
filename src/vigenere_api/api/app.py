@@ -21,8 +21,10 @@ from blacksheep.server.env import is_development
 from blacksheep.server.responses import redirect
 
 from vigenere_api.version import get_version
+
 from .v1.controllers import CaesarController as V1CaesarController
 from .v1.openapi_docs import docs as v1_docs
+
 
 application = Application()
 application.debug = False

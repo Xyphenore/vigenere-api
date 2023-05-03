@@ -18,16 +18,17 @@
 """The caesar controller's documentation."""
 
 from dataclasses import dataclass
-from enum import Enum
-from enum import unique
+from enum import Enum, unique
 from http import HTTPStatus
 from typing import final
 
-from blacksheep.server.openapi.common import ContentInfo
-from blacksheep.server.openapi.common import EndpointDocs
-from blacksheep.server.openapi.common import RequestBodyInfo
-from blacksheep.server.openapi.common import ResponseExample
-from blacksheep.server.openapi.common import ResponseInfo
+from blacksheep.server.openapi.common import (
+    ContentInfo,
+    EndpointDocs,
+    RequestBodyInfo,
+    ResponseExample,
+    ResponseInfo,
+)
 
 from vigenere_api.models import CaesarData
 

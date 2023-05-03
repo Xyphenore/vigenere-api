@@ -20,10 +20,11 @@ from typing import final, Final
 
 from blacksheep.server.openapi.ui import ReDocUIProvider
 from blacksheep.server.openapi.v3 import OpenAPIHandler
+
 from openapidocs.common import Format
 from openapidocs.v3 import Contact, ExternalDocs, Info, License, OpenAPI, Tag
-
 from vigenere_api.version import Version
+
 from .errors import VersionTypeError
 from .open_api_route_filter import get_route_filter
 

@@ -18,4 +18,5 @@
 
 from .caesar import CaesarController
 
+
 __all__ = ["CaesarController"]
