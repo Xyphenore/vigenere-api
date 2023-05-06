@@ -20,7 +20,7 @@ python = "^3.9"
 blacksheep = "^1"
 uvicorn = { extras = ["standard"], version = "^0" }
 pydantic = "^1"
-strenum = "^0.4.10"
+strenum = "^0"
 
 
 [tool.poetry.group.formatter.dependencies]
