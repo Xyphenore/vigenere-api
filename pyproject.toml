@@ -1080,6 +1080,7 @@ required_plugins = [
     "pytest-cov",
     "pytest-asyncio",
     "pytest-integration",
+    "pytest-raises",
 ]
 
 testpaths = [
