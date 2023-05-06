@@ -19,7 +19,6 @@ stages:
     - 🦄 quality 🦄
     - 🔒️ security 🔒️
     - 🤞 test 🤞
-    - deploy
     - 🚀 release 🚀
 
 workflow:
@@ -340,26 +339,6 @@ dependency_scanning:
             - coverage_html
         reports:
             junit: coverage.xml
-
-
-# Deploy coverage results
-
-pages:
-    cache: [ ]
-    stage: deploy
-    rules:
-        -   if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE != 'merge_request_event'
-    needs:
-        - 🤞 coverage 🔍️
-    script:
-        - mkdir public
-        - mkdir public/coverage
-        - mv coverage_html/* public/coverage
-    artifacts:
-        when: on_success
-        paths:
-            - public
-        expire_in: 31 days
 
 
 # Build the package
