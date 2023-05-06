@@ -32,13 +32,13 @@ isort = "^5"
 bandit = { extras = ["toml"], version = "^1" }
 pycodestyle = "^2"
 pydocstyle = { extras = ["toml"], version = "^6" }
+pylint = "^2"
 pylint-secure-coding-standard = "^1"
 pylint-pydantic = "^0"
 pylint-enums = "^0"
 ruff = "^0"
 interrogate = "^1"
 deptry = "^0"
-pylint = "^2"
 mypy = { extras = ["reports"], version = "^1" }
 vulture = "^2"
 safety = "^2.4.0b1"
