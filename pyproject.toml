@@ -35,7 +35,6 @@ pydocstyle = { extras = ["toml"], version = "^6" }
 pylint-secure-coding-standard = "^1"
 pylint-pydantic = "^0"
 pylint-enums = "^0"
-pylint-blocking-calls = "^0"
 ruff = "^0"
 interrogate = "^1"
 deptry = "^0"
@@ -67,7 +66,6 @@ requests = "^2.19"
 
 
 [tool.poetry.urls]
-"Mirror" = "https://github.com/Xyphenore/vigenere-api"
 "Bug Tracker" = "https://etulab.univ-amu.fr/d19006523/vigenere-api/issues"
 
 
