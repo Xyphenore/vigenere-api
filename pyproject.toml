@@ -8,7 +8,7 @@ The Caesar algorithm is provided for the cipher method and decipher method.\
 authors = ["Axel DAVID <axel.david@etu.univ-amu.fr>"]
 readme = "README.md"
 license = "GPL-3.0-or-later"
-packages = [{ include = "src" }]
+packages = [{ include = "vigenere_api", from = "src" }]
 homepage = "https://etulab.univ-amu.fr/d19006523/vigenere-api"
 repository = "https://etulab.univ-amu.fr/d19006523/vigenere-api"
 keywords = ["vigenere", "caesar", "API", "Python"]
