@@ -63,4 +63,4 @@ pip install vigenere-api --index-url https://etulab.univ-amu.fr/api/v4/projects/
 
 ```shell
 python -m vigenere_api
-```****
+```
