@@ -1050,7 +1050,7 @@ known_first_party = []
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-addopts = "--without-integration --without-slow-integration"
+addopts = "--without-integration --without-slow-integration --timer-top-n 10"
 
 cache_dir = "."
 
