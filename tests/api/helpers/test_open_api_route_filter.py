@@ -22,13 +22,16 @@ from vigenere_api.api.helpers.errors import (
     ExcludedPathsTypeError,
     ExcludedPathTypeError,
     PathTypeError,
+    VersionTypeError,
 )
 from vigenere_api.api.helpers.open_api_route_filter import get_route_filter
+from vigenere_api.version import Version
 
 
 def test_get_filter() -> None:
     excluded = []
-    filter = get_route_filter(excluded)
+    version = Version(major=1, minor=1, patch=10)
+    filter = get_route_filter(excluded, version)
 
     assert callable(filter)
     s = signature(filter)
@@ -45,31 +48,42 @@ def test_get_filter() -> None:
 @pytest.mark.raises(exception=ExcludedPathsTypeError)
 def test_bad_type_excluded() -> None:
     excluded = 10
-    _ignored = get_route_filter(excluded)
+    version = Version(major=1, minor=1, patch=10)
+    _ignored = get_route_filter(excluded, version)
 
 
 @pytest.mark.raises(exception=ExcludedPathTypeError)
 def test_bad_type_path_in_excluded() -> None:
     excluded = [b"test"]
-    _ignored = get_route_filter(excluded)
+    version = Version(major=1, minor=1, patch=10)
+    _ignored = get_route_filter(excluded, version)
+
+
+@pytest.mark.raises(exception=VersionTypeError)
+def test_bad_type_version() -> None:
+    _ignored = get_route_filter((), "1.0.0")
 
 
 @pytest.mark.raises(exception=PathTypeError)
 def test_filter_bad_type_path() -> None:
-    route_filter = get_route_filter(["/api"])
+    version = Version(major=1, minor=1, patch=10)
+    route_filter = get_route_filter(["/api"], version)
     _ignored = route_filter(b"/http", Route("http", {}))
 
 
 def test_filter_bad_type_route() -> None:
-    route_filter = get_route_filter(["/api"])
-    assert route_filter("/http", {})
+    version = Version(major=1, minor=1, patch=10)
+    route_filter = get_route_filter(["/api"], version)
+    assert route_filter(f"/api/v{version.major}/test", {})
 
 
 def test_filter_route_excluded() -> None:
-    route_filter = get_route_filter(["/api"])
+    version = Version(major=1, minor=1, patch=10)
+    route_filter = get_route_filter(["/api"], version)
     assert not route_filter("/api", Route("http", {}))
 
 
 def test_filter_route_not_excluded() -> None:
-    route_filter = get_route_filter(["/api"])
-    assert route_filter("/http", Route("http", {}))
+    version = Version(major=1, minor=1, patch=10)
+    route_filter = get_route_filter(["/api"], version)
+    assert route_filter(f"/api/v{version.major}/test", Route("http", {}))

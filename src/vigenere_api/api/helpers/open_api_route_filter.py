@@ -20,10 +20,19 @@ from collections.abc import Callable, Collection
 
 from blacksheep import Route
 
-from .errors import ExcludedPathsTypeError, ExcludedPathTypeError, PathTypeError
+from vigenere_api.version import Version
+from .errors import (
+    ExcludedPathsTypeError,
+    ExcludedPathTypeError,
+    PathTypeError,
+    VersionTypeError,
+)
 
 
-def get_route_filter(excluded: Collection[str]) -> Callable[[str, Route], bool]:
+def get_route_filter(
+    excluded: Collection[str],
+    api_version: Version,
+) -> Callable[[str, Route], bool]:
     """
     Get the route filter.
 
@@ -31,6 +40,8 @@ def get_route_filter(excluded: Collection[str]) -> Callable[[str, Route], bool]:
     ----------
     excluded : Collection[str]
         All routes that should not be exposed.
+    api_version : Version
+        The API version.
 
     Raises
     ------
@@ -38,6 +49,8 @@ def get_route_filter(excluded: Collection[str]) -> Callable[[str, Route], bool]:
         Thrown if 'excluded' is not a Collection.
     ExcludedPathTypeError
         Thrown if 'excluded' does not contain only str.
+    VersionTypeError
+        Thrown if 'api_version' is not a Version.
 
     Returns
     -------
@@ -50,6 +63,9 @@ def get_route_filter(excluded: Collection[str]) -> Callable[[str, Route], bool]:
     for excluded_path in excluded:
         if not isinstance(excluded_path, str):
             raise ExcludedPathTypeError(excluded_path, excluded)
+
+    if not isinstance(api_version, Version):
+        raise VersionTypeError(api_version)
 
     def _route_filter(path: str, _: Route) -> bool:
         """
@@ -80,6 +96,6 @@ def get_route_filter(excluded: Collection[str]) -> Callable[[str, Route], bool]:
         if not isinstance(path, str):
             raise PathTypeError(path)
 
-        return path not in excluded
+        return path not in excluded and path.startswith(f"/api/v{api_version.major}")
 
     return _route_filter

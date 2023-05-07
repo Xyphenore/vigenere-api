@@ -20,11 +20,10 @@ from typing import final, Final
 
 from blacksheep.server.openapi.ui import ReDocUIProvider
 from blacksheep.server.openapi.v3 import OpenAPIHandler
-
 from openapidocs.common import Format
 from openapidocs.v3 import Contact, ExternalDocs, Info, License, OpenAPI, Tag
-from vigenere_api.version import Version
 
+from vigenere_api.version import Version
 from .errors import VersionTypeError
 from .open_api_route_filter import get_route_filter
 
@@ -81,7 +80,10 @@ class VigenereAPIOpenAPIHandler(OpenAPIHandler):
         )
 
         self.ui_providers.append(ReDocUIProvider(ui_path=f"{api_route}/redocs"))
-        self.include = get_route_filter((api_route, json_spec_path, yaml_spec_path))
+        self.include = get_route_filter(
+            (api_route, json_spec_path, yaml_spec_path),
+            version,
+        )
 
     @property
     def version(self) -> Version:
