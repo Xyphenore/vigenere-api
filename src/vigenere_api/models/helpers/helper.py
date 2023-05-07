@@ -19,12 +19,17 @@
 from typing import Literal
 
 from .errors import (
+    BadKeyError,
+    EmptyKeyError,
+    ExpectedKeyType,
     HelperBadCharValueError,
     HelperBadFirstLetterValueError,
     HelperBadLengthCharValueError,
     HelperCharTypeError,
     HelperFirstLetterTypeError,
     HelperKeyTypeError,
+    KeyTypeError,
+    TooLongKeyError,
 )
 
 
@@ -80,3 +85,43 @@ def move_char(char: str, key: int, first_letter: Literal["a", "A"]) -> str:
         raise HelperBadFirstLetterValueError(first_letter)
 
     return chr((ord(char) - ord(first_letter) + key) % 26 + ord(first_letter))
+
+
+def convert_key(key: str) -> int:
+    """
+    Convert the one character string into an integer between 0 and 25.
+
+    Parameters
+    ----------
+    key : str
+        The key to convert.
+
+    Raises
+    ------
+    KeyTypeError
+        Thrown if 'key' is not a string.
+    EmptyKeyError
+        Thrown if 'key' is an empty string.
+    TooLongKeyError
+        Thrown if 'key' is too long.
+    BadKeyError
+        Thrown if 'key' is not a one alphabetical character.
+
+    Returns
+    -------
+    key_converted
+        int
+    """
+    if not isinstance(key, str):
+        raise KeyTypeError(key, ExpectedKeyType.STRING)
+
+    if len(key) == 0:
+        raise EmptyKeyError
+
+    if len(key) > 1:
+        raise TooLongKeyError
+
+    if not key.isalpha():
+        raise BadKeyError(key, ExpectedKeyType.STRING)
+
+    return ord(key) - ord("A") if key.isupper() else ord(key) - ord("a")

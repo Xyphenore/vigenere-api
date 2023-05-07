@@ -17,6 +17,7 @@
 """All models used by VigenereAPI."""
 
 from .caesar import CaesarData
+from .vigenere import VigenereData
 
 
-__all__ = ["CaesarData"]
+__all__ = ["CaesarData", "VigenereData"]
