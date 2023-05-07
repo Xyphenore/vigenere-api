@@ -14,10 +14,12 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""All errors thrown by the caesar model."""
+"""All errors thrown by the caesar and vigenere model."""
 
+from enum import auto, unique
 from typing import Any, final
 
+from strenum import LowercaseStrEnum
 from vigenere_api.helpers import VigenereAPITypeError
 
 
@@ -38,22 +40,6 @@ class ContentTypeError(VigenereAPITypeError):
 
 
 @final
-class KeyTypeError(VigenereAPITypeError):
-    """Thrown if the key is not a string and not an integer."""
-
-    def __init__(self, key: Any) -> None:
-        """
-        Create a KeyTypeError with the key.
-
-        Parameters
-        ----------
-        key : Any
-            The received key.
-        """
-        super().__init__(key, "key", "a string or an integer")
-
-
-@final
 class EmptyContentError(ValueError):
     """Thrown if the content is empty."""
 
@@ -61,47 +47,6 @@ class EmptyContentError(ValueError):
         """Create an EmptyContentError."""
         super().__init__(
             "The content is empty. Please give a not empty string.",
-        )
-
-
-@final
-class EmptyKeyError(ValueError):
-    """Thrown if the key is empty."""
-
-    def __init__(self) -> None:
-        """Create an EmptyKeyError."""
-        super().__init__(
-            "The key is empty. Please give a one character string or an integer.",
-        )
-
-
-@final
-class TooLongKeyError(ValueError):
-    """Thrown if the key is not an integer and not a one character string."""
-
-    def __init__(self) -> None:
-        """Create a TooLongKeyError."""
-        super().__init__(
-            "The key is too long. Please give a one character string or an integer.",
-        )
-
-
-@final
-class BadKeyError(ValueError):
-    """Thrown if the key is not an integer and not a one character string."""
-
-    def __init__(self, key: str) -> None:
-        """
-        Create a BadKeyError with the key.
-
-        Parameters
-        ----------
-        key : str
-            The received key.
-        """
-        super().__init__(
-            f"The key '{key}' is invalid."
-            + " Please give an alphabetic one character string or an integer.",
         )
 
 
@@ -122,10 +67,20 @@ class AlgorithmTextTypeError(VigenereAPITypeError):
 
 
 @final
+@unique
+class AlgorithmExpectedKeyType(LowercaseStrEnum):
+    """The type of key, the algorithm needs it."""
+
+    STRING = auto()
+    INTEGER = auto()
+    VIGENERE_KEY = "VigenereKey"
+
+
+@final
 class AlgorithmKeyTypeError(VigenereAPITypeError):
     """Thrown if the algorithm receives a bad type for the key variable."""
 
-    def __init__(self, key: Any) -> None:
+    def __init__(self, key: Any, expected_type: AlgorithmExpectedKeyType) -> None:
         """
         Create an AlgorithmKeyTypeError with the key.
 
@@ -133,5 +88,21 @@ class AlgorithmKeyTypeError(VigenereAPITypeError):
         ----------
         key : Any
             The given key.
+        expected_type : AlgorithmExpectedKeyType
+            The expected type of the key.
         """
-        super().__init__(key, "key variable", "an integer")
+        expected = f"a {expected_type}"
+        if expected_type == AlgorithmExpectedKeyType.INTEGER:
+            expected = f"an {expected_type}"
+        elif expected_type == AlgorithmExpectedKeyType.VIGENERE_KEY:
+            expected += " object"
+
+        super().__init__(key, "key variable", expected)
+
+
+@final
+class AlgorithmOperationTypeError(VigenereAPITypeError):
+    """Thrown if the operation is not a VigenereOperation object."""
+
+    def __init__(self, operation: Any) -> None:
+        super().__init__(operation, "operation", "a VigenereOperation object")
