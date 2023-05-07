@@ -24,14 +24,13 @@ from typing import final
 from pydantic import StrictStr, validator
 
 from strenum import StrEnum
-from vigenere_api.helpers import Model
+
+from .base_data import BaseData
 from .errors import (
     AlgorithmExpectedKeyType,
     AlgorithmKeyTypeError,
     AlgorithmOperationTypeError,
     AlgorithmTextTypeError,
-    ContentTypeError,
-    EmptyContentError,
 )
 from .helpers import convert_key, move_char, VigenereKey
 
@@ -46,7 +45,7 @@ class VigenereOperation(StrEnum):
 
 
 @final
-class VigenereData(Model):
+class VigenereData(BaseData):
     """
     Vigenere data to cipher the content or decipher.
 
@@ -64,9 +63,6 @@ class VigenereData(Model):
     >>> assert vigenere_data == deciphered_data == "Hello World"
     >>> assert vigenere_data.key == ciphered_data.key == deciphered_data.key == "test"
     """
-
-    content: StrictStr
-    """The content to be ciphered or deciphered."""
 
     key: StrictStr
     """The key to cipher or decipher the content."""
@@ -159,36 +155,6 @@ class VigenereData(Model):
                 result += char
 
         return result
-
-    @validator("content", pre=True)
-    def validate_content(cls, content: str) -> str:
-        """
-        Check if the affectation to content respects contraints.
-
-        Parameters
-        ----------
-        content : str
-            The new content.
-
-        Raises
-        ------
-        ContentTypeError
-            Thrown if 'content' is not a string.
-        EmptyContentError
-            Thrown if 'content' is an empty string.
-
-        Returns
-        -------
-        content
-            str
-        """
-        if not isinstance(content, str):
-            raise ContentTypeError(content)
-
-        if len(content) == 0:
-            raise EmptyContentError
-
-        return content
 
     @validator("key", pre=True)
     def validate_key(cls, key: str) -> str:

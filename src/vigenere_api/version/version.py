@@ -154,4 +154,4 @@ def get_version() -> Version:
     version
         Version
     """
-    return Version(major=1, minor=0, patch=0)
+    return Version(major=2, minor=0, patch=0)

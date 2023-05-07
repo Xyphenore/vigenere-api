@@ -33,7 +33,7 @@ def test_get_index(server: str) -> None:
     assert response.is_redirect
 
     assert response.next is not None
-    assert response.next.path_url == "/api/v1"
+    assert response.next.path_url == "/api/v2"
 
 
 @pytest.mark.integration_test()

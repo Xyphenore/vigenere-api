@@ -22,13 +22,11 @@ from typing import final, Union
 
 from pydantic import StrictInt, StrictStr, validator
 
-from vigenere_api.helpers import Model
+from .base_data import BaseData
 from .errors import (
     AlgorithmExpectedKeyType,
     AlgorithmKeyTypeError,
     AlgorithmTextTypeError,
-    ContentTypeError,
-    EmptyContentError,
 )
 from .helpers import convert_key, move_char
 from .helpers.errors import (
@@ -39,11 +37,12 @@ from .helpers.errors import (
     TooLongKeyError,
 )
 
+
 Key = Union[StrictInt, StrictStr]
 
 
 @final
-class CaesarData(Model):
+class CaesarData(BaseData):
     """
     Caesar data to cipher the content or decipher.
 
@@ -61,9 +60,6 @@ class CaesarData(Model):
     >>> assert caesar_data == deciphered_data == "Hello World"
     >>> assert caesar_data.key == ciphered_data.key == deciphered_data.key == 1
     """
-
-    content: StrictStr
-    """The content to be ciphered or deciphered."""
 
     key: Key
     """The key to cipher or decipher the content."""
@@ -152,36 +148,6 @@ class CaesarData(Model):
             return self.key
 
         return convert_key(self.key)
-
-    @validator("content", pre=True)
-    def validate_content(cls, content: str) -> str:
-        """
-        Check if the affectation to content respects contraints.
-
-        Parameters
-        ----------
-        content : str
-            The new content.
-
-        Raises
-        ------
-        ContentTypeError
-            Thrown if 'content' is not a string.
-        EmptyContentError
-            Thrown if 'content' is an empty string.
-
-        Returns
-        -------
-        content
-            str
-        """
-        if not isinstance(content, str):
-            raise ContentTypeError(content)
-
-        if len(content) == 0:
-            raise EmptyContentError
-
-        return content
 
     @validator("key", pre=True)
     def validate_key(cls, key: Key) -> Key:

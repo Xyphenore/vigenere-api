@@ -22,7 +22,7 @@ from blacksheep.testing import TestClient
 from essentials.json import dumps
 from pydantic import BaseModel
 
-from vigenere_api.models import CaesarData
+from vigenere_api.models import VigenereData
 
 
 def json_content(data: BaseModel) -> Content:
@@ -48,61 +48,15 @@ def bad_content(content: Any, key: Any) -> Content:
 class CipherSuite:
     @staticmethod
     @pytest.mark.asyncio()
-    async def test_with_int_key(test_client: TestClient) -> None:
-        caesar_input = CaesarData(
-            content="Test",
-            key=2,
-        )
-
-        response = await test_client.post(
-            "/api/v1/caesar/cipher",
-            content=json_content(caesar_input),
-        )
-
-        assert response is not None
-
-        data = await response.json()
-        assert data is not None
-
-        ciphered_caesar = CaesarData.parse_obj(data)
-
-        assert ciphered_caesar.key == caesar_input.key
-        assert ciphered_caesar.content == "Vguv"
-
-    @staticmethod
-    @pytest.mark.asyncio()
-    async def test_with_negative_int_key(test_client: TestClient) -> None:
-        caesar_input = CaesarData(
-            content="Test",
-            key=-2,
-        )
-
-        response = await test_client.post(
-            "/api/v1/caesar/cipher",
-            content=json_content(caesar_input),
-        )
-
-        assert response is not None
-
-        data = await response.json()
-        assert data is not None
-
-        ciphered_caesar = CaesarData.parse_obj(data)
-
-        assert ciphered_caesar.key == caesar_input.key
-        assert ciphered_caesar.content == "Rcqr"
-
-    @staticmethod
-    @pytest.mark.asyncio()
     async def test_with_str_lower_key(test_client: TestClient) -> None:
-        caesar_input = CaesarData(
+        vigenere_input = VigenereData(
             content="Test",
-            key="c",
+            key="ct",
         )
 
         response = await test_client.post(
-            "/api/v1/caesar/cipher",
-            content=json_content(caesar_input),
+            "/api/v2/vigenere/cipher",
+            content=json_content(vigenere_input),
         )
 
         assert response is not None
@@ -110,22 +64,22 @@ class CipherSuite:
         data = await response.json()
         assert data is not None
 
-        ciphered_caesar = CaesarData.parse_obj(data)
+        ciphered_vigenere = VigenereData.parse_obj(data)
 
-        assert ciphered_caesar.key == caesar_input.key
-        assert ciphered_caesar.content == "Vguv"
+        assert ciphered_vigenere.key == vigenere_input.key
+        assert ciphered_vigenere.content == "Vxum"
 
     @staticmethod
     @pytest.mark.asyncio()
     async def test_with_str_upper_key(test_client: TestClient) -> None:
-        caesar_input = CaesarData(
+        vigenere_input = VigenereData(
             content="Test",
-            key="C",
+            key="CT",
         )
 
         response = await test_client.post(
-            "/api/v1/caesar/cipher",
-            content=json_content(caesar_input),
+            "/api/v2/vigenere/cipher",
+            content=json_content(vigenere_input),
         )
 
         assert response is not None
@@ -133,22 +87,45 @@ class CipherSuite:
         data = await response.json()
         assert data is not None
 
-        ciphered_caesar = CaesarData.parse_obj(data)
+        ciphered_vigenere = VigenereData.parse_obj(data)
 
-        assert ciphered_caesar.key == caesar_input.key
-        assert ciphered_caesar.content == "Vguv"
+        assert ciphered_vigenere.key == vigenere_input.key
+        assert ciphered_vigenere.content == "Vxum"
+
+    @staticmethod
+    @pytest.mark.asyncio()
+    async def test_with_str_mixes_key(test_client: TestClient) -> None:
+        vigenere_input = VigenereData(
+            content="Test",
+            key="Ct",
+        )
+
+        response = await test_client.post(
+            "/api/v2/vigenere/cipher",
+            content=json_content(vigenere_input),
+        )
+
+        assert response is not None
+
+        data = await response.json()
+        assert data is not None
+
+        ciphered_vigenere = VigenereData.parse_obj(data)
+
+        assert ciphered_vigenere.key == vigenere_input.key
+        assert ciphered_vigenere.content == "Vxum"
 
     @staticmethod
     @pytest.mark.asyncio()
     async def test_equality_between_keys(test_client: TestClient) -> None:
-        caesar_input1 = CaesarData(
+        vigenere_input1 = VigenereData(
             content="Test",
-            key=2,
+            key="ct",
         )
 
         response1 = await test_client.post(
-            "/api/v1/caesar/cipher",
-            content=json_content(caesar_input1),
+            "/api/v2/vigenere/cipher",
+            content=json_content(vigenere_input1),
         )
 
         assert response1 is not None
@@ -156,19 +133,19 @@ class CipherSuite:
         data1 = await response1.json()
         assert data1 is not None
 
-        ciphered_caesar1 = CaesarData.parse_obj(data1)
+        ciphered_vigenere1 = VigenereData.parse_obj(data1)
 
-        assert ciphered_caesar1.key == caesar_input1.key
-        assert ciphered_caesar1.content == "Vguv"
+        assert ciphered_vigenere1.key == vigenere_input1.key
+        assert ciphered_vigenere1.content == "Vxum"
 
-        caesar_input2 = CaesarData(
+        vigenere_input2 = VigenereData(
             content="Test",
-            key="c",
+            key="cT",
         )
 
         response2 = await test_client.post(
-            "/api/v1/caesar/cipher",
-            content=json_content(caesar_input2),
+            "/api/v2/vigenere/cipher",
+            content=json_content(vigenere_input2),
         )
 
         assert response2 is not None
@@ -176,19 +153,19 @@ class CipherSuite:
         data2 = await response2.json()
         assert data2 is not None
 
-        ciphered_caesar2 = CaesarData.parse_obj(data2)
+        ciphered_vigenere2 = VigenereData.parse_obj(data2)
 
-        assert ciphered_caesar2.key == caesar_input2.key
-        assert ciphered_caesar2.content == "Vguv"
+        assert ciphered_vigenere2.key == vigenere_input2.key
+        assert ciphered_vigenere2.content == "Vxum"
 
-        caesar_input3 = CaesarData(
+        vigenere_input3 = VigenereData(
             content="Test",
-            key="C",
+            key="CT",
         )
 
         response3 = await test_client.post(
-            "/api/v1/caesar/cipher",
-            content=json_content(caesar_input3),
+            "/api/v2/vigenere/cipher",
+            content=json_content(vigenere_input3),
         )
 
         assert response3 is not None
@@ -196,15 +173,15 @@ class CipherSuite:
         data3 = await response3.json()
         assert data3 is not None
 
-        ciphered_caesar3 = CaesarData.parse_obj(data3)
+        ciphered_vigenere3 = VigenereData.parse_obj(data3)
 
-        assert ciphered_caesar3.key == caesar_input3.key
-        assert ciphered_caesar3.content == "Vguv"
+        assert ciphered_vigenere3.key == vigenere_input3.key
+        assert ciphered_vigenere3.content == "Vxum"
 
         assert (
-            ciphered_caesar1.content
-            == ciphered_caesar2.content
-            == ciphered_caesar3.content
+            ciphered_vigenere1.content
+            == ciphered_vigenere2.content
+            == ciphered_vigenere3.content
         )
 
     class BadCipherSuite:
@@ -212,10 +189,10 @@ class CipherSuite:
         @pytest.mark.asyncio()
         async def test_missing_content(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/cipher",
+                "/api/v2/vigenere/cipher",
                 content=Content(
                     b"application/json",
-                    b'{"key": 2}',
+                    b'{"key": "ct"}',
                 ),
             )
 
@@ -236,7 +213,7 @@ class CipherSuite:
         @pytest.mark.asyncio()
         async def test_missing_key(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/cipher",
+                "/api/v2/vigenere/cipher",
                 content=Content(
                     b"application/json",
                     b'{"content": "test"}',
@@ -260,8 +237,8 @@ class CipherSuite:
         @pytest.mark.asyncio()
         async def test_bad_type_content(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/cipher",
-                content=bad_content(254, 2),
+                "/api/v2/vigenere/cipher",
+                content=bad_content(254, "tt"),
             )
 
             assert response is not None
@@ -281,8 +258,8 @@ class CipherSuite:
         @pytest.mark.asyncio()
         async def test_bad_empty_content(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/cipher",
-                content=bad_content("", 2),
+                "/api/v2/vigenere/cipher",
+                content=bad_content("", "ty"),
             )
 
             assert response is not None
@@ -302,7 +279,7 @@ class CipherSuite:
         @pytest.mark.asyncio()
         async def test_bad_type_key(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/cipher",
+                "/api/v2/vigenere/cipher",
                 content=bad_content("Test", 25.8),
             )
 
@@ -314,7 +291,7 @@ class CipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key is 'float'. Please give a string or an integer.",
+                    "msg": "The key is 'float'. Please give a string.",
                     "type": "type_error.keytype",
                 },
             ]
@@ -323,7 +300,7 @@ class CipherSuite:
         @pytest.mark.asyncio()
         async def test_bad_empty_key(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/cipher",
+                "/api/v2/vigenere/cipher",
                 content=bad_content("Test", ""),
             )
 
@@ -342,10 +319,10 @@ class CipherSuite:
 
         @staticmethod
         @pytest.mark.asyncio()
-        async def test_too_long_key(test_client: TestClient) -> None:
+        async def test_too_short_key(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/cipher",
-                content=bad_content("Test", "TT"),
+                "/api/v2/vigenere/cipher",
+                content=bad_content("Test", "T"),
             )
 
             assert response is not None
@@ -356,8 +333,8 @@ class CipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key is too long. Please give a one character string or an integer.",
-                    "type": "value_error.toolongkey",
+                    "msg": "The key is too short. Please give a string with more than one character.",
+                    "type": "value_error.tooshortkey",
                 },
             ]
 
@@ -365,8 +342,8 @@ class CipherSuite:
         @pytest.mark.asyncio()
         async def test_bad_not_alpha_str_key(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/cipher",
-                content=bad_content("Test", "+"),
+                "/api/v2/vigenere/cipher",
+                content=bad_content("Test", "+t"),
             )
 
             assert response is not None
@@ -377,7 +354,7 @@ class CipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key '+' is invalid. Please give a string or an integer.",
+                    "msg": "The key '+t' is invalid. Please give a string.",
                     "type": "value_error.badkey",
                 },
             ]
@@ -386,38 +363,15 @@ class CipherSuite:
 class DecipherSuite:
     @staticmethod
     @pytest.mark.asyncio()
-    async def test_with_int_key(test_client: TestClient) -> None:
-        caesar_input = CaesarData(
-            content="Test",
-            key=2,
-        )
-
-        response = await test_client.post(
-            "/api/v1/caesar/decipher",
-            content=json_content(caesar_input),
-        )
-
-        assert response is not None
-
-        data = await response.json()
-        assert data is not None
-
-        deciphered_caesar = CaesarData.parse_obj(data)
-
-        assert deciphered_caesar.key == caesar_input.key
-        assert deciphered_caesar.content == "Rcqr"
-
-    @staticmethod
-    @pytest.mark.asyncio()
     async def test_with_str_lower_key(test_client: TestClient) -> None:
-        caesar_input = CaesarData(
+        vigenere_input = VigenereData(
             content="Test",
-            key="c",
+            key="ct",
         )
 
         response = await test_client.post(
-            "/api/v1/caesar/decipher",
-            content=json_content(caesar_input),
+            "/api/v2/vigenere/decipher",
+            content=json_content(vigenere_input),
         )
 
         assert response is not None
@@ -425,22 +379,22 @@ class DecipherSuite:
         data = await response.json()
         assert data is not None
 
-        deciphered_caesar = CaesarData.parse_obj(data)
+        deciphered_vigenere = VigenereData.parse_obj(data)
 
-        assert deciphered_caesar.key == caesar_input.key
-        assert deciphered_caesar.content == "Rcqr"
+        assert deciphered_vigenere.key == vigenere_input.key
+        assert deciphered_vigenere.content == "Rlqa"
 
     @staticmethod
     @pytest.mark.asyncio()
     async def test_with_str_upper_key(test_client: TestClient) -> None:
-        caesar_input = CaesarData(
+        vigenere_input = VigenereData(
             content="Test",
-            key="C",
+            key="CT",
         )
 
         response = await test_client.post(
-            "/api/v1/caesar/decipher",
-            content=json_content(caesar_input),
+            "/api/v2/vigenere/decipher",
+            content=json_content(vigenere_input),
         )
 
         assert response is not None
@@ -448,22 +402,45 @@ class DecipherSuite:
         data = await response.json()
         assert data is not None
 
-        deciphered_caesar = CaesarData.parse_obj(data)
+        deciphered_vigenere = VigenereData.parse_obj(data)
 
-        assert deciphered_caesar.key == caesar_input.key
-        assert deciphered_caesar.content == "Rcqr"
+        assert deciphered_vigenere.key == vigenere_input.key
+        assert deciphered_vigenere.content == "Rlqa"
+
+    @staticmethod
+    @pytest.mark.asyncio()
+    async def test_with_str_mixed_key(test_client: TestClient) -> None:
+        vigenere_input = VigenereData(
+            content="Test",
+            key="Ct",
+        )
+
+        response = await test_client.post(
+            "/api/v2/vigenere/decipher",
+            content=json_content(vigenere_input),
+        )
+
+        assert response is not None
+
+        data = await response.json()
+        assert data is not None
+
+        deciphered_vigenere = VigenereData.parse_obj(data)
+
+        assert deciphered_vigenere.key == vigenere_input.key
+        assert deciphered_vigenere.content == "Rlqa"
 
     @staticmethod
     @pytest.mark.asyncio()
     async def test_equality_between_keys(test_client: TestClient) -> None:
-        caesar_input1 = CaesarData(
+        vigenere_input1 = VigenereData(
             content="Test",
-            key=2,
+            key="ct",
         )
 
         response1 = await test_client.post(
-            "/api/v1/caesar/decipher",
-            content=json_content(caesar_input1),
+            "/api/v2/vigenere/decipher",
+            content=json_content(vigenere_input1),
         )
 
         assert response1 is not None
@@ -471,19 +448,19 @@ class DecipherSuite:
         data1 = await response1.json()
         assert data1 is not None
 
-        deciphered_caesar1 = CaesarData.parse_obj(data1)
+        deciphered_vigenere1 = VigenereData.parse_obj(data1)
 
-        assert deciphered_caesar1.key == caesar_input1.key
-        assert deciphered_caesar1.content == "Rcqr"
+        assert deciphered_vigenere1.key == vigenere_input1.key
+        assert deciphered_vigenere1.content == "Rlqa"
 
-        caesar_input2 = CaesarData(
+        vigenere_input2 = VigenereData(
             content="Test",
-            key="c",
+            key="cT",
         )
 
         response2 = await test_client.post(
-            "/api/v1/caesar/decipher",
-            content=json_content(caesar_input2),
+            "/api/v2/vigenere/decipher",
+            content=json_content(vigenere_input2),
         )
 
         assert response2 is not None
@@ -491,19 +468,19 @@ class DecipherSuite:
         data2 = await response2.json()
         assert data2 is not None
 
-        deciphered_caesar2 = CaesarData.parse_obj(data2)
+        deciphered_vigenere2 = VigenereData.parse_obj(data2)
 
-        assert deciphered_caesar2.key == caesar_input2.key
-        assert deciphered_caesar2.content == "Rcqr"
+        assert deciphered_vigenere2.key == vigenere_input2.key
+        assert deciphered_vigenere2.content == "Rlqa"
 
-        caesar_input3 = CaesarData(
+        vigenere_input3 = VigenereData(
             content="Test",
-            key="C",
+            key="CT",
         )
 
         response3 = await test_client.post(
-            "/api/v1/caesar/decipher",
-            content=json_content(caesar_input3),
+            "/api/v2/vigenere/decipher",
+            content=json_content(vigenere_input3),
         )
 
         assert response3 is not None
@@ -511,49 +488,26 @@ class DecipherSuite:
         data3 = await response3.json()
         assert data3 is not None
 
-        deciphered_caesar3 = CaesarData.parse_obj(data3)
+        deciphered_vigenere3 = VigenereData.parse_obj(data3)
 
-        assert deciphered_caesar3.key == caesar_input3.key
-        assert deciphered_caesar3.content == "Rcqr"
+        assert deciphered_vigenere3.key == vigenere_input3.key
+        assert deciphered_vigenere3.content == "Rlqa"
 
         assert (
-            deciphered_caesar1.content
-            == deciphered_caesar2.content
-            == deciphered_caesar3.content
+            deciphered_vigenere1.content
+            == deciphered_vigenere2.content
+            == deciphered_vigenere3.content
         )
-
-    @staticmethod
-    @pytest.mark.asyncio()
-    async def test_with_negative_int_key(test_client: TestClient) -> None:
-        caesar_input = CaesarData(
-            content="Test",
-            key=-2,
-        )
-
-        response = await test_client.post(
-            "/api/v1/caesar/decipher",
-            content=json_content(caesar_input),
-        )
-
-        assert response is not None
-
-        data = await response.json()
-        assert data is not None
-
-        deciphered_caesar = CaesarData.parse_obj(data)
-
-        assert deciphered_caesar.key == caesar_input.key
-        assert deciphered_caesar.content == "Vguv"
 
     class BadDecipherSuite:
         @staticmethod
         @pytest.mark.asyncio()
         async def test_missing_content(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/decipher",
+                "/api/v2/vigenere/decipher",
                 content=Content(
                     b"application/json",
-                    b'{"key": 2}',
+                    b'{"key": "tt"}',
                 ),
             )
 
@@ -574,7 +528,7 @@ class DecipherSuite:
         @pytest.mark.asyncio()
         async def test_missing_key(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/decipher",
+                "/api/v2/vigenere/decipher",
                 content=Content(
                     b"application/json",
                     b'{"content": "test"}',
@@ -598,8 +552,8 @@ class DecipherSuite:
         @pytest.mark.asyncio()
         async def test_bad_type_content(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/decipher",
-                content=bad_content(254, 2),
+                "/api/v2/vigenere/decipher",
+                content=bad_content(254, "tt"),
             )
 
             assert response is not None
@@ -619,8 +573,8 @@ class DecipherSuite:
         @pytest.mark.asyncio()
         async def test_bad_empty_content(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/decipher",
-                content=bad_content("", 2),
+                "/api/v2/vigenere/decipher",
+                content=bad_content("", "tt"),
             )
 
             assert response is not None
@@ -640,7 +594,7 @@ class DecipherSuite:
         @pytest.mark.asyncio()
         async def test_bad_type_key(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/decipher",
+                "/api/v2/vigenere/decipher",
                 content=bad_content("Test", 25.8),
             )
 
@@ -652,7 +606,7 @@ class DecipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key is 'float'. Please give a string or an integer.",
+                    "msg": "The key is 'float'. Please give a string.",
                     "type": "type_error.keytype",
                 },
             ]
@@ -661,7 +615,7 @@ class DecipherSuite:
         @pytest.mark.asyncio()
         async def test_bad_empty_key(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/decipher",
+                "/api/v2/vigenere/decipher",
                 content=bad_content("Test", ""),
             )
 
@@ -680,10 +634,10 @@ class DecipherSuite:
 
         @staticmethod
         @pytest.mark.asyncio()
-        async def test_too_long_key(test_client: TestClient) -> None:
+        async def test_too_short_key(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/decipher",
-                content=bad_content("Test", "TT"),
+                "/api/v2/vigenere/decipher",
+                content=bad_content("Test", "T"),
             )
 
             assert response is not None
@@ -694,9 +648,8 @@ class DecipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key is too long. Please give a one character string or an "
-                    "integer.",
-                    "type": "value_error.toolongkey",
+                    "msg": "The key is too short. Please give a string with more than one character.",
+                    "type": "value_error.tooshortkey",
                 },
             ]
 
@@ -704,8 +657,8 @@ class DecipherSuite:
         @pytest.mark.asyncio()
         async def test_bad_not_alpha_str_key(test_client: TestClient) -> None:
             response = await test_client.post(
-                "/api/v1/caesar/decipher",
-                content=bad_content("Test", "+"),
+                "/api/v2/vigenere/decipher",
+                content=bad_content("Test", "+t"),
             )
 
             assert response is not None
@@ -716,7 +669,7 @@ class DecipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key '+' is invalid. Please give a string or an integer.",
+                    "msg": "The key '+t' is invalid. Please give a string.",
                     "type": "value_error.badkey",
                 },
             ]

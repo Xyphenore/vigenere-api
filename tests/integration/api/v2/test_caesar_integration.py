@@ -40,7 +40,7 @@ class IntegrationCipherSuite:
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
+            url=server + "/api/v2/caesar/cipher",
             json=json_data(caesar_input),
             timeout=1,
         )
@@ -64,7 +64,7 @@ class IntegrationCipherSuite:
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
+            url=server + "/api/v2/caesar/cipher",
             json=json_data(caesar_input),
             timeout=1,
         )
@@ -88,7 +88,7 @@ class IntegrationCipherSuite:
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
+            url=server + "/api/v2/caesar/cipher",
             json=json_data(caesar_input),
             timeout=1,
         )
@@ -112,7 +112,7 @@ class IntegrationCipherSuite:
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
+            url=server + "/api/v2/caesar/cipher",
             json=json_data(caesar_input),
             timeout=1,
         )
@@ -136,7 +136,7 @@ class IntegrationCipherSuite:
         )
 
         response1 = requests.post(
-            url=server + "/api/v1/caesar/cipher",
+            url=server + "/api/v2/caesar/cipher",
             json=json_data(caesar_input1),
             timeout=1,
         )
@@ -157,7 +157,7 @@ class IntegrationCipherSuite:
         )
 
         response2 = requests.post(
-            url=server + "/api/v1/caesar/cipher",
+            url=server + "/api/v2/caesar/cipher",
             json=json_data(caesar_input2),
             timeout=1,
         )
@@ -178,7 +178,7 @@ class IntegrationCipherSuite:
         )
 
         response3 = requests.post(
-            url=server + "/api/v1/caesar/cipher",
+            url=server + "/api/v2/caesar/cipher",
             json=json_data(caesar_input3),
             timeout=1,
         )
@@ -204,7 +204,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_missing_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/caesar/cipher",
                 json={"key": 2},
                 timeout=1,
             )
@@ -226,7 +226,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_missing_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/caesar/cipher",
                 json={"content": "test"},
                 timeout=1,
             )
@@ -248,7 +248,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_bad_type_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/caesar/cipher",
                 json=bad_content(254, 2),
                 timeout=1,
             )
@@ -270,7 +270,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_bad_empty_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/caesar/cipher",
                 json=bad_content("", 2),
                 timeout=1,
             )
@@ -292,7 +292,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_bad_type_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/caesar/cipher",
                 json=bad_content("Test", 25.8),
                 timeout=1,
             )
@@ -314,7 +314,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_bad_empty_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/caesar/cipher",
                 json=bad_content("Test", ""),
                 timeout=1,
             )
@@ -336,7 +336,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_too_long_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/caesar/cipher",
                 json=bad_content("Test", "TT"),
                 timeout=1,
             )
@@ -358,7 +358,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_bad_not_alpha_str_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/caesar/cipher",
                 json=bad_content("Test", "+"),
                 timeout=1,
             )
@@ -387,7 +387,7 @@ class IntegrationDecipherSuite:
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
+            url=server + "/api/v2/caesar/decipher",
             json=json_data(caesar_input),
             timeout=1,
         )
@@ -411,7 +411,7 @@ class IntegrationDecipherSuite:
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
+            url=server + "/api/v2/caesar/decipher",
             json=json_data(caesar_input),
             timeout=1,
         )
@@ -435,7 +435,7 @@ class IntegrationDecipherSuite:
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
+            url=server + "/api/v2/caesar/decipher",
             json=json_data(caesar_input),
             timeout=1,
         )
@@ -459,7 +459,7 @@ class IntegrationDecipherSuite:
         )
 
         response1 = requests.post(
-            url=server + "/api/v1/caesar/decipher",
+            url=server + "/api/v2/caesar/decipher",
             json=json_data(caesar_input1),
             timeout=1,
         )
@@ -480,7 +480,7 @@ class IntegrationDecipherSuite:
         )
 
         response2 = requests.post(
-            url=server + "/api/v1/caesar/decipher",
+            url=server + "/api/v2/caesar/decipher",
             json=json_data(caesar_input2),
             timeout=1,
         )
@@ -501,7 +501,7 @@ class IntegrationDecipherSuite:
         )
 
         response3 = requests.post(
-            url=server + "/api/v1/caesar/decipher",
+            url=server + "/api/v2/caesar/decipher",
             json=json_data(caesar_input3),
             timeout=1,
         )
@@ -531,7 +531,7 @@ class IntegrationDecipherSuite:
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
+            url=server + "/api/v2/caesar/decipher",
             json=json_data(caesar_input),
             timeout=1,
         )
@@ -551,7 +551,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_missing_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/caesar/decipher",
                 json={"key": 2},
                 timeout=1,
             )
@@ -573,7 +573,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_missing_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/caesar/decipher",
                 json={"content": "test"},
                 timeout=1,
             )
@@ -595,7 +595,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_bad_type_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/caesar/decipher",
                 json=bad_content(254, 2),
                 timeout=1,
             )
@@ -617,7 +617,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_bad_empty_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/caesar/decipher",
                 json=bad_content("", 2),
                 timeout=1,
             )
@@ -639,7 +639,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_bad_type_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/caesar/decipher",
                 json=bad_content("Test", 25.8),
                 timeout=1,
             )
@@ -661,7 +661,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_bad_empty_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/caesar/decipher",
                 json=bad_content("Test", ""),
                 timeout=1,
             )
@@ -683,7 +683,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_too_long_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/caesar/decipher",
                 json=bad_content("Test", "TT"),
                 timeout=1,
             )
@@ -705,7 +705,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_bad_not_alpha_str_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/caesar/decipher",
                 json=bad_content("Test", "+"),
                 timeout=1,
             )

@@ -19,7 +19,7 @@ import pytest
 import requests
 from pydantic import BaseModel
 
-from vigenere_api.models import CaesarData
+from vigenere_api.models import VigenereData
 
 
 def json_data(data: BaseModel) -> dict[str, Any]:
@@ -33,63 +33,15 @@ def bad_content(content: Any, key: Any) -> dict[str, Any]:
 class IntegrationCipherSuite:
     @staticmethod
     @pytest.mark.integration_test()
-    def test_with_int_key(server: str) -> None:
-        caesar_input = CaesarData(
-            content="Test",
-            key=2,
-        )
-
-        response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input),
-            timeout=1,
-        )
-
-        assert response is not None
-
-        data = response.json()
-        assert data is not None
-
-        ciphered_caesar = CaesarData.parse_obj(data)
-
-        assert ciphered_caesar.key == caesar_input.key
-        assert ciphered_caesar.content == "Vguv"
-
-    @staticmethod
-    @pytest.mark.integration_test()
-    def test_with_negative_int_key(server: str) -> None:
-        caesar_input = CaesarData(
-            content="Test",
-            key=-2,
-        )
-
-        response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input),
-            timeout=1,
-        )
-
-        assert response is not None
-
-        data = response.json()
-        assert data is not None
-
-        ciphered_caesar = CaesarData.parse_obj(data)
-
-        assert ciphered_caesar.key == caesar_input.key
-        assert ciphered_caesar.content == "Rcqr"
-
-    @staticmethod
-    @pytest.mark.integration_test()
     def test_with_str_lower_key(server: str) -> None:
-        caesar_input = CaesarData(
+        vigenere_input = VigenereData(
             content="Test",
-            key="c",
+            key="ct",
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input),
+            url=server + "/api/v2/vigenere/cipher",
+            json=json_data(vigenere_input),
             timeout=1,
         )
 
@@ -98,22 +50,22 @@ class IntegrationCipherSuite:
         data = response.json()
         assert data is not None
 
-        ciphered_caesar = CaesarData.parse_obj(data)
+        ciphered_vigenere = VigenereData.parse_obj(data)
 
-        assert ciphered_caesar.key == caesar_input.key
-        assert ciphered_caesar.content == "Vguv"
+        assert ciphered_vigenere.key == vigenere_input.key
+        assert ciphered_vigenere.content == "Vxum"
 
     @staticmethod
     @pytest.mark.integration_test()
     def test_with_str_upper_key(server: str) -> None:
-        caesar_input = CaesarData(
+        vigenere_input = VigenereData(
             content="Test",
-            key="C",
+            key="CT",
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input),
+            url=server + "/api/v2/vigenere/cipher",
+            json=json_data(vigenere_input),
             timeout=1,
         )
 
@@ -122,22 +74,46 @@ class IntegrationCipherSuite:
         data = response.json()
         assert data is not None
 
-        ciphered_caesar = CaesarData.parse_obj(data)
+        ciphered_vigenere = VigenereData.parse_obj(data)
 
-        assert ciphered_caesar.key == caesar_input.key
-        assert ciphered_caesar.content == "Vguv"
+        assert ciphered_vigenere.key == vigenere_input.key
+        assert ciphered_vigenere.content == "Vxum"
+
+    @staticmethod
+    @pytest.mark.integration_test()
+    def test_with_str_mixed_key(server: str) -> None:
+        vigenere_input = VigenereData(
+            content="Test",
+            key="Ct",
+        )
+
+        response = requests.post(
+            url=server + "/api/v2/vigenere/cipher",
+            json=json_data(vigenere_input),
+            timeout=1,
+        )
+
+        assert response is not None
+
+        data = response.json()
+        assert data is not None
+
+        ciphered_vigenere = VigenereData.parse_obj(data)
+
+        assert ciphered_vigenere.key == vigenere_input.key
+        assert ciphered_vigenere.content == "Vxum"
 
     @staticmethod
     @pytest.mark.integration_test()
     def test_equality_between_keys(server: str) -> None:
-        caesar_input1 = CaesarData(
+        vigenere_input1 = VigenereData(
             content="Test",
-            key=2,
+            key="ct",
         )
 
         response1 = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input1),
+            url=server + "/api/v2/vigenere/cipher",
+            json=json_data(vigenere_input1),
             timeout=1,
         )
 
@@ -146,19 +122,19 @@ class IntegrationCipherSuite:
         data1 = response1.json()
         assert data1 is not None
 
-        ciphered_caesar1 = CaesarData.parse_obj(data1)
+        ciphered_vigenere1 = VigenereData.parse_obj(data1)
 
-        assert ciphered_caesar1.key == caesar_input1.key
-        assert ciphered_caesar1.content == "Vguv"
+        assert ciphered_vigenere1.key == vigenere_input1.key
+        assert ciphered_vigenere1.content == "Vxum"
 
-        caesar_input2 = CaesarData(
+        vigenere_input2 = VigenereData(
             content="Test",
-            key="c",
+            key="cT",
         )
 
         response2 = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input2),
+            url=server + "/api/v2/vigenere/cipher",
+            json=json_data(vigenere_input2),
             timeout=1,
         )
 
@@ -167,19 +143,19 @@ class IntegrationCipherSuite:
         data2 = response2.json()
         assert data2 is not None
 
-        ciphered_caesar2 = CaesarData.parse_obj(data2)
+        ciphered_vigenere2 = VigenereData.parse_obj(data2)
 
-        assert ciphered_caesar2.key == caesar_input2.key
-        assert ciphered_caesar2.content == "Vguv"
+        assert ciphered_vigenere2.key == vigenere_input2.key
+        assert ciphered_vigenere2.content == "Vxum"
 
-        caesar_input3 = CaesarData(
+        vigenere_input3 = VigenereData(
             content="Test",
-            key="C",
+            key="CT",
         )
 
         response3 = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input3),
+            url=server + "/api/v2/vigenere/cipher",
+            json=json_data(vigenere_input3),
             timeout=1,
         )
 
@@ -188,15 +164,15 @@ class IntegrationCipherSuite:
         data3 = response3.json()
         assert data3 is not None
 
-        ciphered_caesar3 = CaesarData.parse_obj(data3)
+        ciphered_vigenere3 = VigenereData.parse_obj(data3)
 
-        assert ciphered_caesar3.key == caesar_input3.key
-        assert ciphered_caesar3.content == "Vguv"
+        assert ciphered_vigenere3.key == vigenere_input3.key
+        assert ciphered_vigenere3.content == "Vxum"
 
         assert (
-            ciphered_caesar1.content
-            == ciphered_caesar2.content
-            == ciphered_caesar3.content
+            ciphered_vigenere1.content
+            == ciphered_vigenere2.content
+            == ciphered_vigenere3.content
         )
 
     class BadCipherSuite:
@@ -204,8 +180,8 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_missing_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json={"key": 2},
+                url=server + "/api/v2/vigenere/cipher",
+                json={"key": "tt"},
                 timeout=1,
             )
 
@@ -226,7 +202,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_missing_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/vigenere/cipher",
                 json={"content": "test"},
                 timeout=1,
             )
@@ -248,8 +224,8 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_bad_type_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json=bad_content(254, 2),
+                url=server + "/api/v2/vigenere/cipher",
+                json=bad_content(254, "tt"),
                 timeout=1,
             )
 
@@ -270,8 +246,8 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_bad_empty_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json=bad_content("", 2),
+                url=server + "/api/v2/vigenere/cipher",
+                json=bad_content("", "tt"),
                 timeout=1,
             )
 
@@ -292,7 +268,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_bad_type_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/vigenere/cipher",
                 json=bad_content("Test", 25.8),
                 timeout=1,
             )
@@ -305,7 +281,7 @@ class IntegrationCipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key is 'float'. Please give a string or an integer.",
+                    "msg": "The key is 'float'. Please give a string.",
                     "type": "type_error.keytype",
                 },
             ]
@@ -314,7 +290,7 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_bad_empty_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
+                url=server + "/api/v2/vigenere/cipher",
                 json=bad_content("Test", ""),
                 timeout=1,
             )
@@ -334,10 +310,10 @@ class IntegrationCipherSuite:
 
         @staticmethod
         @pytest.mark.integration_test()
-        def test_too_long_key(server: str) -> None:
+        def test_too_short_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json=bad_content("Test", "TT"),
+                url=server + "/api/v2/vigenere/cipher",
+                json=bad_content("Test", "T"),
                 timeout=1,
             )
 
@@ -349,8 +325,8 @@ class IntegrationCipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key is too long. Please give a one character string or an integer.",
-                    "type": "value_error.toolongkey",
+                    "msg": "The key is too short. Please give a string with more than one character.",
+                    "type": "value_error.tooshortkey",
                 },
             ]
 
@@ -358,8 +334,8 @@ class IntegrationCipherSuite:
         @pytest.mark.integration_test()
         def test_bad_not_alpha_str_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json=bad_content("Test", "+"),
+                url=server + "/api/v2/vigenere/cipher",
+                json=bad_content("Test", "+t"),
                 timeout=1,
             )
 
@@ -371,7 +347,7 @@ class IntegrationCipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key '+' is invalid. Please give a string or an integer.",
+                    "msg": "The key '+t' is invalid. Please give a string.",
                     "type": "value_error.badkey",
                 },
             ]
@@ -380,39 +356,15 @@ class IntegrationCipherSuite:
 class IntegrationDecipherSuite:
     @staticmethod
     @pytest.mark.integration_test()
-    def test_with_int_key(server: str) -> None:
-        caesar_input = CaesarData(
-            content="Test",
-            key=2,
-        )
-
-        response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input),
-            timeout=1,
-        )
-
-        assert response is not None
-
-        data = response.json()
-        assert data is not None
-
-        deciphered_caesar = CaesarData.parse_obj(data)
-
-        assert deciphered_caesar.key == caesar_input.key
-        assert deciphered_caesar.content == "Rcqr"
-
-    @staticmethod
-    @pytest.mark.integration_test()
     def test_with_str_lower_key(server: str) -> None:
-        caesar_input = CaesarData(
+        vigenere_input = VigenereData(
             content="Test",
-            key="c",
+            key="ct",
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input),
+            url=server + "/api/v2/vigenere/decipher",
+            json=json_data(vigenere_input),
             timeout=1,
         )
 
@@ -421,22 +373,22 @@ class IntegrationDecipherSuite:
         data = response.json()
         assert data is not None
 
-        deciphered_caesar = CaesarData.parse_obj(data)
+        deciphered_vigenere = VigenereData.parse_obj(data)
 
-        assert deciphered_caesar.key == caesar_input.key
-        assert deciphered_caesar.content == "Rcqr"
+        assert deciphered_vigenere.key == vigenere_input.key
+        assert deciphered_vigenere.content == "Rlqa"
 
     @staticmethod
     @pytest.mark.integration_test()
     def test_with_str_upper_key(server: str) -> None:
-        caesar_input = CaesarData(
+        vigenere_input = VigenereData(
             content="Test",
-            key="C",
+            key="CT",
         )
 
         response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input),
+            url=server + "/api/v2/vigenere/decipher",
+            json=json_data(vigenere_input),
             timeout=1,
         )
 
@@ -445,22 +397,46 @@ class IntegrationDecipherSuite:
         data = response.json()
         assert data is not None
 
-        deciphered_caesar = CaesarData.parse_obj(data)
+        deciphered_vigenere = VigenereData.parse_obj(data)
 
-        assert deciphered_caesar.key == caesar_input.key
-        assert deciphered_caesar.content == "Rcqr"
+        assert deciphered_vigenere.key == vigenere_input.key
+        assert deciphered_vigenere.content == "Rlqa"
+
+    @staticmethod
+    @pytest.mark.integration_test()
+    def test_with_str_mixed_key(server: str) -> None:
+        vigenere_input = VigenereData(
+            content="Test",
+            key="Ct",
+        )
+
+        response = requests.post(
+            url=server + "/api/v2/vigenere/decipher",
+            json=json_data(vigenere_input),
+            timeout=1,
+        )
+
+        assert response is not None
+
+        data = response.json()
+        assert data is not None
+
+        deciphered_vigenere = VigenereData.parse_obj(data)
+
+        assert deciphered_vigenere.key == vigenere_input.key
+        assert deciphered_vigenere.content == "Rlqa"
 
     @staticmethod
     @pytest.mark.integration_test()
     def test_equality_between_keys(server: str) -> None:
-        caesar_input1 = CaesarData(
+        vigenere_input1 = VigenereData(
             content="Test",
-            key=2,
+            key="ct",
         )
 
         response1 = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input1),
+            url=server + "/api/v2/vigenere/decipher",
+            json=json_data(vigenere_input1),
             timeout=1,
         )
 
@@ -469,19 +445,19 @@ class IntegrationDecipherSuite:
         data1 = response1.json()
         assert data1 is not None
 
-        deciphered_caesar1 = CaesarData.parse_obj(data1)
+        deciphered_vigenere1 = VigenereData.parse_obj(data1)
 
-        assert deciphered_caesar1.key == caesar_input1.key
-        assert deciphered_caesar1.content == "Rcqr"
+        assert deciphered_vigenere1.key == vigenere_input1.key
+        assert deciphered_vigenere1.content == "Rlqa"
 
-        caesar_input2 = CaesarData(
+        vigenere_input2 = VigenereData(
             content="Test",
-            key="c",
+            key="cT",
         )
 
         response2 = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input2),
+            url=server + "/api/v2/vigenere/decipher",
+            json=json_data(vigenere_input2),
             timeout=1,
         )
 
@@ -490,19 +466,19 @@ class IntegrationDecipherSuite:
         data2 = response2.json()
         assert data2 is not None
 
-        deciphered_caesar2 = CaesarData.parse_obj(data2)
+        deciphered_vigenere2 = VigenereData.parse_obj(data2)
 
-        assert deciphered_caesar2.key == caesar_input2.key
-        assert deciphered_caesar2.content == "Rcqr"
+        assert deciphered_vigenere2.key == vigenere_input2.key
+        assert deciphered_vigenere2.content == "Rlqa"
 
-        caesar_input3 = CaesarData(
+        vigenere_input3 = VigenereData(
             content="Test",
-            key="C",
+            key="CT",
         )
 
         response3 = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input3),
+            url=server + "/api/v2/vigenere/decipher",
+            json=json_data(vigenere_input3),
             timeout=1,
         )
 
@@ -511,48 +487,24 @@ class IntegrationDecipherSuite:
         data3 = response3.json()
         assert data3 is not None
 
-        deciphered_caesar3 = CaesarData.parse_obj(data3)
+        deciphered_vigenere3 = VigenereData.parse_obj(data3)
 
-        assert deciphered_caesar3.key == caesar_input3.key
-        assert deciphered_caesar3.content == "Rcqr"
+        assert deciphered_vigenere3.key == vigenere_input3.key
+        assert deciphered_vigenere3.content == "Rlqa"
 
         assert (
-            deciphered_caesar1.content
-            == deciphered_caesar2.content
-            == deciphered_caesar3.content
+            deciphered_vigenere1.content
+            == deciphered_vigenere2.content
+            == deciphered_vigenere3.content
         )
-
-    @staticmethod
-    @pytest.mark.integration_test()
-    def test_with_negative_int_key(server: str) -> None:
-        caesar_input = CaesarData(
-            content="Test",
-            key=-2,
-        )
-
-        response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input),
-            timeout=1,
-        )
-
-        assert response is not None
-
-        data = response.json()
-        assert data is not None
-
-        deciphered_caesar = CaesarData.parse_obj(data)
-
-        assert deciphered_caesar.key == caesar_input.key
-        assert deciphered_caesar.content == "Vguv"
 
     class BadDecipherSuite:
         @staticmethod
         @pytest.mark.integration_test()
         def test_missing_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json={"key": 2},
+                url=server + "/api/v2/vigenere/decipher",
+                json={"key": "tt"},
                 timeout=1,
             )
 
@@ -573,7 +525,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_missing_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/vigenere/decipher",
                 json={"content": "test"},
                 timeout=1,
             )
@@ -595,8 +547,8 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_bad_type_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json=bad_content(254, 2),
+                url=server + "/api/v2/vigenere/decipher",
+                json=bad_content(254, "tt"),
                 timeout=1,
             )
 
@@ -617,8 +569,8 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_bad_empty_content(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json=bad_content("", 2),
+                url=server + "/api/v2/vigenere/decipher",
+                json=bad_content("", "tt"),
                 timeout=1,
             )
 
@@ -639,7 +591,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_bad_type_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/vigenere/decipher",
                 json=bad_content("Test", 25.8),
                 timeout=1,
             )
@@ -652,7 +604,7 @@ class IntegrationDecipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key is 'float'. Please give a string or an integer.",
+                    "msg": "The key is 'float'. Please give a string.",
                     "type": "type_error.keytype",
                 },
             ]
@@ -661,7 +613,7 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_bad_empty_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
+                url=server + "/api/v2/vigenere/decipher",
                 json=bad_content("Test", ""),
                 timeout=1,
             )
@@ -681,10 +633,10 @@ class IntegrationDecipherSuite:
 
         @staticmethod
         @pytest.mark.integration_test()
-        def test_too_long_key(server: str) -> None:
+        def test_too_short_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json=bad_content("Test", "TT"),
+                url=server + "/api/v2/vigenere/decipher",
+                json=bad_content("Test", "T"),
                 timeout=1,
             )
 
@@ -696,8 +648,8 @@ class IntegrationDecipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key is too long. Please give a one character string or an integer.",
-                    "type": "value_error.toolongkey",
+                    "msg": "The key is too short. Please give a string with more than one character.",
+                    "type": "value_error.tooshortkey",
                 },
             ]
 
@@ -705,8 +657,8 @@ class IntegrationDecipherSuite:
         @pytest.mark.integration_test()
         def test_bad_not_alpha_str_key(server: str) -> None:
             response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json=bad_content("Test", "+"),
+                url=server + "/api/v2/vigenere/decipher",
+                json=bad_content("Test", "+t"),
                 timeout=1,
             )
 
@@ -718,7 +670,7 @@ class IntegrationDecipherSuite:
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key '+' is invalid. Please give a string or an integer.",
+                    "msg": "The key '+t' is invalid. Please give a string.",
                     "type": "value_error.badkey",
                 },
             ]

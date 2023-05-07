@@ -1,5 +1,3 @@
-"""All utils for the API."""
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -15,16 +13,41 @@
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-from .controller import Controller
-from .open_api_handler import VigenereAPIOpenAPIHandler
-from .operation_docs import Algorithm, ControllerDocs, Operation
+import pytest
+import requests
 
 
-__all__ = [
-    "VigenereAPIOpenAPIHandler",
-    "Controller",
-    "ControllerDocs",
-    "Operation",
-    "Algorithm",
-]
+@pytest.mark.integration_test()
+def test_get_api_docs(server: str) -> None:
+    response = requests.get(
+        url=server + "/api/v2",
+        timeout=1,
+        allow_redirects=False,
+    )
+
+    assert response is not None
+
+    assert response.status_code == 200
+    assert response.content != b""
+    assert response.text != ""
+    assert not response.is_redirect
+
+    assert response.next is None
+
+
+@pytest.mark.integration_test()
+def test_get_api_redocs(server: str) -> None:
+    response = requests.get(
+        url=server + "/api/v2/redocs",
+        timeout=1,
+        allow_redirects=False,
+    )
+
+    assert response is not None
+
+    assert response.status_code == 200
+    assert response.content != b""
+    assert response.text != ""
+    assert not response.is_redirect
+
+    assert response.next is None

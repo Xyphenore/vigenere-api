@@ -73,3 +73,44 @@ class PathTypeError(VigenereAPITypeError):
     def __init__(self, path: Any) -> None:
         """Create a new PathTypeError."""
         super().__init__(path, "path", "a string")
+
+
+@final
+class OperationTypeError(VigenereAPITypeError):
+    """Thrown if 'operation' is not an Operation object."""
+
+    def __init__(self, operation: Any) -> None:
+        """Create a new OperationTypeError."""
+        super().__init__(operation, "operation", "an Operation object")
+
+
+@final
+class AlgorithmTypeError(VigenereAPITypeError):
+    """Thrown if 'algorithm' is not an Algorithm object."""
+
+    def __init__(self, algorithm: Any) -> None:
+        """Create a new AlgorithmTypeError."""
+        super().__init__(algorithm, "algorithm", "an Algorithm object")
+
+
+@final
+class ExamplesTypeError(VigenereAPITypeError):
+    """Thrown if 'examples' is not a Sequence of CaesarData or VigenereData."""
+
+    def __init__(self, data: Any, name: str) -> None:
+        """Create a new ExamplesTypeError."""
+        super().__init__(data, name, "a Sequence of CaesarData or VigenereData")
+
+
+@final
+class ExampleTypeError(TypeError):
+    """Thrown if an example in 'data_examples' is not a CaesarData or VigenereData."""
+
+    def __init__(self, example: Any, name: str) -> None:
+        """Create a new ExampleTypeError."""
+        cls_name = type(example).__qualname__
+
+        super().__init__(
+            f"An example is a '{cls_name}' in {name}."
+            + " Please give a Sequence of CaesarData or VigenereData.",
+        )

@@ -126,4 +126,4 @@ def test_get_version() -> None:
     v = get_version()
 
     assert isinstance(v, Version)
-    assert v == Version(major=1, minor=0, patch=0)
+    assert v == Version(major=2, minor=0, patch=0)

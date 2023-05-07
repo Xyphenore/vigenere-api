@@ -1,5 +1,3 @@
-"""All utils for the API."""
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -15,16 +13,33 @@
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+import pytest
+from pydantic import ValidationError
 
-from .controller import Controller
-from .open_api_handler import VigenereAPIOpenAPIHandler
-from .operation_docs import Algorithm, ControllerDocs, Operation
+from vigenere_api.models.base_data import BaseData
 
 
-__all__ = [
-    "VigenereAPIOpenAPIHandler",
-    "Controller",
-    "ControllerDocs",
-    "Operation",
-    "Algorithm",
-]
+class CtorSuite:
+    @staticmethod
+    def test_with_text() -> None:
+        text = "Test"
+        data = BaseData(content=text)
+
+        assert data.content == text
+
+    @staticmethod
+    @pytest.mark.raises(exception=ValidationError)
+    def test_missing_content() -> None:
+        _ignored_data = BaseData()
+
+    @staticmethod
+    @pytest.mark.raises(exception=ValidationError)
+    def test_bad_type_content() -> None:
+        text = b"Test"
+        _ignored_data = BaseData(content=text)
+
+    @staticmethod
+    @pytest.mark.raises(exception=ValidationError)
+    def test_bad_empty_content() -> None:
+        text = ""
+        _ignored_data = BaseData(content=text)
