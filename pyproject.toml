@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Vigenere-API"
-version = "1.0.0"
+version = "2.0.0"
 description = """\
 The project provides an API to use cipher, decipher and decrypt method with the Vigenere algorithm.\
 The Caesar algorithm is provided for the cipher method and decipher method.\
