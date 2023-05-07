@@ -44,14 +44,14 @@ class CaesarOperation(LowercaseStrEnum):
 
 
 CAESAR_DATA1 = (
+    CaesarData(content="DeFgHiJkLmNoPqRsTuVwXyZaBc", key=3),
+    CaesarData(content="DeFgHiJkLmNoPqRsTuVwXyZaBc", key="D"),
     CaesarData(content="Mabl bl t mxlm.", key="T"),
-    CaesarData(content="Docd", key=10),
-    CaesarData(content="Xiwx", key="e"),
 )
 CAESAR_DATA2 = (
+    CaesarData(content="AbCdEfGhIjKlMnOpQrStUvWxYz", key=3),
+    CaesarData(content="AbCdEfGhIjKlMnOpQrStUvWxYz", key="d"),
     CaesarData(content="This is a test.", key="T"),
-    CaesarData(content="Test", key=10),
-    CaesarData(content="Test", key="e"),
 )
 
 
