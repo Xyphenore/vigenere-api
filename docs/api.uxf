@@ -5,8 +5,8 @@
     <id>UMLClass</id>
     <coordinates>
       <x>504</x>
-      <y>360</y>
-      <w>352</w>
+      <y>520</y>
+      <w>416</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>VigenereController
@@ -15,7 +15,7 @@
 --
 + cipher(in request: VigenereData): VigenereData
 + decipher(in request: VigenereData): VigenereData
-+ decrypt(in request: VigenereDecryptInput): VigenereDecryptOutput
++ decrypt(in request: VigenereDecryptInput): Collection[VigenereDecryptOutput]
 
 bg=green</panel_attributes>
     <additional_attributes/>
@@ -24,8 +24,8 @@ bg=green</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>504</x>
-      <y>464</y>
-      <w>352</w>
+      <y>624</y>
+      <w>416</w>
       <h>72</h>
     </coordinates>
     <panel_attributes>CesarController
@@ -41,16 +41,15 @@ bg=green</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>960</x>
-      <y>472</y>
+      <x>992</x>
+      <y>632</y>
       <w>248</w>
       <h>128</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
 CaesarData
 --
-- message: str
-- key: OneCharStr | int
++ key: OneCharStr | int
 --
 __+ from_json(in json: str): CaesarData__
 __+ to_json(in data: CaesarData): str__
@@ -64,16 +63,15 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>960</x>
-      <y>328</y>
+      <x>992</x>
+      <y>488</y>
       <w>248</w>
       <h>128</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
 VigenereData
 --
-- message: str
-- key: str
++ key: str
 --
 __+ from_json(in json: str): VigenereData__
 __+ to_json(in data: VigenereData): str__
@@ -88,18 +86,18 @@ bg=blue</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>504</x>
-      <y>184</y>
-      <w>240</w>
+      <y>344</y>
+      <w>248</w>
       <h>96</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
-VigenereDecryptInput
+VigenereDecryptInputData
 --
-- message: str
+
 --
 __+ from_json(in json: str): VigenereDecryptInput__
 + ctor(in message: str)
-+ decrypt(): VigenereDecryptOutput
++ decrypt(): Collection[VigenereDecryptOutput]
 bg=blue</panel_attributes>
     <additional_attributes/>
   </element>
@@ -107,17 +105,17 @@ bg=blue</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>816</x>
-      <y>184</y>
+      <y>344</y>
       <w>280</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
 VigenereDecryptOutput
 --
-- possibilities: Collection[Taux, VigenereData]
++ rate: float
 --
 __+ to_json(in data: VigenereDecryptOutput): str__
-+ ctor(in possibilities: Collection[Taux, VigenereData])
++ ctor(in message: str, in key: str, in rate: float)
 
 bg=blue</panel_attributes>
     <additional_attributes/>
@@ -125,21 +123,8 @@ bg=blue</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1088</x>
-      <y>200</y>
-      <w>80</w>
-      <h>144</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
-m1=1
-m2=1..*</panel_attributes>
-    <additional_attributes>10.0;10.0;60.0;10.0;60.0;160.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
       <x>592</x>
-      <y>272</y>
+      <y>432</y>
       <w>56</w>
       <h>104</h>
     </coordinates>
@@ -151,43 +136,44 @@ m2=1..*</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>760</x>
-      <y>256</y>
-      <w>200</w>
+      <y>416</y>
+      <w>216</w>
       <h>120</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-&lt;&lt;use&gt;&gt;</panel_attributes>
+&lt;&lt;use&gt;&gt;
+m2=1..*</panel_attributes>
     <additional_attributes>10.0;130.0;10.0;90.0;230.0;90.0;230.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>848</x>
-      <y>392</y>
-      <w>128</w>
+      <x>912</x>
+      <y>552</y>
+      <w>96</w>
       <h>32</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
 &lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>848</x>
-      <y>488</y>
-      <w>128</w>
+      <x>912</x>
+      <y>648</y>
+      <w>96</w>
       <h>32</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 &lt;&lt;use&gt;&gt;</panel_attributes>
-    <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>100.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>288</x>
-      <y>416</y>
+      <y>576</y>
       <w>128</w>
       <h>64</h>
     </coordinates>
@@ -204,7 +190,7 @@ bg=pink</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>408</x>
-      <y>392</y>
+      <y>552</y>
       <w>112</w>
       <h>80</h>
     </coordinates>
@@ -218,7 +204,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>408</x>
-      <y>440</y>
+      <y>600</y>
       <w>112</w>
       <h>80</h>
     </coordinates>
@@ -232,7 +218,7 @@ m2=1
     <id>UMLClass</id>
     <coordinates>
       <x>64</x>
-      <y>416</y>
+      <y>576</y>
       <w>160</w>
       <h>64</h>
     </coordinates>
@@ -250,7 +236,7 @@ bg=pink</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>216</x>
-      <y>432</y>
+      <y>592</y>
       <w>88</w>
       <h>40</h>
     </coordinates>
@@ -264,7 +250,7 @@ m2=1
     <id>UMLClass</id>
     <coordinates>
       <x>0</x>
-      <y>176</y>
+      <y>336</y>
       <w>280</w>
       <h>184</h>
     </coordinates>
@@ -291,7 +277,7 @@ bg=pink</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>128</x>
-      <y>352</y>
+      <y>512</y>
       <w>24</w>
       <h>80</h>
     </coordinates>
@@ -305,7 +291,7 @@ m2=1
     <id>UMLNote</id>
     <coordinates>
       <x>928</x>
-      <y>112</y>
+      <y>272</y>
       <w>112</w>
       <h>32</h>
     </coordinates>
@@ -316,7 +302,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>968</x>
-      <y>136</y>
+      <y>296</y>
       <w>24</w>
       <h>64</h>
     </coordinates>
@@ -326,13 +312,84 @@ m2=1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>736</x>
-      <y>216</y>
-      <w>96</w>
+      <x>744</x>
+      <y>376</y>
+      <w>88</w>
       <h>32</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
 &lt;&lt;generate&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;90.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>848</x>
+      <y>72</y>
+      <w>248</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+BaseData
+--
++ message: str
+--
+__+ from_json(in json: str): BaseData__
++ ctor(in message: str)
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>624</x>
+      <y>160</y>
+      <w>360</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;230.0;10.0;80.0;430.0;80.0;430.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>960</x>
+      <y>160</y>
+      <w>384</w>
+      <h>416</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>350.0;500.0;400.0;500.0;400.0;80.0;10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>960</x>
+      <y>160</y>
+      <w>336</w>
+      <h>560</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+</panel_attributes>
+    <additional_attributes>350.0;680.0;400.0;680.0;400.0;80.0;10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1088</x>
+      <y>376</y>
+      <w>88</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+
+
+
+
+&lt;&lt;extends&gt;&gt;
+</panel_attributes>
+    <additional_attributes>10.0;20.0;90.0;20.0;90.0;140.0</additional_attributes>
   </element>
 </diagram>
