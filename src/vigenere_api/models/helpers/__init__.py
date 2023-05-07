@@ -16,7 +16,7 @@
 
 """Helper package for models."""
 
-from .helper import move_char
+from .helper import convert_key, move_char
+from .vigenere_key import VigenereKey
 
-
-__all__ = ["move_char"]
+__all__ = ["move_char", "convert_key", "VigenereKey"]
