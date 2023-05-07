@@ -1,5 +1,3 @@
-"""All utils for the API."""
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -16,15 +14,11 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .controller import Controller
-from .open_api_handler import VigenereAPIOpenAPIHandler
-from .operation_docs import Algorithm, ControllerDocs, Operation
+from blacksheep import FromJSON, Response
+from blacksheep.server.controllers import APIController
 
+from vigenere_api.models import CaesarData
 
-__all__ = [
-    "VigenereAPIOpenAPIHandler",
-    "Controller",
-    "ControllerDocs",
-    "Operation",
-    "Algorithm",
-]
+class CaesarController(APIController):
+    async def cipher(self, data: FromJSON[CaesarData]) -> Response: ...
+    async def decipher(self, data: FromJSON[CaesarData]) -> Response: ...

@@ -14,43 +14,58 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+"""Model helper tests."""
 
-"""The caesar controller's documentation."""
+import pytest
 
-from dataclasses import dataclass
-from typing import final
-
-from vigenere_api.api.helpers.operation_docs import Algorithm, ControllerDocs, Operation
-from vigenere_api.models import CaesarData
-
-
-CAESAR_DATA1 = (
-    CaesarData(content="DeFgHiJkLmNoPqRsTuVwXyZaBc", key=3),
-    CaesarData(content="DeFgHiJkLmNoPqRsTuVwXyZaBc", key="D"),
-    CaesarData(content="Mabl bl t mxlm.", key="T"),
-)
-CAESAR_DATA2 = (
-    CaesarData(content="AbCdEfGhIjKlMnOpQrStUvWxYz", key=3),
-    CaesarData(content="AbCdEfGhIjKlMnOpQrStUvWxYz", key="d"),
-    CaesarData(content="This is a test.", key="T"),
+from vigenere_api.models.helpers import move_char
+from vigenere_api.models.helpers.errors import (
+    HelperBadCharValueError,
+    HelperBadFirstLetterValueError,
+    HelperBadLengthCharValueError,
+    HelperCharTypeError,
+    HelperFirstLetterTypeError,
+    HelperKeyTypeError,
 )
 
 
-@final
-@dataclass
-class CaesarControllerDocs(ControllerDocs):
-    """Create the documentation for Caesar algorithm."""
+def test_move_lower_letter() -> None:
+    moved_letter = move_char("a", 2, "a")
 
-    def __init__(self, operation: Operation) -> None:
-        """
-        Create a CaesarControllerDocs.
-
-        Parameters
-        ----------
-        operation : Operation
-        """
-        super().__init__(operation, Algorithm.CAESAR, CAESAR_DATA1, CAESAR_DATA2)
+    assert moved_letter == "c"
 
 
-post_caesar_cipher_docs = CaesarControllerDocs(operation=Operation.CIPHER)
-post_caesar_decipher_docs = CaesarControllerDocs(operation=Operation.DECIPHER)
+def test_move_upper_letter() -> None:
+    moved_letter = move_char("A", 2, "A")
+
+    assert moved_letter == "C"
+
+
+@pytest.mark.raises(exception=HelperCharTypeError)
+def test_bad_type_char() -> None:
+    _ignored = move_char(b"r", 2, "a")
+
+
+@pytest.mark.raises(exception=HelperBadLengthCharValueError)
+def test_bad_length_char() -> None:
+    _ignored = move_char("rr", 2, "a")
+
+
+@pytest.mark.raises(exception=HelperBadCharValueError)
+def test_bad_alpha_char() -> None:
+    _ignored = move_char("+", 2, "a")
+
+
+@pytest.mark.raises(exception=HelperKeyTypeError)
+def test_bad_type_key() -> None:
+    _ignored = move_char("a", "v", "a")
+
+
+@pytest.mark.raises(exception=HelperFirstLetterTypeError)
+def test_bad_type_first_letter() -> None:
+    _ignored = move_char("a", 2, b"a")
+
+
+@pytest.mark.raises(exception=HelperBadFirstLetterValueError)
+def test_bad_first_letter_value() -> None:
+    _ignored = move_char("a", 2, "g")

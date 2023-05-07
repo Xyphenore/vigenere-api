@@ -1,5 +1,3 @@
-"""All utils for the API."""
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -16,15 +14,40 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .controller import Controller
-from .open_api_handler import VigenereAPIOpenAPIHandler
-from .operation_docs import Algorithm, ControllerDocs, Operation
+"""Convert a one character string into an integer between 0 and 25."""
+
+from .check_key import check_key
+from .errors import TooLongKeyError
 
 
-__all__ = [
-    "VigenereAPIOpenAPIHandler",
-    "Controller",
-    "ControllerDocs",
-    "Operation",
-    "Algorithm",
-]
+def convert_key(key: str) -> int:
+    """
+    Convert the one character string into an integer between 0 and 25.
+
+    Parameters
+    ----------
+    key : str
+        The key to convert.
+
+    Raises
+    ------
+    KeyTypeError
+        Thrown if 'key' is not a string.
+    EmptyKeyError
+        Thrown if 'key' is an empty string.
+    TooLongKeyError
+        Thrown if 'key' is too long.
+    BadKeyError
+        Thrown if 'key' is not a one alphabetical character.
+
+    Returns
+    -------
+    key_converted
+        int
+    """
+    check_key(key)
+
+    if len(key) > 1:
+        raise TooLongKeyError
+
+    return ord(key) - ord("A") if key.isupper() else ord(key) - ord("a")

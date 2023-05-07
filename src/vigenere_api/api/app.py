@@ -20,10 +20,12 @@ from blacksheep import Application, Response
 from blacksheep.server.env import is_development
 from blacksheep.server.responses import redirect
 
-from vigenere_api.version import get_version
+from vigenere_api.version import get_version, Version
 
 from .v1.controllers import CaesarController as V1CaesarController
 from .v1.openapi_docs import docs as v1_docs
+from .v2.controllers import CaesarController as V2CaesarController, VigenereController
+from .v2.openapi_docs import docs as v2_docs
 
 
 application = Application()
@@ -40,12 +42,15 @@ if is_development():  # pragma: no cover
     application.debug = True
     application.show_error_details = True
 
-application.register_controllers([V1CaesarController])
+application.register_controllers(
+    [V1CaesarController, V2CaesarController, VigenereController],
+)
 v1_docs.bind_app(application)
+v2_docs.bind_app(application)
 
 get = application.router.get
 
-version = get_version()
+app_version: Version = get_version()
 
 
 @v1_docs(ignored=True)
@@ -61,7 +66,7 @@ async def index() -> Response:
     redirect
         Response
     """
-    return redirect(f"/api/v{version.major}")
+    return redirect(f"/api/v{app_version.major}")
 
 
 def __fallback() -> str:

@@ -14,72 +14,49 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""Utils class for VigenereData."""
+"""Base model."""
 
-from typing import final, Final
+from __future__ import annotations
 
-from .check_key import check_key
-from .errors import TooShortKeyError
+from pydantic import StrictStr, validator
+
+from vigenere_api.helpers import Model
+
+from .errors import ContentTypeError, EmptyContentError
 
 
-@final
-class VigenereKey:
-    """Util class to loop on each character of the key."""
+class BaseData(Model):
+    """Base data to verify the content."""
 
-    def __init__(self, key: str) -> None:
+    content: StrictStr
+    """The content to be ciphered or deciphered."""
+
+    @validator("content", pre=True)
+    def validate_content(cls, content: str) -> str:
         """
-        Create a new Vigenere key.
+        Check if the affectation to content respects contraints.
 
         Parameters
         ----------
-        key : str
-            The string used like a key.
+        content : str
+            The new content.
 
         Raises
         ------
-        KeyTypeError
-            Thrown if 'key' is not a string.
-        EmptyKeyError
-            Thrown if 'key' is empty.
-        TooShortKeyError
-            Thrown if 'key' is too short.
-        BadKeyError
-            Thrown if 'key' contains invalid characters.
-        """
-        check_key(key)
-
-        if len(key) == 1:
-            raise TooShortKeyError
-
-        self.__index = 0
-        self.__key: Final = key
-
-    def __next__(self) -> str:
-        """
-        Get the next character of the key.
+        ContentTypeError
+            Thrown if 'content' is not a string.
+        EmptyContentError
+            Thrown if 'content' is an empty string.
 
         Returns
         -------
-        The next character of the key.
+        content
             str
         """
-        try:
-            return self.__key[self.__index]
-        finally:
-            self.__increase_index()
+        if not isinstance(content, str):
+            raise ContentTypeError(content)
 
-    def __increase_index(self) -> None:
-        """Increase the index of the key."""
-        self.__index += 1
-        self.__index %= len(self)
+        if len(content) == 0:
+            raise EmptyContentError
 
-    def __len__(self) -> int:
-        """
-        Get the length of the key.
-
-        Returns
-        -------
-        int
-            The length of the key.
-        """
-        return len(self.__key)
+        return content

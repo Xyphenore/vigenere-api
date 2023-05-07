@@ -15,11 +15,13 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 """All errors thrown by the helper."""
+
 from enum import unique
 from typing import Any, final
 
 from strenum import StrEnum
 from vigenere_api.helpers import VigenereAPITypeError
+
 
 A_STRING = "a string"
 

@@ -105,4 +105,11 @@ class AlgorithmOperationTypeError(VigenereAPITypeError):
     """Thrown if the operation is not a VigenereOperation object."""
 
     def __init__(self, operation: Any) -> None:
+        """
+        Create an AlgorithmOperationTypeError with the operation.
+
+        Parameters
+        ----------
+        operation : Any
+        """
         super().__init__(operation, "operation", "a VigenereOperation object")

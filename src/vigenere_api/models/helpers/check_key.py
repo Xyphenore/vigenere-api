@@ -1,5 +1,3 @@
-"""All utils for the API."""
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -16,15 +14,34 @@
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from .controller import Controller
-from .open_api_handler import VigenereAPIOpenAPIHandler
-from .operation_docs import Algorithm, ControllerDocs, Operation
+"""Check if the key is good."""
+
+from .errors import BadKeyError, EmptyKeyError, ExpectedKeyType, KeyTypeError
 
 
-__all__ = [
-    "VigenereAPIOpenAPIHandler",
-    "Controller",
-    "ControllerDocs",
-    "Operation",
-    "Algorithm",
-]
+def check_key(key: str) -> None:
+    """
+    Check if the key is an alphabetic string and not empty.
+
+    Parameters
+    ----------
+    key : str
+        The key to check.
+
+    Raises
+    ------
+    KeyTypeError
+        Thrown if 'key' is not a string.
+    EmptyKeyError
+        Thrown if 'key' is empty.
+    BadKeyError
+        Thrown if 'key' is not an alphabetic string.
+    """
+    if not isinstance(key, str):
+        raise KeyTypeError(key, ExpectedKeyType.STRING)
+
+    if len(key) == 0:
+        raise EmptyKeyError
+
+    if not key.isalpha():
+        raise BadKeyError(key, ExpectedKeyType.STRING)

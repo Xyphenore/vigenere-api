@@ -13,41 +13,55 @@
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 from typing import Any
 
 import pytest
-import requests
+from blacksheep import Content
+from blacksheep.testing import TestClient
+from essentials.json import dumps
 from pydantic import BaseModel
 
 from vigenere_api.models import CaesarData
 
 
-def json_data(data: BaseModel) -> dict[str, Any]:
-    return data.dict()
+def json_content(data: BaseModel) -> Content:
+    return Content(
+        b"application/json",
+        dumps(data, separators=(",", ":")).encode("utf8"),
+    )
 
 
-def bad_content(content: Any, key: Any) -> dict[str, Any]:
-    return {"content": content, "key": key}
+def bad_content(content: Any, key: Any) -> Content:
+    msg = '{"content": '
+    msg += f'"{content}"' if isinstance(content, str) else f"{content}"
+    msg += ', "key": '
+    msg += f'"{key}"' if isinstance(key, str) else f"{key}"
+    msg += "}"
+
+    return Content(
+        b"application/json",
+        msg.encode(),
+    )
 
 
-class IntegrationCipherSuite:
+class CipherSuite:
     @staticmethod
-    @pytest.mark.integration_test()
-    def test_with_int_key(server: str) -> None:
+    @pytest.mark.asyncio()
+    async def test_with_int_key(test_client: TestClient) -> None:
         caesar_input = CaesarData(
             content="Test",
             key=2,
         )
 
-        response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input),
-            timeout=1,
+        response = await test_client.post(
+            "/api/v2/caesar/cipher",
+            content=json_content(caesar_input),
         )
 
         assert response is not None
 
-        data = response.json()
+        data = await response.json()
         assert data is not None
 
         ciphered_caesar = CaesarData.parse_obj(data)
@@ -56,22 +70,21 @@ class IntegrationCipherSuite:
         assert ciphered_caesar.content == "Vguv"
 
     @staticmethod
-    @pytest.mark.integration_test()
-    def test_with_negative_int_key(server: str) -> None:
+    @pytest.mark.asyncio()
+    async def test_with_negative_int_key(test_client: TestClient) -> None:
         caesar_input = CaesarData(
             content="Test",
             key=-2,
         )
 
-        response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input),
-            timeout=1,
+        response = await test_client.post(
+            "/api/v2/caesar/cipher",
+            content=json_content(caesar_input),
         )
 
         assert response is not None
 
-        data = response.json()
+        data = await response.json()
         assert data is not None
 
         ciphered_caesar = CaesarData.parse_obj(data)
@@ -80,22 +93,21 @@ class IntegrationCipherSuite:
         assert ciphered_caesar.content == "Rcqr"
 
     @staticmethod
-    @pytest.mark.integration_test()
-    def test_with_str_lower_key(server: str) -> None:
+    @pytest.mark.asyncio()
+    async def test_with_str_lower_key(test_client: TestClient) -> None:
         caesar_input = CaesarData(
             content="Test",
             key="c",
         )
 
-        response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input),
-            timeout=1,
+        response = await test_client.post(
+            "/api/v2/caesar/cipher",
+            content=json_content(caesar_input),
         )
 
         assert response is not None
 
-        data = response.json()
+        data = await response.json()
         assert data is not None
 
         ciphered_caesar = CaesarData.parse_obj(data)
@@ -104,22 +116,21 @@ class IntegrationCipherSuite:
         assert ciphered_caesar.content == "Vguv"
 
     @staticmethod
-    @pytest.mark.integration_test()
-    def test_with_str_upper_key(server: str) -> None:
+    @pytest.mark.asyncio()
+    async def test_with_str_upper_key(test_client: TestClient) -> None:
         caesar_input = CaesarData(
             content="Test",
             key="C",
         )
 
-        response = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input),
-            timeout=1,
+        response = await test_client.post(
+            "/api/v2/caesar/cipher",
+            content=json_content(caesar_input),
         )
 
         assert response is not None
 
-        data = response.json()
+        data = await response.json()
         assert data is not None
 
         ciphered_caesar = CaesarData.parse_obj(data)
@@ -128,22 +139,21 @@ class IntegrationCipherSuite:
         assert ciphered_caesar.content == "Vguv"
 
     @staticmethod
-    @pytest.mark.integration_test()
-    def test_equality_between_keys(server: str) -> None:
+    @pytest.mark.asyncio()
+    async def test_equality_between_keys(test_client: TestClient) -> None:
         caesar_input1 = CaesarData(
             content="Test",
             key=2,
         )
 
-        response1 = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input1),
-            timeout=1,
+        response1 = await test_client.post(
+            "/api/v2/caesar/cipher",
+            content=json_content(caesar_input1),
         )
 
         assert response1 is not None
 
-        data1 = response1.json()
+        data1 = await response1.json()
         assert data1 is not None
 
         ciphered_caesar1 = CaesarData.parse_obj(data1)
@@ -156,15 +166,14 @@ class IntegrationCipherSuite:
             key="c",
         )
 
-        response2 = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input2),
-            timeout=1,
+        response2 = await test_client.post(
+            "/api/v2/caesar/cipher",
+            content=json_content(caesar_input2),
         )
 
         assert response2 is not None
 
-        data2 = response2.json()
+        data2 = await response2.json()
         assert data2 is not None
 
         ciphered_caesar2 = CaesarData.parse_obj(data2)
@@ -177,15 +186,14 @@ class IntegrationCipherSuite:
             key="C",
         )
 
-        response3 = requests.post(
-            url=server + "/api/v1/caesar/cipher",
-            json=json_data(caesar_input3),
-            timeout=1,
+        response3 = await test_client.post(
+            "/api/v2/caesar/cipher",
+            content=json_content(caesar_input3),
         )
 
         assert response3 is not None
 
-        data3 = response3.json()
+        data3 = await response3.json()
         assert data3 is not None
 
         ciphered_caesar3 = CaesarData.parse_obj(data3)
@@ -201,17 +209,19 @@ class IntegrationCipherSuite:
 
     class BadCipherSuite:
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_missing_content(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json={"key": 2},
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_missing_content(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/cipher",
+                content=Content(
+                    b"application/json",
+                    b'{"key": 2}',
+                ),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -223,17 +233,19 @@ class IntegrationCipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_missing_key(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json={"content": "test"},
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_missing_key(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/cipher",
+                content=Content(
+                    b"application/json",
+                    b'{"content": "test"}',
+                ),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -245,17 +257,16 @@ class IntegrationCipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_bad_type_content(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json=bad_content(254, 2),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_bad_type_content(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/cipher",
+                content=bad_content(254, 2),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -267,17 +278,16 @@ class IntegrationCipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_bad_empty_content(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json=bad_content("", 2),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_bad_empty_content(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/cipher",
+                content=bad_content("", 2),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -289,17 +299,16 @@ class IntegrationCipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_bad_type_key(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json=bad_content("Test", 25.8),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_bad_type_key(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/cipher",
+                content=bad_content("Test", 25.8),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -311,17 +320,16 @@ class IntegrationCipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_bad_empty_key(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json=bad_content("Test", ""),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_bad_empty_key(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/cipher",
+                content=bad_content("Test", ""),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -333,39 +341,38 @@ class IntegrationCipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_too_long_key(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json=bad_content("Test", "TT"),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_too_long_key(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/cipher",
+                content=bad_content("Test", "TT"),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key is too long. Please give a one character string or an integer.",
+                    "msg": "The key is too long. Please give a one character string or an "
+                    "integer.",
                     "type": "value_error.toolongkey",
                 },
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_bad_not_alpha_str_key(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/cipher",
-                json=bad_content("Test", "+"),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_bad_not_alpha_str_key(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/cipher",
+                content=bad_content("Test", "+"),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -377,24 +384,23 @@ class IntegrationCipherSuite:
             ]
 
 
-class IntegrationDecipherSuite:
+class DecipherSuite:
     @staticmethod
-    @pytest.mark.integration_test()
-    def test_with_int_key(server: str) -> None:
+    @pytest.mark.asyncio()
+    async def test_with_int_key(test_client: TestClient) -> None:
         caesar_input = CaesarData(
             content="Test",
             key=2,
         )
 
-        response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input),
-            timeout=1,
+        response = await test_client.post(
+            "/api/v2/caesar/decipher",
+            content=json_content(caesar_input),
         )
 
         assert response is not None
 
-        data = response.json()
+        data = await response.json()
         assert data is not None
 
         deciphered_caesar = CaesarData.parse_obj(data)
@@ -403,22 +409,21 @@ class IntegrationDecipherSuite:
         assert deciphered_caesar.content == "Rcqr"
 
     @staticmethod
-    @pytest.mark.integration_test()
-    def test_with_str_lower_key(server: str) -> None:
+    @pytest.mark.asyncio()
+    async def test_with_str_lower_key(test_client: TestClient) -> None:
         caesar_input = CaesarData(
             content="Test",
             key="c",
         )
 
-        response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input),
-            timeout=1,
+        response = await test_client.post(
+            "/api/v2/caesar/decipher",
+            content=json_content(caesar_input),
         )
 
         assert response is not None
 
-        data = response.json()
+        data = await response.json()
         assert data is not None
 
         deciphered_caesar = CaesarData.parse_obj(data)
@@ -427,22 +432,21 @@ class IntegrationDecipherSuite:
         assert deciphered_caesar.content == "Rcqr"
 
     @staticmethod
-    @pytest.mark.integration_test()
-    def test_with_str_upper_key(server: str) -> None:
+    @pytest.mark.asyncio()
+    async def test_with_str_upper_key(test_client: TestClient) -> None:
         caesar_input = CaesarData(
             content="Test",
             key="C",
         )
 
-        response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input),
-            timeout=1,
+        response = await test_client.post(
+            "/api/v2/caesar/decipher",
+            content=json_content(caesar_input),
         )
 
         assert response is not None
 
-        data = response.json()
+        data = await response.json()
         assert data is not None
 
         deciphered_caesar = CaesarData.parse_obj(data)
@@ -451,22 +455,21 @@ class IntegrationDecipherSuite:
         assert deciphered_caesar.content == "Rcqr"
 
     @staticmethod
-    @pytest.mark.integration_test()
-    def test_equality_between_keys(server: str) -> None:
+    @pytest.mark.asyncio()
+    async def test_equality_between_keys(test_client: TestClient) -> None:
         caesar_input1 = CaesarData(
             content="Test",
             key=2,
         )
 
-        response1 = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input1),
-            timeout=1,
+        response1 = await test_client.post(
+            "/api/v2/caesar/decipher",
+            content=json_content(caesar_input1),
         )
 
         assert response1 is not None
 
-        data1 = response1.json()
+        data1 = await response1.json()
         assert data1 is not None
 
         deciphered_caesar1 = CaesarData.parse_obj(data1)
@@ -479,15 +482,14 @@ class IntegrationDecipherSuite:
             key="c",
         )
 
-        response2 = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input2),
-            timeout=1,
+        response2 = await test_client.post(
+            "/api/v2/caesar/decipher",
+            content=json_content(caesar_input2),
         )
 
         assert response2 is not None
 
-        data2 = response2.json()
+        data2 = await response2.json()
         assert data2 is not None
 
         deciphered_caesar2 = CaesarData.parse_obj(data2)
@@ -500,15 +502,14 @@ class IntegrationDecipherSuite:
             key="C",
         )
 
-        response3 = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input3),
-            timeout=1,
+        response3 = await test_client.post(
+            "/api/v2/caesar/decipher",
+            content=json_content(caesar_input3),
         )
 
         assert response3 is not None
 
-        data3 = response3.json()
+        data3 = await response3.json()
         assert data3 is not None
 
         deciphered_caesar3 = CaesarData.parse_obj(data3)
@@ -523,22 +524,21 @@ class IntegrationDecipherSuite:
         )
 
     @staticmethod
-    @pytest.mark.integration_test()
-    def test_with_negative_int_key(server: str) -> None:
+    @pytest.mark.asyncio()
+    async def test_with_negative_int_key(test_client: TestClient) -> None:
         caesar_input = CaesarData(
             content="Test",
             key=-2,
         )
 
-        response = requests.post(
-            url=server + "/api/v1/caesar/decipher",
-            json=json_data(caesar_input),
-            timeout=1,
+        response = await test_client.post(
+            "/api/v2/caesar/decipher",
+            content=json_content(caesar_input),
         )
 
         assert response is not None
 
-        data = response.json()
+        data = await response.json()
         assert data is not None
 
         deciphered_caesar = CaesarData.parse_obj(data)
@@ -548,17 +548,19 @@ class IntegrationDecipherSuite:
 
     class BadDecipherSuite:
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_missing_content(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json={"key": 2},
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_missing_content(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/decipher",
+                content=Content(
+                    b"application/json",
+                    b'{"key": 2}',
+                ),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -570,17 +572,19 @@ class IntegrationDecipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_missing_key(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json={"content": "test"},
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_missing_key(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/decipher",
+                content=Content(
+                    b"application/json",
+                    b'{"content": "test"}',
+                ),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -592,17 +596,16 @@ class IntegrationDecipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_bad_type_content(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json=bad_content(254, 2),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_bad_type_content(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/decipher",
+                content=bad_content(254, 2),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -614,17 +617,16 @@ class IntegrationDecipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_bad_empty_content(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json=bad_content("", 2),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_bad_empty_content(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/decipher",
+                content=bad_content("", 2),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -636,17 +638,16 @@ class IntegrationDecipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_bad_type_key(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json=bad_content("Test", 25.8),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_bad_type_key(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/decipher",
+                content=bad_content("Test", 25.8),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -658,17 +659,16 @@ class IntegrationDecipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_bad_empty_key(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json=bad_content("Test", ""),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_bad_empty_key(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/decipher",
+                content=bad_content("Test", ""),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
@@ -680,39 +680,38 @@ class IntegrationDecipherSuite:
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_too_long_key(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json=bad_content("Test", "TT"),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_too_long_key(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/decipher",
+                content=bad_content("Test", "TT"),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [
                 {
                     "loc": ["key"],
-                    "msg": "The key is too long. Please give a one character string or an integer.",
+                    "msg": "The key is too long. Please give a one character string or an "
+                    "integer.",
                     "type": "value_error.toolongkey",
                 },
             ]
 
         @staticmethod
-        @pytest.mark.integration_test()
-        def test_bad_not_alpha_str_key(server: str) -> None:
-            response = requests.post(
-                url=server + "/api/v1/caesar/decipher",
-                json=bad_content("Test", "+"),
-                timeout=1,
+        @pytest.mark.asyncio()
+        async def test_bad_not_alpha_str_key(test_client: TestClient) -> None:
+            response = await test_client.post(
+                "/api/v2/caesar/decipher",
+                content=bad_content("Test", "+"),
             )
 
             assert response is not None
 
-            data = response.json()
+            data = await response.json()
             assert data is not None
 
             assert data == [

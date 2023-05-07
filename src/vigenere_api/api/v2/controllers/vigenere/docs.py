@@ -20,37 +20,39 @@
 from dataclasses import dataclass
 from typing import final
 
-from vigenere_api.api.helpers.operation_docs import Algorithm, ControllerDocs, Operation
-from vigenere_api.models import CaesarData
+from vigenere_api.api.helpers import Algorithm, ControllerDocs, Operation
+from vigenere_api.models import VigenereData
 
 
-CAESAR_DATA1 = (
-    CaesarData(content="DeFgHiJkLmNoPqRsTuVwXyZaBc", key=3),
-    CaesarData(content="DeFgHiJkLmNoPqRsTuVwXyZaBc", key="D"),
-    CaesarData(content="Mabl bl t mxlm.", key="T"),
+VIGENERE_DATA1 = (
+    VigenereData(content="RI ZR VXGM XFLX CWMI", key="pierre"),
+    VigenereData(content="ABC DAB CDA BCD ABC DAB", key="AbCd"),
+    VigenereData(content="Ri zr vxgm xflx cwmi!", key="PIERRE"),
+    VigenereData(content="AbC dab CDA bCd abc dAB", key="abcd"),
 )
-CAESAR_DATA2 = (
-    CaesarData(content="AbCdEfGhIjKlMnOpQrStUvWxYz", key=3),
-    CaesarData(content="AbCdEfGhIjKlMnOpQrStUvWxYz", key="d"),
-    CaesarData(content="This is a test.", key="T"),
+VIGENERE_DATA2 = (
+    VigenereData(content="CA VA ETRE TOUT NOIR", key="PIERRE"),
+    VigenereData(content="AAA AAA AAA AAA AAA AAA", key="abcd"),
+    VigenereData(content="Ca va etre tout noir!", key="piErrE"),
+    VigenereData(content="AaA aaa AAA aAa aaa aAA", key="aBCd"),
 )
 
 
 @final
 @dataclass
-class CaesarControllerDocs(ControllerDocs):
-    """Create the documentation for Caesar algorithm."""
+class VigenereControllerDocs(ControllerDocs):
+    """Create the documentation for Vigenere algorithm."""
 
     def __init__(self, operation: Operation) -> None:
         """
-        Create a CaesarControllerDocs.
+        Create a VigenereControllerDocs.
 
         Parameters
         ----------
         operation : Operation
         """
-        super().__init__(operation, Algorithm.CAESAR, CAESAR_DATA1, CAESAR_DATA2)
+        super().__init__(operation, Algorithm.VIGENERE, VIGENERE_DATA1, VIGENERE_DATA2)
 
 
-post_caesar_cipher_docs = CaesarControllerDocs(operation=Operation.CIPHER)
-post_caesar_decipher_docs = CaesarControllerDocs(operation=Operation.DECIPHER)
+post_vigenere_cipher_docs = VigenereControllerDocs(operation=Operation.CIPHER)
+post_vigenere_decipher_docs = VigenereControllerDocs(operation=Operation.DECIPHER)

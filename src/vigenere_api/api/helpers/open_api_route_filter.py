@@ -21,6 +21,7 @@ from collections.abc import Callable, Collection
 from blacksheep import Route
 
 from vigenere_api.version import Version
+
 from .errors import (
     ExcludedPathsTypeError,
     ExcludedPathTypeError,

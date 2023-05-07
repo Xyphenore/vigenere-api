@@ -1,5 +1,3 @@
-"""All utils for the API."""
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  Vigenere-API                                                                        +
 #  Copyright (C) 2023 Axel DAVID                                                       +
@@ -15,16 +13,30 @@
 #  You should have received a copy of the GNU General Public License along with        +
 #  this program.  If not, see <https://www.gnu.org/licenses/>.                         +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+import pytest
 
-from .controller import Controller
-from .open_api_handler import VigenereAPIOpenAPIHandler
-from .operation_docs import Algorithm, ControllerDocs, Operation
+from vigenere_api.models.helpers.check_key import check_key
+from vigenere_api.models.helpers.errors import BadKeyError, EmptyKeyError, KeyTypeError
 
 
-__all__ = [
-    "VigenereAPIOpenAPIHandler",
-    "Controller",
-    "ControllerDocs",
-    "Operation",
-    "Algorithm",
-]
+def test_with_key() -> None:
+    key = "zz"
+    check_key(key)
+
+
+@pytest.mark.raises(exception=KeyTypeError)
+def test_bad_type_key() -> None:
+    key = b"z"
+    check_key(key)
+
+
+@pytest.mark.raises(exception=EmptyKeyError)
+def test_bad_empty_key() -> None:
+    key = ""
+    check_key(key)
+
+
+@pytest.mark.raises(exception=BadKeyError)
+def test_bad_not_alpha_str_key() -> None:
+    key = "$z"
+    check_key(key)

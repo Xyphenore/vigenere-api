@@ -30,7 +30,7 @@ async def test_get_index(test_client: TestClient) -> None:
 
     first_header = response.headers.values[0]
     assert first_header[0] == b"Location"
-    assert first_header[1] == b"/api/v1"
+    assert first_header[1] == b"/api/v2"
 
 
 @pytest.mark.asyncio()
