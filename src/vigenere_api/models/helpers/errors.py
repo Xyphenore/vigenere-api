@@ -15,10 +15,13 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 """All errors thrown by the helper."""
-
+from enum import unique
 from typing import Any, final
 
+from strenum import StrEnum
 from vigenere_api.helpers import VigenereAPITypeError
+
+A_STRING = "a string"
 
 
 @final
@@ -34,7 +37,7 @@ class HelperCharTypeError(VigenereAPITypeError):
         char : Any
             The received char.
         """
-        super().__init__(char, "char variable", "a string")
+        super().__init__(char, "char variable", A_STRING)
 
 
 @final
@@ -102,7 +105,7 @@ class HelperFirstLetterTypeError(VigenereAPITypeError):
         first_letter : Any
             The first letter.
         """
-        super().__init__(first_letter, "first letter variable", "a string")
+        super().__init__(first_letter, "first letter variable", A_STRING)
 
 
 @final
@@ -121,4 +124,82 @@ class HelperBadFirstLetterValueError(ValueError):
         super().__init__(
             f"The helper function receives a first letter equals to '{first_letter}'."
             + " Please give a string in {'a', 'A'}.",
+        )
+
+
+@final
+class EmptyKeyError(ValueError):
+    """Thrown if the key is empty."""
+
+    def __init__(self) -> None:
+        """Create an EmptyKeyError."""
+        super().__init__(
+            "The key is empty. Please give a one character string or an integer.",
+        )
+
+
+@final
+class TooShortKeyError(ValueError):
+    """Thrown if the key is a string of one character."""
+
+    def __init__(self) -> None:
+        """Create a TooLongKeyError."""
+        super().__init__(
+            "The key is too short. Please give a string with more than one character.",
+        )
+
+
+@final
+@unique
+class ExpectedKeyType(StrEnum):
+    """The type of key, the function needs it."""
+
+    STRING = A_STRING
+    STRING_OR_INTEGER = "a string or an integer"
+
+
+@final
+class BadKeyError(ValueError):
+    """Thrown if the key is not an integer and not a one character string."""
+
+    def __init__(self, key: str, excepted_type: ExpectedKeyType) -> None:
+        """
+        Create a BadKeyError with the key.
+
+        Parameters
+        ----------
+        key : str
+            The received key.
+        """
+        super().__init__(
+            f"The key '{key}' is invalid." + f" Please give {excepted_type}.",
+        )
+
+
+@final
+class KeyTypeError(VigenereAPITypeError):
+    """Thrown if the key is not a string and not an integer."""
+
+    def __init__(self, key: Any, expected_type: ExpectedKeyType) -> None:
+        """
+        Create a KeyTypeError with the key.
+
+        Parameters
+        ----------
+        key : Any
+            The received key.
+        expected_type : ExpectedKeyType
+            The expected type of the key.
+        """
+        super().__init__(key, "key", expected_type)
+
+
+@final
+class TooLongKeyError(ValueError):
+    """Thrown if the key is not an integer and not a one character string."""
+
+    def __init__(self) -> None:
+        """Create a TooLongKeyError."""
+        super().__init__(
+            "The key is too long. Please give a one character string or an integer.",
         )

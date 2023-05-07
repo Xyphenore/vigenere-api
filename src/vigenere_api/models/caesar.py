@@ -23,19 +23,21 @@ from typing import final, Union
 from pydantic import StrictInt, StrictStr, validator
 
 from vigenere_api.helpers import Model
-
 from .errors import (
+    AlgorithmExpectedKeyType,
     AlgorithmKeyTypeError,
     AlgorithmTextTypeError,
-    BadKeyError,
     ContentTypeError,
     EmptyContentError,
+)
+from .helpers import convert_key, move_char
+from .helpers.errors import (
+    BadKeyError,
     EmptyKeyError,
+    ExpectedKeyType,
     KeyTypeError,
     TooLongKeyError,
 )
-from .helpers import move_char
-
 
 Key = Union[StrictInt, StrictStr]
 
@@ -123,14 +125,15 @@ class CaesarData(Model):
             raise AlgorithmTextTypeError(text)
 
         if not isinstance(key, int):
-            raise AlgorithmKeyTypeError(key)
+            raise AlgorithmKeyTypeError(key, AlgorithmExpectedKeyType.INTEGER)
 
         result = ""
         for char in text:
-            if char.isupper():
-                result += move_char(char, key, "A")
-            elif char.islower():
-                result += move_char(char, key, "a")
+            if char.isalpha():
+                if char.isupper():
+                    result += move_char(char, key, "A")
+                else:
+                    result += move_char(char, key, "a")
             else:
                 result += char
 
@@ -148,8 +151,7 @@ class CaesarData(Model):
         if isinstance(self.key, int):
             return self.key
 
-        key = self.key
-        return ord(key) - ord("A") if key.isupper() else ord(key) - ord("a")
+        return convert_key(self.key)
 
     @validator("content", pre=True)
     def validate_content(cls, content: str) -> str:
@@ -208,7 +210,7 @@ class CaesarData(Model):
             Key
         """
         if not isinstance(key, (str, int)):
-            raise KeyTypeError(key)
+            raise KeyTypeError(key, ExpectedKeyType.STRING_OR_INTEGER)
 
         if isinstance(key, str):
             if len(key) == 0:
@@ -218,6 +220,6 @@ class CaesarData(Model):
                 raise TooLongKeyError
 
             if not key.isalpha():
-                raise BadKeyError(key)
+                raise BadKeyError(key, ExpectedKeyType.STRING_OR_INTEGER)
 
         return key
