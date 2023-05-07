@@ -10,7 +10,7 @@ To see how to build the package, or to install the development version, see 'INS
 To install the latest version of the package.
 
 ```bash
-pip install https://etulab.univ-amu.fr/d19006523/vigenere-api/-/packages/pypi/vigenere-api
+pip install vigenere-api --index-url https://etulab.univ-amu.fr/api/v4/projects/8004/packages/pypi/simple
 ```
 
 - API :<br>
