@@ -58,7 +58,7 @@ source .venv/bin/activate
 ### Install dependencies :
 
 ```shell
-pip install https://etulab.univ-amu.fr/d19006523/vigenere-api/-/packages/pypi/vigenere-api
+pip install vigenere-api --index-url https://etulab.univ-amu.fr/api/v4/projects/8004/packages/pypi/simple
 ```
 
 ## Run the API :
@@ -160,19 +160,19 @@ python -m vigenere_api
 ## Execute tests :
 
 ```shell
-PYTHONPATH=.src pytest
+PYTHONPATH=./src pytest
 ```
 
 ## Execute coverage :
 
 ```shell
-PYTHONPATH=.src pytest --cov=src --cov=tests --cov=src --cov=tests --junit-xml=coverage.xml --cov-report=html:coverage_html
+PYTHONPATH=./src pytest --cov=src --cov=tests --cov=src --cov=tests --junit-xml=coverage.xml --cov-report=html:coverage_html
 ```
 
 ## Execute integration tests :
 
 ```shell
-PYTHONPATH=.src pytest --with-integration
+PYTHONPATH=./src pytest --with-integration
 ```
 
 ## Build the API package :
