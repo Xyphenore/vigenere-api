@@ -42,8 +42,8 @@ deptry = "^0"
 mypy = { extras = ["reports"], version = "^1" }
 vulture = "^2"
 safety = "^2.4.0b1"
-# Dependencies requests fixed to 2.19 and upper because safety does not fix the required version
-# Version lower than 2.19 has a CVE problem
+# Dependencies requests fixed to 2.31 and upper because safety does not fix the required version
+# Version lower than 2.31 has two CVE problem
 requests = "^2.31"
 dodgy = "^0"
 yamllint = "^1"
