@@ -24,7 +24,7 @@ strenum = "^0"
 
 
 [tool.poetry.group.formatter.dependencies]
-black = "^23"
+black = "^24"
 isort = "^5"
 
 
@@ -44,7 +44,7 @@ vulture = "^2"
 safety = "^2.4.0b1"
 # Dependencies requests fixed to 2.31 and upper because safety does not fix the required version
 # Version lower than 2.31 has two CVE problem
-requests = "^2.31"
+requests = "^2.32"
 dodgy = "^0"
 yamllint = "^1"
 
