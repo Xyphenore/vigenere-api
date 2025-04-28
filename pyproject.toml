@@ -17,11 +17,14 @@ include = ["CHANGELOG.md", "INSTALL.md"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-blacksheep = "^1"
-uvicorn = { extras = ["standard"], version = "^0" }
-pydantic = "^1"
-strenum = "^0"
-
+blacksheep = "^1.2"
+uvicorn = { extras = ["standard"], version = "^0.34" }
+pydantic = "^1.10"
+strenum = "^0.4"
+# Dependency h11 has a critical CVE with a version lower than 0.16.
+h11 = "^0.16"
+# Dependecy Jinja2 has a three CVE for a version lower than 3.1.6.
+jinja2 = "^3.1.6"
 
 [tool.poetry.group.formatter.dependencies]
 black = "^24"
@@ -42,8 +45,8 @@ deptry = "^0"
 mypy = { extras = ["reports"], version = "^1" }
 vulture = "^2"
 safety = "^2.4.0b1"
-# Dependencies requests fixed to 2.31 and upper because safety does not fix the required version
-# Version lower than 2.31 has two CVE problem
+# Dependency requests fixed to 2.31 and upper because safety does not fix the required version.
+# Version lower than 2.31 has two CVE problems.
 requests = "^2.32"
 dodgy = "^0"
 yamllint = "^1"
