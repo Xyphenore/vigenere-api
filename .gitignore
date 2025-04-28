@@ -20,3 +20,15 @@ coverage.wml
 .coverage
 coverage_html
 htmlcov
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/dictionaries/project.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/.gitignore
+/.idea/compiler.xml
+/.idea/git_toolbox_prj.xml
+/.idea/jsLibraryMappings.xml
+/.idea/jsonCatalog.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+/.idea/vigenere-api.iml
