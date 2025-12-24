@@ -27,15 +27,15 @@ h11 = "^0.16"
 jinja2 = "^3.1.6"
 
 [tool.poetry.group.formatter.dependencies]
-black = "^24"
-isort = "^5"
+black = "^25"
+isort = "^7"
 
 
 [tool.poetry.group.linter.dependencies]
 bandit = { extras = ["toml"], version = "^1" }
 pycodestyle = "^2"
 pydocstyle = { extras = ["toml"], version = "^6" }
-pylint = "^2"
+pylint = "^4"
 pylint-secure-coding-standard = "^1"
 pylint-pydantic = "^0"
 pylint-enums = "^0"
@@ -44,22 +44,25 @@ interrogate = "^1"
 deptry = "^0"
 mypy = { extras = ["reports"], version = "^1" }
 vulture = "^2"
-safety = "^2.4.0b1"
+safety = "^3"
 # Dependency requests fixed to 2.31 and upper because safety does not fix the required version.
 # Version lower than 2.31 has two CVE problems.
 requests = "^2.32"
+# Dependency marshmallow fixed to 4.1.2 and upper because safety does not fix the required version.
+# Version lower than 4.1.2 has one CVE problem.
+marshmallow = "^4.1.2"
 dodgy = "^0"
 yamllint = "^1"
 
 
 [tool.poetry.group.test.dependencies]
 coverage = { extras = ["toml"], version = "^7" }
-pytest = "^7"
-pytest-asyncio = "^0"
-pytest-cov = "^4"
+pytest = "^9"
+pytest-asyncio = "^1"
+pytest-cov = "^7"
 pytest-raises = "^0"
 pytest-integration = "^0"
-pytest-timer = "^0"
+pytest-timer = "^1"
 
 
 [tool.poetry.urls]
