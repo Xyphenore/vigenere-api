@@ -16,7 +16,7 @@ include = ["CHANGELOG.md", "INSTALL.md"]
 
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 blacksheep = "^1.2"
 uvicorn = { extras = ["standard"], version = "^0.34" }
 pydantic = "^1.10"
@@ -666,7 +666,7 @@ os-mknod-mode = true
 
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.10"
 
 namespace_packages = true
 explicit_package_bases = false

@@ -1,5 +1,5 @@
 default:
-    image: python:3.9
+    image: python:3.10
     cache:
         -   key:
                 files:
@@ -41,8 +41,8 @@ variables:
     PYTHONPATH: "."
     GIT_STRATEGY: "fetch"
     GIT_SUBMODULE_STRATEGY: "recursive"
-    ASDF_PYTHON_VERSION: "3.9"
-    LM_PYTHON_VERSION: "3.9"
+    ASDF_PYTHON_VERSION: "3.10"
+    LM_PYTHON_VERSION: "3.10"
     SAFETY_POLICY_FILE: "$CI_PROJECT_DIR/.safety-policy.yml"
     SAFETY_COLOR: "True"
     CI_SERVER_URL: "https://etulab.univ-amu.fr"
@@ -145,8 +145,8 @@ dependency_scanning:
         -   changes:
                 - $CI_PROJECT_DIR/**/*.yml
                 - $CI_PROJECT_DIR/**/*.yaml
-        - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-        - if: $CI_COMMIT_TAG
+        -   if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+        -   if: $CI_COMMIT_TAG
     script:
         - yamllint src tests
 
@@ -377,7 +377,7 @@ dependency_scanning:
             - dist
 
 🔖 release version 🚧:
-    cache: []
+    cache: [ ]
     extends: .common_release
     needs:
         - 🔧 publish package 🚧

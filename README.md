@@ -38,9 +38,9 @@ alt="License GPL-3.0">
 <img src="https://img.shields.io/badge/platform-linux--64%20%7C%20win--64-lightgrey"
 alt="Platform Windows Linux">
 </a>
-<a href="https://docs.python.org/fr/3.9/">
-<img src="https://img.shields.io/badge/python-3.9-blue"
-alt="Python 3.9">
+<a href="https://docs.python.org/fr/3.10/">
+<img src="https://img.shields.io/badge/python-3.10-blue"
+alt="Python 3.10">
 </a>
 
 # Vigenere-API

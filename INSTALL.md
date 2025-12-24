@@ -4,7 +4,7 @@
 
 ### Requirements :
 
-<b> Python 3.9 </b>
+<b> Python 3.10 </b>
 
 Upper versions are not tested, but we think the package can work.<br>
 If an issue has occurred, open a ticket to: https://etulab.univ-amu.fr/d19006523/vigenere-api/-/issues
@@ -71,7 +71,7 @@ python3 -m vigenere_api
 
 ### Requirements :
 
-<b> Python 3.9 </b>
+<b> Python 3.10 </b>
 
 Upper versions are not tested, but we think the package can work.<br>
 If an issue has occurred, open a ticket to: https://etulab.univ-amu.fr/d19006523/vigenere-api/-/issues
